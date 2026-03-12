@@ -10,6 +10,6 @@
       <span>{{ dateFormat "January 2, 2006" .Date }}</span>
       {{ if .Params.author }}<span> | Author: {{ .Params.author }}</span>{{ end }}
     </div>
-    <div style="font-size:18px; line-height:1.8;">{{ .Content }}</div>
+    <div class="markdown-body" style="font-size:18px; line-height:1.8;">{{ .Content }}</div>
   </article>
 {{ end }}

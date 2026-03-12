@@ -1,0 +1,35 @@
+{{- $destination := .Destination -}}
+{{- $text := printf "%s" .Text -}}
+{{- $parts := split $text "|" -}}
+{{- $alt := "" -}}
+{{- $width := "" -}}
+{{- if gt (len $parts) 0 }}{{ $alt = trim (index $parts 0) " " }}{{ end -}}
+{{- if gt (len $parts) 1 }}{{ $width = trim (index $parts 1) " " }}{{ end -}}
+{{- $lowerDest := lower $destination -}}
+{{- $isRemote := or (hasPrefix $destination "http://") (hasPrefix $destination "https://") -}}
+{{- $resource := "" -}}
+{{- if not $isRemote }}{{ $resource = .Page.Resources.GetMatch $destination }}{{ end -}}
+{{- $src := $destination -}}
+{{- if $resource }}{{ $src = $resource.RelPermalink }}{{ end -}}
+{{- $style := "" -}}
+{{- if $width -}}
+  {{- if or (hasSuffix $width "%") (hasSuffix $width "px") (hasSuffix $width "rem") (hasSuffix $width "vw") -}}
+    {{- $style = printf "width:%s;" $width -}}
+  {{- else -}}
+    {{- $widthNum := int $width -}}
+    {{- if le $widthNum 100 -}}
+      {{- $style = printf "width:%d%%;" $widthNum -}}
+    {{- else -}}
+      {{- $style = printf "width:%dpx;" $widthNum -}}
+    {{- end -}}
+  {{- end -}}
+{{- end -}}
+
+{{- if or (hasSuffix $lowerDest ".mp4") (hasSuffix $lowerDest ".webm") (hasSuffix $lowerDest ".ogg") -}}
+  <video controls preload="metadata"{{ with $style }} style="{{ . }}"{{ end }}>
+    <source src="{{ $src }}" type="video/{{ path.Ext $lowerDest | strings.TrimPrefix `.` }}">
+    {{ with $alt }}{{ . }}{{ else }}Your browser does not support the video tag.{{ end }}
+  </video>
+{{- else -}}
+  <img src="{{ $src }}" alt="{{ $alt }}" loading="lazy"{{ with $style }} style="{{ . }}"{{ end }}>
+{{- end -}}

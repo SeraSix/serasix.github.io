@@ -10,14 +10,42 @@ tags:
   - technical-art
 ---
 
-# Post Test
+## Heading Level 2
 
-This is a sample technical blog entry.
+This post verifies common Markdown rendering in Hugo page bundles.
 
-It can be used to verify:
+**This text is bold**
 
-- the home page card layout
-- the section list page for `posts`
-- the single page template for an individual article
+*This text is italic*
 
-Future blog posts can discuss shaders, tools, workflows, or rendering experiments.
+- First bullet
+- Second bullet
+  - Nested bullet
+
+Inline math-like text can stay as plain content for now: `v_{i,t}` and `1/2`.
+
+```python
+for i in range(n):
+    print(i)
+```
+
+| I | am | a | table |
+| --- | --- | --- | --- |
+| This | is | a | row |
+| Hugo | now | renders | it |
+
+> [!NOTE]
+> This is a callout rendered through a Hugo blockquote render hook.
+> It is useful for notes, warnings, and tips.
+
+> This is a regular blockquote.
+
+[My GitHub](https://github.com/SeraSix)
+
+Image with custom width:
+
+![Post effect breakdown|60%](PostEffect.png)
+
+Video inside the page bundle:
+
+![WRC demo reel|720](WRC.mp4)
