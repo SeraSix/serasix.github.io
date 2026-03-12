@@ -1,3 +1,12 @@
-<div style="text-align: center; height: 75px; padding:1px;   text-transform:capitalize; background-color:#42a5f5; color:white">
-     <h1 style="margin-bottom:-10px; "><a style="text-decoration: none; color:white;"href="/">{{.Template}} Template - {{.Kind}}</a></h1>
-</div>
+<header style="background-color:#0f172a; color:#ffffff;">
+  <div style="max-width: 960px; margin: 0 auto; padding: 20px; display:flex; justify-content:space-between; align-items:center; gap:20px;">
+    <a href="{{ `/` | relURL }}" style="color:#ffffff; text-decoration:none; font-size:24px; font-weight:700;">
+      {{ .Site.Title }}
+    </a>
+    <nav style="display:flex; gap:16px; font-size:14px;">
+      <a href="{{ `/` | relURL }}" style="color:#ffffff; text-decoration:none;">Home</a>
+      <a href="{{ `/posts/` | relURL }}" style="color:#ffffff; text-decoration:none;">Blog</a>
+      <a href="{{ `/portfolio/` | relURL }}" style="color:#ffffff; text-decoration:none;">Portfolio</a>
+    </nav>
+  </div>
+</header>

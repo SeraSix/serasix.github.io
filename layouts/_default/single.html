@@ -1,19 +1,10 @@
-<html>
-<head>
-     <meta charset="UTF-8">
-     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-     <title>{{ .Title }} | {{ .Site.Title }}</title>
-</head>
-<body>
-     {{ partial "header.html" (dict "Kind" .Kind "Template" "Single") }}
-
-     <div style="margin:25px;">
-          <h1>{{.Title}}</h1>
-          <div style="color:grey; font-size:16px;">{{ dateFormat "Monday, Jan 2, 2006" .Date }}</div>
-          <div style="color:grey; font-size:16px;">{{if .Params.author}}Author: {{.Params.Author}}{{end}}</div>
-          <div style="font-size:18px;">{{.Content}}</div>
-     </div>
-     {{ partial "footer.html" . }}
-</body>
-</html>
+{{ define "main" }}
+  <article style="background-color:#ffffff; border:1px solid #d9e2ec; border-radius:16px; padding:32px;">
+    <h1 style="margin:0 0 12px; font-size:42px;">{{ .Title }}</h1>
+    <div style="color:#7b8794; font-size:14px; margin-bottom:24px;">
+      <span>{{ dateFormat "January 2, 2006" .Date }}</span>
+      {{ if .Params.author }}<span> | Author: {{ .Params.author }}</span>{{ end }}
+    </div>
+    <div style="font-size:18px; line-height:1.8;">{{ .Content }}</div>
+  </article>
+{{ end }}
