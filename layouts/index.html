@@ -1,8 +1,5 @@
 {{ define "main" }}
-  <section style="background-color:#ffffff; border:1px solid #d9e2ec; border-radius:16px; padding:32px; margin-bottom:24px;">
-    <h1 style="margin:0 0 16px; font-size:44px;">{{ .Title }}</h1>
-    <div style="font-size:18px; line-height:1.8;">{{ .Content }}</div>
-  </section>
+  {{ partial "home-hero.html" . }}
 
   {{ $items := where site.RegularPages "Section" "in" (slice "posts" "projects") }}
   {{ range $items.ByDate.Reverse }}
