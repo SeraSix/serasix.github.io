@@ -4,9 +4,9 @@
       {{ .Site.Title }}
     </a>
     <nav style="display:flex; gap:16px; font-size:14px;">
-      <a href="{{ `/` | relURL }}" style="color:#ffffff; text-decoration:none;">Home</a>
-      <a href="{{ `/posts/` | relURL }}" style="color:#ffffff; text-decoration:none;">Blog</a>
-      <a href="{{ `/portfolio/` | relURL }}" style="color:#ffffff; text-decoration:none;">Portfolio</a>
+      {{ range .Site.Menus.main }}
+        <a href="{{ .URL | relURL }}" style="color:#ffffff; text-decoration:none;">{{ .Name }}</a>
+      {{ end }}
     </nav>
   </div>
 </header>
