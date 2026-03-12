@@ -3,10 +3,7 @@ title: "Project Test"
 date: 2026-03-12T09:00:00+08:00
 draft: false
 summary: "A test portfolio item for validating Hugo page bundle content and project card display."
-tools:
-  - Houdini
-  - Unreal Engine
-  - Python
+cover: "cover.jpg"
 ---
 
 # Project Test

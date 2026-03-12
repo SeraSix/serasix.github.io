@@ -4,10 +4,7 @@ date: 2026-03-11T10:00:00+08:00
 draft: false
 author: "Sera"
 summary: "A test blog post for validating Hugo page bundle content and single page rendering."
-tags:
-  - hugo
-  - blog
-  - technical-art
+cover: "cover.jpg"
 ---
 
 ## Heading Level 2
