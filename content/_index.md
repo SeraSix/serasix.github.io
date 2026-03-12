@@ -1,14 +1,13 @@
 ---
-title: "Home"
+title: "Technical Art Portfolio and Blog"
 date: 2026-03-12T00:00:00+08:00
 draft: false
 ---
 
-# Test Home Page
+# Home
 
-这是首页测试内容。
+This is the landing page for a personal site built with Hugo.
 
-- 这里将用于展示技术美术作品集
-- 这里将用于展示技术博客文章
-
-当前 Hugo 首页已经可以正常渲染这段 Markdown 内容。
+- `Posts` will hold technical blog articles.
+- `Projects` will hold technical art portfolio entries.
+- The cards below should combine both sections on the home page.

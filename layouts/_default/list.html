@@ -4,7 +4,7 @@
     <div style="font-size:18px; line-height:1.7;">{{ .Content }}</div>
   </section>
 
-  {{ range .Pages }}
+  {{ range .Pages.ByDate.Reverse }}
     <article style="background-color:#ffffff; border:1px solid #d9e2ec; border-radius:12px; margin:0 0 16px; padding:20px;">
       <h2 style="margin:0 0 8px; font-size:24px;">
         <a href="{{ .RelPermalink }}" style="color:#102a43; text-decoration:none;">{{ .Title }}</a>
