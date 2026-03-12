@@ -5,18 +5,6 @@
     <loc>http://localhost:1313/projects/projects_test/</loc>
     <lastmod>2026-03-12T09:00:00+08:00</lastmod>
   </url><url>
-    <loc>http://localhost:1313/tags/shader/</loc>
-    <lastmod>2026-03-12T09:00:00+08:00</lastmod>
-  </url><url>
-    <loc>http://localhost:1313/tags/stylized/</loc>
-    <lastmod>2026-03-12T09:00:00+08:00</lastmod>
-  </url><url>
-    <loc>http://localhost:1313/tags/ta/</loc>
-    <lastmod>2026-03-12T09:00:00+08:00</lastmod>
-  </url><url>
-    <loc>http://localhost:1313/tags/</loc>
-    <lastmod>2026-03-12T09:00:00+08:00</lastmod>
-  </url><url>
     <loc>http://localhost:1313/posts/</loc>
     <lastmod>2026-03-12T00:00:00+08:00</lastmod>
   </url><url>
@@ -26,18 +14,11 @@
     <loc>http://localhost:1313/</loc>
     <lastmod>2026-03-12T00:00:00+08:00</lastmod>
   </url><url>
-    <loc>http://localhost:1313/tags/blog/</loc>
-    <lastmod>2026-03-11T10:00:00+08:00</lastmod>
-  </url><url>
-    <loc>http://localhost:1313/tags/hugo/</loc>
-    <lastmod>2026-03-11T10:00:00+08:00</lastmod>
-  </url><url>
     <loc>http://localhost:1313/posts/post_test/</loc>
     <lastmod>2026-03-11T10:00:00+08:00</lastmod>
   </url><url>
-    <loc>http://localhost:1313/tags/technical-art/</loc>
-    <lastmod>2026-03-11T10:00:00+08:00</lastmod>
-  </url><url>
     <loc>http://localhost:1313/categories/</loc>
+  </url><url>
+    <loc>http://localhost:1313/tags/</loc>
   </url>
 </urlset>

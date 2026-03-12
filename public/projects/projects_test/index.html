@@ -90,18 +90,61 @@
 
   <main style="flex:1; width:100%; max-width: 960px; margin: 0 auto; padding: 32px 20px 48px; box-sizing:border-box;">
     
-  <article style="background-color:#ffffff; border:1px solid #d9e2ec; border-radius:16px; padding:32px;">
-    <div style="margin-bottom:12px;">
-      <span style="display:inline-block; padding:4px 10px; border-radius:999px; background-color:#e0e8f9; color:#243b53; font-size:12px; font-weight:700; text-transform:uppercase;">
-        projects
-      </span>
-    </div>
-    <h1 style="margin:0 0 12px; font-size:42px;">Project Test</h1>
-    <div style="color:#7b8794; font-size:14px; margin-bottom:24px;">
-      <span>March 12, 2026</span>
-      
-    </div>
-    <div class="markdown-body" style="font-size:18px; line-height:1.8;"><h1 id="project-test">Project Test</h1>
+  <style>
+    .single-layout {
+      display: flex;
+      gap: 24px;
+      align-items: flex-start;
+    }
+
+    .single-article {
+      flex: 1;
+      min-width: 0;
+      background-color: #ffffff;
+      border: 1px solid #d9e2ec;
+      border-radius: 16px;
+      padding: 32px;
+    }
+
+    .single-toc {
+      width: 260px;
+      flex-shrink: 0;
+      position: sticky;
+      top: 24px;
+      background-color: #ffffff;
+      border: 1px solid #d9e2ec;
+      border-radius: 16px;
+      padding: 20px;
+    }
+
+    @media (max-width: 1000px) {
+      .single-layout {
+        display: block;
+      }
+
+      .single-toc {
+        display: none;
+      }
+    }
+  </style>
+
+  <div class="single-layout">
+    <article class="single-article">
+      <div style="margin-bottom:12px;">
+        <span style="display:inline-block; padding:4px 10px; border-radius:999px; background-color:#e0e8f9; color:#243b53; font-size:12px; font-weight:700; text-transform:uppercase;">
+          projects
+        </span>
+      </div>
+
+      <h1 style="margin:0 0 12px; font-size:42px;">Project Test</h1>
+
+      <div style="color:#7b8794; font-size:14px; margin-bottom:24px;">
+        <span>March 12, 2026</span>
+        
+      </div>
+
+      <div class="markdown-body" style="font-size:18px; line-height:1.8;">
+        <h1 id="project-test">Project Test</h1>
 <p>This is a sample portfolio entry for a technical art project.</p>
 <p>The page demonstrates a basic project bundle with Markdown content. Later you can extend it with:</p>
 <ul>
@@ -109,8 +152,18 @@
 <li>process notes and technical breakdowns</li>
 <li>links to videos, repositories, or downloadable builds</li>
 </ul>
-</div>
-  </article>
+
+      </div>
+    </article>
+
+    <aside class="single-toc">
+      <h2 style="margin:0 0 12px; font-size:18px; color:#102a43;">On This Page</h2>
+
+      <div style="font-size:14px; line-height:1.8; color:#486581;">
+        <nav id="TableOfContents"></nav>
+      </div>
+    </aside>
+  </div>
 
   </main>
   <footer style="border-top:1px solid #d9e2ec; background-color:#ffffff;">

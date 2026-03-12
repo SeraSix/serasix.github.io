@@ -11,6 +11,10 @@ cover: "cover.jpg"
 
 This post verifies common Markdown rendering in Hugo page bundles.
 
+### Heading Level 2.1
+
+### Heading Level 2.2
+
 **This text is bold**
 
 *This text is italic*
@@ -43,6 +47,8 @@ Image with custom width:
 
 ![Post effect breakdown|60%](PostEffect.png)
 
+
+## Heading Level 3
 Video inside the page bundle:
 
 ![WRC demo reel|720](WRC.mp4)
