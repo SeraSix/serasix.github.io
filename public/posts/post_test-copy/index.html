@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en-us">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+<title>Post Test | My Portfolio</title>
+<link rel="stylesheet" href="/css/custom.css">
+<style>
+  .markdown-body img,
+  .markdown-body video {
+    display: block;
+    max-width: 100%;
+    height: auto;
+    margin: 1.5rem 0;
+    border-radius: 12px;
+  }
+
+  .markdown-body video {
+    width: 100%;
+    background: #000;
+  }
+
+  .markdown-body table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 1.5rem 0;
+    overflow: hidden;
+    background: #fff;
+  }
+
+  .markdown-body th,
+  .markdown-body td {
+    padding: 0.75rem 1rem;
+    border: 1px solid #d9e2ec;
+    text-align: left;
+    vertical-align: top;
+  }
+
+  .markdown-body th {
+    background: #f0f4f8;
+  }
+
+  .markdown-body blockquote {
+    margin: 1.5rem 0;
+    padding: 1rem 1.25rem;
+    border-left: 4px solid #486581;
+    background: #f8fbff;
+    color: #243b53;
+  }
+
+  .markdown-body .callout {
+    margin: 1.5rem 0;
+    padding: 1rem 1.25rem;
+    border-radius: 12px;
+    border: 1px solid #bcccdc;
+    background: #f8fbff;
+  }
+
+  .markdown-body .callout-title {
+    margin: 0 0 0.5rem;
+    font-size: 0.9rem;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+  }
+
+  .markdown-body pre {
+    overflow-x: auto;
+  }
+</style>
+
+</head>
+<body style="margin:0; min-height:100vh; display:flex; flex-direction:column; font-family: Arial, sans-serif; color:#1f2933; background-color:#f5f7fa;">
+  <header style="background-color:#0f172a; color:#ffffff;">
+  <div style="max-width: 960px; margin: 0 auto; padding: 20px; display:flex; justify-content:space-between; align-items:center; gap:20px;">
+    <a href="/" style="color:#ffffff; text-decoration:none; font-size:24px; font-weight:700;">
+      My Portfolio
+    </a>
+    <nav style="display:flex; gap:16px; font-size:14px;">
+      
+        <a href="/" style="color:#ffffff; text-decoration:none;">Home</a>
+      
+        <a href="/posts/" style="color:#ffffff; text-decoration:none;">Blog</a>
+      
+        <a href="/projects/" style="color:#ffffff; text-decoration:none;">Project</a>
+      
+    </nav>
+  </div>
+</header>
+
+  <main style="flex:1; width:100%; max-width: 960px; margin: 0 auto; padding: 32px 20px 48px; box-sizing:border-box;">
+    
+  <style>
+    .single-layout {
+      display: flex;
+      gap: 24px;
+      align-items: flex-start;
+    }
+
+    .single-article {
+      flex: 1;
+      min-width: 0;
+      background-color: #ffffff;
+      border: 1px solid #d9e2ec;
+      border-radius: 16px;
+      padding: 32px;
+    }
+
+    .single-toc {
+      width: 260px;
+      flex-shrink: 0;
+      position: sticky;
+      top: 24px;
+      background-color: #ffffff;
+      border: 1px solid #d9e2ec;
+      border-radius: 16px;
+      padding: 20px;
+    }
+
+    @media (max-width: 1000px) {
+      .single-layout {
+        display: block;
+      }
+
+      .single-toc {
+        display: none;
+      }
+    }
+  </style>
+
+  <div class="single-layout">
+    <article class="single-article">
+      <div style="margin-bottom:12px;">
+        <span style="display:inline-block; padding:4px 10px; border-radius:999px; background-color:#e0e8f9; color:#243b53; font-size:12px; font-weight:700; text-transform:uppercase;">
+          posts
+        </span>
+      </div>
+
+      <h1 style="margin:0 0 12px; font-size:42px;">Post Test</h1>
+
+      <div style="color:#7b8794; font-size:14px; margin-bottom:24px;">
+        <span>March 11, 2026</span>
+        <span> | Author: Sera</span>
+      </div>
+
+      <div class="markdown-body" style="font-size:18px; line-height:1.8;">
+        <h2 id="heading-level-2">Heading Level 2</h2>
+<p>This post verifies common Markdown rendering in Hugo page bundles.</p>
+<h3 id="heading-level-21">Heading Level 2.1</h3>
+<h3 id="heading-level-22">Heading Level 2.2</h3>
+<p><strong>This text is bold</strong></p>
+<p><em>This text is italic</em></p>
+<ul>
+<li>First bullet</li>
+<li>Second bullet
+<ul>
+<li>Nested bullet</li>
+</ul>
+</li>
+</ul>
+<p>Inline math-like text can stay as plain content for now: <code>v_{i,t}</code> and <code>1/2</code>.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#66d9ef">for</span> i <span style="color:#f92672">in</span> range(n):
+</span></span><span style="display:flex;"><span>    print(i)
+</span></span></code></pre></div><table>
+  <thead>
+      <tr>
+          <th>I</th>
+          <th>am</th>
+          <th>a</th>
+          <th>table</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td>This</td>
+          <td>is</td>
+          <td>a</td>
+          <td>row</td>
+      </tr>
+      <tr>
+          <td>Hugo</td>
+          <td>now</td>
+          <td>renders</td>
+          <td>it</td>
+      </tr>
+  </tbody>
+</table>
+<div class="callout callout-note">
+    <div class="callout-title">Note</div>
+    <div><p>This is a callout rendered through a Hugo blockquote render hook.
+It is useful for notes, warnings, and tips.</p></div>
+  </div><blockquote>
+    <p>This is a regular blockquote.</p>
+
+  </blockquote><p><a href="https://github.com/SeraSix">My GitHub</a></p>
+<p>Image with custom width:</p>
+<img src="/posts/post_test-copy/PostEffect.png" alt="Post effect breakdown" loading="lazy" style="ZgotmplZ"><h2 id="heading-level-3">Heading Level 3</h2>
+<p>Video inside the page bundle:</p>
+<video controls preload="metadata" style="ZgotmplZ">
+    <source src="/posts/post_test-copy/WRC.mp4" type="video/mp4">
+    WRC demo reel
+  </video>
+      </div>
+    </article>
+
+    <aside class="single-toc">
+      <h2 style="margin:0 0 12px; font-size:18px; color:#102a43;">On This Page</h2>
+
+      <div style="font-size:14px; line-height:1.8; color:#486581;">
+        <nav id="TableOfContents">
+  <ul>
+    <li><a href="#heading-level-2">Heading Level 2</a>
+      <ul>
+        <li><a href="#heading-level-21">Heading Level 2.1</a></li>
+        <li><a href="#heading-level-22">Heading Level 2.2</a></li>
+      </ul>
+    </li>
+    <li><a href="#heading-level-3">Heading Level 3</a></li>
+  </ul>
+</nav>
+      </div>
+    </aside>
+  </div>
+
+  </main>
+  <footer style="border-top:1px solid #d9e2ec; background-color:#ffffff;">
+  <div style="max-width: 960px; margin: 0 auto; padding: 20px; color:#52606d; font-size:14px;">
+    <p style="margin:0;">&copy; 2026 My Portfolio. Built with Hugo.</p>
+  </div>
+</footer>
+
+</body>
+</html>

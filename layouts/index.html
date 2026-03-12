@@ -1,8 +1,10 @@
 {{ define "main" }}
   {{ partial "home-hero.html" . }}
 
-  {{ $items := where site.RegularPages "Section" "in" (slice "posts" "projects") }}
-  {{ range $items.ByDate.Reverse }}
-    {{ partial "card.html" . }}
-  {{ end }}
+  <section class="content-grid">
+    {{ $items := where site.RegularPages "Section" "in" (slice "posts" "projects") }}
+    {{ range $items.ByDate.Reverse }}
+      {{ partial "card.html" . }}
+    {{ end }}
+  </section>
 {{ end }}

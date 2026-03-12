@@ -1,0 +1,135 @@
+.content-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 24px;
+  align-items: start;
+}
+
+.list-hero {
+  margin-bottom: 28px;
+}
+
+.list-title {
+  margin: 0 0 12px;
+  font-size: clamp(2rem, 3vw, 2.5rem);
+  line-height: 1.1;
+  color: #102a43;
+}
+
+.list-description {
+  font-size: 1.05rem;
+  line-height: 1.75;
+  color: #486581;
+}
+
+.list-description > :first-child {
+  margin-top: 0;
+}
+
+.list-description > :last-child {
+  margin-bottom: 0;
+}
+
+.content-card {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  background-color: #ffffff;
+  border: 1px solid #d9e2ec;
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 10px 24px rgba(15, 23, 42, 0.04);
+}
+
+.content-card__media {
+  display: block;
+  aspect-ratio: 16 / 9;
+  background-color: #d9e2ec;
+  overflow: hidden;
+}
+
+.content-card__image {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 180ms ease;
+}
+
+.content-card:hover .content-card__image {
+  transform: scale(1.03);
+}
+
+.content-card__body {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: 10px;
+  padding: 18px 18px 20px;
+}
+
+.content-card__meta {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+}
+
+.content-card__section {
+  display: inline-block;
+  padding: 4px 10px;
+  border-radius: 999px;
+  background-color: #e0e8f9;
+  color: #243b53;
+  font-size: 12px;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+.content-card__date {
+  color: #7b8794;
+  font-size: 14px;
+  white-space: nowrap;
+}
+
+.content-card__title {
+  margin: 0;
+  font-size: 1.25rem;
+  line-height: 1.35;
+}
+
+.content-card__title a {
+  color: #102a43;
+  text-decoration: none;
+}
+
+.content-card__summary {
+  margin: 0;
+  font-size: 0.98rem;
+  line-height: 1.7;
+  color: #334e68;
+}
+
+@media (max-width: 960px) {
+  .content-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 20px;
+  }
+}
+
+@media (max-width: 640px) {
+  .content-grid {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+
+  .content-card__body {
+    padding: 16px;
+  }
+
+  .content-card__meta {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 8px;
+  }
+}

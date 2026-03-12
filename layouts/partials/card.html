@@ -8,27 +8,27 @@
   {{- end -}}
 {{- end -}}
 
-<article style="background-color:#ffffff; border:1px solid #d9e2ec; border-radius:16px; margin:0 0 16px; overflow:hidden; box-shadow:0 10px 24px rgba(15, 23, 42, 0.04);">
+<article class="content-card">
   {{ with $cover }}
-    <a href="{{ $page.RelPermalink }}" style="display:block; aspect-ratio:16/9; background-color:#d9e2ec; overflow:hidden;">
-      <img src="{{ . }}" alt="{{ $page.Title }} cover" style="display:block; width:100%; height:100%; object-fit:cover;">
+    <a class="content-card__media" href="{{ $page.RelPermalink }}">
+      <img class="content-card__image" src="{{ . }}" alt="{{ $page.Title }} cover">
     </a>
   {{ end }}
 
-  <div style="padding:20px;">
-    <div style="display:flex; justify-content:space-between; align-items:center; gap:16px; margin-bottom:10px;">
-      <span style="display:inline-block; padding:4px 10px; border-radius:999px; background-color:#e0e8f9; color:#243b53; font-size:12px; font-weight:700; text-transform:uppercase;">
+  <div class="content-card__body">
+    <div class="content-card__meta">
+      <span class="content-card__section">
         {{ $page.Section }}
       </span>
-      <span style="color:#7b8794; font-size:14px;">{{ dateFormat "January 2, 2006" $page.Date }}</span>
+      <span class="content-card__date">{{ dateFormat "January 2, 2006" $page.Date }}</span>
     </div>
 
-    <h2 style="margin:0 0 10px; font-size:26px; line-height:1.2;">
-      <a href="{{ $page.RelPermalink }}" style="color:#102a43; text-decoration:none;">{{ $page.Title }}</a>
+    <h2 class="content-card__title">
+      <a href="{{ $page.RelPermalink }}">{{ $page.Title }}</a>
     </h2>
 
     {{ with $page.Summary }}
-      <p style="margin:0; font-size:16px; line-height:1.7; color:#334e68;">{{ . }}</p>
+      <p class="content-card__summary">{{ . }}</p>
     {{ end }}
   </div>
 </article>

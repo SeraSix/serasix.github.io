@@ -1,10 +1,12 @@
 {{ define "main" }}
-  <section style="margin-bottom: 32px;">
-    <h1 style="margin:0 0 16px; font-size:40px;">{{ .Title }}</h1>
-    <div style="font-size:18px; line-height:1.7;">{{ .Content }}</div>
+  <section class="list-hero">
+    <h1 class="list-title">{{ .Title }}</h1>
+    <div class="list-description">{{ .Content }}</div>
   </section>
 
-  {{ range .Pages.ByDate.Reverse }}
-    {{ partial "card.html" . }}
-  {{ end }}
+  <section class="content-grid">
+    {{ range .Pages.ByDate.Reverse }}
+      {{ partial "card.html" . }}
+    {{ end }}
+  </section>
 {{ end }}
