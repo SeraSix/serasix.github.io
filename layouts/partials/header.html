@@ -1,11 +1,11 @@
-<header style="background-color:#0f172a; color:#ffffff;">
+<header style="background-color:#252627; color:#A9A9B3;">
   <div style="max-width: 960px; margin: 0 auto; padding: 20px; display:flex; justify-content:space-between; align-items:center; gap:20px;">
-    <a href="{{ `/` | relURL }}" style="color:#ffffff; text-decoration:none; font-size:24px; font-weight:700;">
+    <a href="{{ `/` | relURL }}" style="color:#A9A9B3; text-decoration:none; font-size:24px; font-weight:700;">
       {{ .Site.Title }}
     </a>
     <nav style="display:flex; gap:16px; font-size:14px;">
       {{ range .Site.Menus.main }}
-        <a href="{{ .URL | relURL }}" style="color:#ffffff; text-decoration:none;">{{ .Name }}</a>
+        <a href="{{ .URL | relURL }}" style="color:#A9A9B3; text-decoration:none;">{{ .Name }}</a>
       {{ end }}
     </nav>
   </div>
