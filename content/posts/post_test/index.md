@@ -45,10 +45,12 @@ for i in range(n):
 
 Image with custom width:
 
-![Post effect breakdown|60%](PostEffect.png)
 
+<img src="PostEffect.png" width="400">
 
 ## Heading Level 3
 Video inside the page bundle:
 
 ![WRC demo reel|720](WRC.mp4)
+
+<video src="WRC.mp4" width="500" controls></video>

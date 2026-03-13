@@ -352,8 +352,8 @@
 
 .markdown-body hr {
   border: 0;
-  border-top: 1px solid rgba(169,169,179,0.16);
-  margin: 2rem 0;
+  border-top: 5px solid rgba(169,169,179,0.16);
+  margin: 5rem 0 5rem 0;
 }
 
 
@@ -368,7 +368,7 @@
   padding: 0.18em 0.45em;
   border: 1px solid rgba(169,169,179,0.14);
   border-radius: 0;
-  background: rgba(37,38,39,0.95);
+  background: #292A2D;
   color: #f0f0f4;
 }
 
@@ -377,8 +377,8 @@
   margin: 2rem 0;
   padding: 1rem 1.15rem;
   border-radius: 0;
-  background: #252627;
-  border: 1px solid rgba(169,169,179,0.12);
+  background: #292A2D;
+  border: 1px solid #292A2D;
 }
 
 .markdown-body pre code {
@@ -401,8 +401,14 @@
   border: 1px solid rgba(169,169,179,0.1);
 }
 
+/* 如果 markdown 写了 width，就尊重它 */
+.markdown-body img[width],
+.markdown-body video[width] {
+  max-width: none;
+}
+
 .markdown-body video {
-  width: 100%;
+  height: auto;
 }
 
 
@@ -415,20 +421,20 @@
   border-spacing: 0;
   overflow: hidden;
   background: #333333;
-  border: 1px solid rgba(169,169,179,0.12);
+  border: 2px solid rgba(169,169,179,0.12);
   border-radius: 0;
 }
 
 .markdown-body th,
 .markdown-body td {
-  padding: 0.8rem 1rem;
-  border-right: 1px solid rgba(169,169,179,0.1);
-  border-bottom: 1px solid rgba(169,169,179,0.1);
+  padding: 0.5rem 0.5rem 0.5rem 1rem;
+  border-right: 2px solid rgba(169,169,179,0.1);
+  border-bottom: 2px solid rgba(169,169,179,0.1);
   text-align: left;
 }
 
 .markdown-body th {
-  background: #252627;
+  background: #292A2D;
   color: #f0f0f4;
   font-weight: 600;
 }
@@ -466,19 +472,23 @@
 
 .markdown-body .callout {
   margin: 2rem 0;
-  padding: 1rem 1.1rem;
-  border: 1px solid rgba(169,169,179,0.14);
-  border-left: 4px solid rgba(169,169,179,0.56);
-  border-radius: 0;
-  background: rgba(51,51,51,0.92);
+  padding: 1rem 1.2rem;
+
+  border: 1px solid rgba(220, 218, 165, 0.14);
+  border-left: 4px solid #f0e770;
+
+  background: rgba(107, 110, 90, 0.35);
 }
 
 .markdown-body .callout-title {
-  margin: 0 0 0.6rem;
-  font-size: 0.8rem;
+  margin-bottom: 0.5rem;
+
+  font-size: 1.2rem;
   font-weight: 700;
-  letter-spacing: 0.06em;
+  letter-spacing: 0.08em;
   text-transform: uppercase;
+
+  color: #f0e770;
 }
 
 
