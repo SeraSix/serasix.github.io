@@ -5,92 +5,36 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta http-equiv="X-UA-Compatible" content="ie=edge">
 <title>Project Test | My Portfolio</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="/css/custom.css">
-<style>
-  .markdown-body img,
-  .markdown-body video {
-    display: block;
-    max-width: 100%;
-    height: auto;
-    margin: 1.5rem 0;
-    border-radius: 12px;
-  }
-
-  .markdown-body video {
-    width: 100%;
-    background: #252627;
-  }
-
-  .markdown-body table {
-    width: 100%;
-    border-collapse: collapse;
-    margin: 1.5rem 0;
-    overflow: hidden;
-    background: #333333;
-    color: #A9A9B3;
-  }
-
-  .markdown-body th,
-  .markdown-body td {
-    padding: 0.75rem 1rem;
-    border: 1px solid #404247;
-    text-align: left;
-    vertical-align: top;
-  }
-
-  .markdown-body th {
-    background: #252627;
-  }
-
-  .markdown-body blockquote {
-    margin: 1.5rem 0;
-    padding: 1rem 1.25rem;
-    border-left: 4px solid #A9A9B3;
-    background: #333333;
-    color: #A9A9B3;
-  }
-
-  .markdown-body .callout {
-    margin: 1.5rem 0;
-    padding: 1rem 1.25rem;
-    border-radius: 12px;
-    border: 1px solid #404247;
-    background: #333333;
-  }
-
-  .markdown-body .callout-title {
-    margin: 0 0 0.5rem;
-    font-size: 0.9rem;
-    font-weight: 700;
-    letter-spacing: 0.04em;
-    text-transform: uppercase;
-  }
-
-  .markdown-body pre {
-    overflow-x: auto;
-  }
-</style>
 
 </head>
-<body style="margin:0; min-height:100vh; display:flex; flex-direction:column; font-family: Arial, sans-serif; color:#A9A9B3; background-color:#292A2D;">
-  <header style="background-color:#252627; color:#A9A9B3;">
-  <div style="max-width: 960px; margin: 0 auto; padding: 20px; display:flex; justify-content:space-between; align-items:center; gap:20px;">
-    <a href="/" style="color:#A9A9B3; text-decoration:none; font-size:24px; font-weight:700;">
-      My Portfolio
+<body style="margin:0; min-height:100vh; display:flex; flex-direction:column; font-family: var(--site-font-sans, Arial, sans-serif); color:#A9A9B3; background-color:#292A2D;">
+  <header class="site-header">
+  <div class="site-header__inner">
+    <a href="/" class="site-header__brand">
+      <img src="/icons/home.png" alt="Home" width="30" height="30" class="site-header__brand-icon">
+      <span>Home</span>
     </a>
-    <nav style="display:flex; gap:16px; font-size:14px;">
+    <nav class="site-header__nav">
       
-        <a href="/" style="color:#A9A9B3; text-decoration:none;">Home</a>
+        
       
-        <a href="/posts/" style="color:#A9A9B3; text-decoration:none;">Blog</a>
+        
+          <a href="/posts/" class="site-header__link">Blog</a>
+        
       
-        <a href="/projects/" style="color:#A9A9B3; text-decoration:none;">Project</a>
+        
+          <a href="/projects/" class="site-header__link">Project</a>
+        
       
     </nav>
   </div>
 </header>
 
-  <main style="flex:1; width:100%; max-width: 960px; margin: 0 auto; padding: 32px 20px 48px; box-sizing:border-box;">
+  <main style="flex:1; width:100%; max-width: var(--site-container, 1280px); margin: 0 auto; padding: 32px 24px 48px; box-sizing:border-box;">
     
   <style>
     .single-layout {
@@ -103,8 +47,8 @@
       flex: 1;
       min-width: 0;
       background-color: #333333;
-      border: 1px solid #404247;
-      border-radius: 16px;
+      border: 0px solid #404247;
+      border-radius: 0px;
       padding: 32px;
     }
 
@@ -113,10 +57,22 @@
       flex-shrink: 0;
       position: sticky;
       top: 24px;
-      background-color: #333333;
-      border: 1px solid #404247;
+      background-color: #292A2D;
+      border: 0px solid #404247;
       border-radius: 16px;
       padding: 20px;
+      font-family: var(--site-font-sans, Arial, sans-serif);
+    }
+
+    .single-toc,
+    .single-toc a,
+    .single-toc li,
+    .single-toc ul {
+      color: #A9A9B3;
+    }
+
+    .single-toc a {
+      text-decoration: none;
     }
 
     @media (max-width: 1000px) {
@@ -161,7 +117,7 @@
     <aside class="single-toc">
       <h2 style="margin:0 0 12px; font-size:18px; color:#A9A9B3;">On This Page</h2>
 
-      <div style="font-size:14px; line-height:1.8; color:#A9A9B3;">
+      <div style="font-size:18px; line-height:1.8; color:#A9A9B3; font-family:var(--site-font-sans, Arial, sans-serif);">
         <nav id="TableOfContents"></nav>
       </div>
     </aside>
@@ -169,7 +125,7 @@
 
   </main>
   <footer style="border-top:1px solid #404247; background-color:#252627;">
-  <div style="max-width: 960px; margin: 0 auto; padding: 20px; color:#A9A9B3; font-size:14px;">
+  <div style="max-width: var(--site-container, 1280px); margin: 0 auto; padding: 20px 24px; color:#A9A9B3; font-size:14px;">
     <p style="margin:0;">&copy; 2026 My Portfolio. Built with Hugo.</p>
   </div>
 </footer>

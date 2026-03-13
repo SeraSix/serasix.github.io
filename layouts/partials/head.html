@@ -2,68 +2,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta http-equiv="X-UA-Compatible" content="ie=edge">
 <title>{{ if .IsHome }}{{ .Site.Title }}{{ else }}{{ .Title }} | {{ .Site.Title }}{{ end }}</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="{{ `/css/custom.css` | relURL }}">
-<style>
-  .markdown-body img,
-  .markdown-body video {
-    display: block;
-    max-width: 100%;
-    height: auto;
-    margin: 1.5rem 0;
-    border-radius: 12px;
-  }
-
-  .markdown-body video {
-    width: 100%;
-    background: #252627;
-  }
-
-  .markdown-body table {
-    width: 100%;
-    border-collapse: collapse;
-    margin: 1.5rem 0;
-    overflow: hidden;
-    background: #333333;
-    color: #A9A9B3;
-  }
-
-  .markdown-body th,
-  .markdown-body td {
-    padding: 0.75rem 1rem;
-    border: 1px solid #404247;
-    text-align: left;
-    vertical-align: top;
-  }
-
-  .markdown-body th {
-    background: #252627;
-  }
-
-  .markdown-body blockquote {
-    margin: 1.5rem 0;
-    padding: 1rem 1.25rem;
-    border-left: 4px solid #A9A9B3;
-    background: #333333;
-    color: #A9A9B3;
-  }
-
-  .markdown-body .callout {
-    margin: 1.5rem 0;
-    padding: 1rem 1.25rem;
-    border-radius: 12px;
-    border: 1px solid #404247;
-    background: #333333;
-  }
-
-  .markdown-body .callout-title {
-    margin: 0 0 0.5rem;
-    font-size: 0.9rem;
-    font-weight: 700;
-    letter-spacing: 0.04em;
-    text-transform: uppercase;
-  }
-
-  .markdown-body pre {
-    overflow-x: auto;
-  }
-</style>

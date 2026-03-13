@@ -8,6 +8,8 @@ cover: "cover.jpg"
 
 # Project Test
 
+看看中文渲染出来会是什么样子呢
+
 This is a sample portfolio entry for a technical art project.
 
 The page demonstrates a basic project bundle with Markdown content. Later you can extend it with:

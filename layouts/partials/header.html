@@ -1,11 +1,14 @@
-<header style="background-color:#252627; color:#A9A9B3;">
-  <div style="max-width: 960px; margin: 0 auto; padding: 20px; display:flex; justify-content:space-between; align-items:center; gap:20px;">
-    <a href="{{ `/` | relURL }}" style="color:#A9A9B3; text-decoration:none; font-size:24px; font-weight:700;">
-      {{ .Site.Title }}
+<header class="site-header">
+  <div class="site-header__inner">
+    <a href="{{ `/` | relURL }}" class="site-header__brand">
+      <img src="{{ `/icons/home.png` | relURL }}" alt="Home" width="30" height="30" class="site-header__brand-icon">
+      <span>Home</span>
     </a>
-    <nav style="display:flex; gap:16px; font-size:14px;">
+    <nav class="site-header__nav">
       {{ range .Site.Menus.main }}
-        <a href="{{ .URL | relURL }}" style="color:#A9A9B3; text-decoration:none;">{{ .Name }}</a>
+        {{ if ne .Name "Home" }}
+          <a href="{{ .URL | relURL }}" class="site-header__link">{{ .Name }}</a>
+        {{ end }}
       {{ end }}
     </nav>
   </div>
