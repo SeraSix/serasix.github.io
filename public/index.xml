@@ -1,13 +1,20 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>Technical Art Portfolio and Blog on My Portfolio</title>
+    <title>Technical Art Portfolio and Blog on Sera&#39;s Portfolio</title>
     <link>http://localhost:1313/</link>
-    <description>Recent content in Technical Art Portfolio and Blog on My Portfolio</description>
+    <description>Recent content in Technical Art Portfolio and Blog on Sera&#39;s Portfolio</description>
     <generator>Hugo</generator>
     <language>en-us</language>
-    <lastBuildDate>Thu, 12 Mar 2026 09:00:00 +0800</lastBuildDate>
+    <lastBuildDate>Sat, 14 Mar 2026 10:00:00 +0800</lastBuildDate>
     <atom:link href="http://localhost:1313/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>About Me</title>
+      <link>http://localhost:1313/about/me/</link>
+      <pubDate>Sat, 14 Mar 2026 10:00:00 +0800</pubDate>
+      <guid>http://localhost:1313/about/me/</guid>
+      <description>A test about page for validating the new about section and page bundle structure.</description>
+    </item>
     <item>
       <title>Project Test</title>
       <link>http://localhost:1313/projects/projects_test-copy-2/</link>
