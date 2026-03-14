@@ -6,10 +6,17 @@
     <description>Recent content in Projects on Sera&#39;s Portfolio</description>
     <generator>Hugo</generator>
     <language>en-us</language>
-    <lastBuildDate>Sat, 14 Mar 2026 14:14:00 +0800</lastBuildDate>
+    <lastBuildDate>Sat, 14 Mar 2026 20:39:00 +0800</lastBuildDate>
     <atom:link href="http://localhost:1313/projects/index.xml" rel="self" type="application/rss+xml" />
     <item>
-      <title>LD56:Night at the 8th Warehouse</title>
+      <title>LD58: HeartKeys</title>
+      <link>http://localhost:1313/projects/ld58/</link>
+      <pubDate>Sat, 14 Mar 2026 20:39:00 +0800</pubDate>
+      <guid>http://localhost:1313/projects/ld58/</guid>
+      <description>Leading artist and technical artist of the team</description>
+    </item>
+    <item>
+      <title>LD56: Night at the 8th Warehouse</title>
       <link>http://localhost:1313/projects/ld56/</link>
       <pubDate>Sat, 14 Mar 2026 14:14:00 +0800</pubDate>
       <guid>http://localhost:1313/projects/ld56/</guid>
@@ -27,13 +34,6 @@
       <link>http://localhost:1313/projects/projects_test-copy/</link>
       <pubDate>Thu, 12 Mar 2026 09:00:00 +0800</pubDate>
       <guid>http://localhost:1313/projects/projects_test-copy/</guid>
-      <description>A test portfolio item for validating Hugo page bundle content and project card display.</description>
-    </item>
-    <item>
-      <title>Project Test</title>
-      <link>http://localhost:1313/projects/projects_test/</link>
-      <pubDate>Thu, 12 Mar 2026 09:00:00 +0800</pubDate>
-      <guid>http://localhost:1313/projects/projects_test/</guid>
       <description>A test portfolio item for validating Hugo page bundle content and project card display.</description>
     </item>
   </channel>
