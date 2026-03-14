@@ -6,8 +6,15 @@
     <description>Recent content in Technical Art Portfolio and Blog on Sera&#39;s Portfolio</description>
     <generator>Hugo</generator>
     <language>en-us</language>
-    <lastBuildDate>Sat, 14 Mar 2026 20:39:00 +0800</lastBuildDate>
+    <lastBuildDate>Sun, 15 Mar 2026 00:15:00 +0800</lastBuildDate>
     <atom:link href="http://localhost:1313/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>第十一届世界渲染大赛</title>
+      <link>http://localhost:1313/projects/wrc11/</link>
+      <pubDate>Sun, 15 Mar 2026 00:15:00 +0800</pubDate>
+      <guid>http://localhost:1313/projects/wrc11/</guid>
+      <description>My first full pipeline animation project</description>
+    </item>
     <item>
       <title>LD58: HeartKeys</title>
       <link>http://localhost:1313/projects/ld58/</link>
@@ -28,20 +35,6 @@
       <pubDate>Sat, 14 Mar 2026 10:00:00 +0800</pubDate>
       <guid>http://localhost:1313/about/me/</guid>
       <description>A test about page for validating the new about section and page bundle structure.</description>
-    </item>
-    <item>
-      <title>Project Test</title>
-      <link>http://localhost:1313/projects/projects_test-copy-2/</link>
-      <pubDate>Thu, 12 Mar 2026 09:00:00 +0800</pubDate>
-      <guid>http://localhost:1313/projects/projects_test-copy-2/</guid>
-      <description>A test portfolio item for validating Hugo page bundle content and project card display.</description>
-    </item>
-    <item>
-      <title>Project Test</title>
-      <link>http://localhost:1313/projects/projects_test-copy/</link>
-      <pubDate>Thu, 12 Mar 2026 09:00:00 +0800</pubDate>
-      <guid>http://localhost:1313/projects/projects_test-copy/</guid>
-      <description>A test portfolio item for validating Hugo page bundle content and project card display.</description>
     </item>
     <item>
       <title>Post Test</title>

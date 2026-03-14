@@ -2,6 +2,12 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
+    <loc>http://localhost:1313/projects/wrc11/</loc>
+    <lastmod>2026-03-15T00:15:00+08:00</lastmod>
+  </url><url>
+    <loc>http://localhost:1313/projects/ld58/</loc>
+    <lastmod>2026-03-14T20:39:00+08:00</lastmod>
+  </url><url>
     <loc>http://localhost:1313/projects/ld56/</loc>
     <lastmod>2026-03-14T14:14:00+08:00</lastmod>
   </url><url>
@@ -12,9 +18,6 @@
     <lastmod>2026-03-14T00:00:00+08:00</lastmod>
   </url><url>
     <loc>http://localhost:1313/projects/projects_test-copy-2/</loc>
-    <lastmod>2026-03-12T09:00:00+08:00</lastmod>
-  </url><url>
-    <loc>http://localhost:1313/projects/projects_test-copy/</loc>
     <lastmod>2026-03-12T09:00:00+08:00</lastmod>
   </url><url>
     <loc>http://localhost:1313/posts/</loc>
@@ -34,8 +37,6 @@
   </url><url>
     <loc>http://localhost:1313/posts/post_test/</loc>
     <lastmod>2026-03-11T10:00:00+08:00</lastmod>
-  </url><url>
-    <loc>http://localhost:1313/projects/ld58/ld58-2d8fdd154af1808f9840cefb8dc9be69/</loc>
   </url><url>
     <loc>http://localhost:1313/categories/</loc>
   </url><url>
