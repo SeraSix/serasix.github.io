@@ -18,41 +18,36 @@
 .site-header__inner {
   max-width: var(--site-container);
   margin: 0 auto;
-  padding: 20px 24px;
+  padding: 20px 48px;
+  box-sizing: border-box;
   display: flex;
   justify-content: space-between;
   align-items: center;
   gap: 20px;
 }
 
+/* ---------------- Blog / Project ---------------- */
 .site-header__brand {
   display: inline-flex;
   align-items: center;
   gap: 10px;
   color: var(--site-text);
   text-decoration: none;
-  font-size: 1.85rem;
-  font-weight: 600;
-}
-
-.site-header__brand-icon {
-  display: block;
-  width: 34px;
-  height: 34px;
-  object-fit: contain;
-  filter: brightness(0) saturate(100%) invert(71%) sepia(7%) saturate(258%) hue-rotate(202deg) brightness(90%) contrast(88%);
+  font-size: 1.8rem;
+  font-weight: 500;
 }
 
 .site-header__nav {
   display: flex;
-  gap: 15px;
+  gap: 20px;
   align-items: flex-end;
 }
 
+/* ---------------- Blog / Project ---------------- */
 .site-header__link {
   color: var(--site-text);
   text-decoration: none;
-  font-size: 1.2rem;
+  font-size: 1.5rem;
   font-weight: 500;
 }
 
@@ -401,7 +396,7 @@
   border: 1px solid rgba(169,169,179,0.1);
 }
 
-/* 如果 markdown 写了 width，就尊重它 */
+/* 如果 markdown 写了 width，就尊重�?*/
 .markdown-body img[width],
 .markdown-body video[width] {
   max-width: none;
@@ -495,6 +490,10 @@
 /* ---------------- Responsive ---------------- */
 
 @media (max-width: 640px) {
+  .site-header__inner {
+    padding: 16px 32px;
+  }
+
   .markdown-body {
     font-size: 19px;
   }
@@ -507,3 +506,4 @@
     font-size: 1.45rem;
   }
 }
+
