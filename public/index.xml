@@ -6,8 +6,15 @@
     <description>Recent content in Technical Art Portfolio and Blog on Sera&#39;s Portfolio</description>
     <generator>Hugo</generator>
     <language>en-us</language>
-    <lastBuildDate>Sun, 15 Mar 2026 00:15:00 +0800</lastBuildDate>
+    <lastBuildDate>Sun, 15 Mar 2026 01:33:00 +0800</lastBuildDate>
     <atom:link href="http://localhost:1313/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>我有个人网页了（好耶！）</title>
+      <link>http://localhost:1313/about/me/</link>
+      <pubDate>Sun, 15 Mar 2026 01:33:00 +0800</pubDate>
+      <guid>http://localhost:1313/about/me/</guid>
+      <description>一个关于网站的小小介绍</description>
+    </item>
     <item>
       <title>第十一届世界渲染大赛</title>
       <link>http://localhost:1313/projects/wrc11/</link>
@@ -28,13 +35,6 @@
       <pubDate>Sat, 14 Mar 2026 14:14:00 +0800</pubDate>
       <guid>http://localhost:1313/projects/ld56/</guid>
       <description>My very first journey in game development and CG</description>
-    </item>
-    <item>
-      <title>About Me</title>
-      <link>http://localhost:1313/about/me/</link>
-      <pubDate>Sat, 14 Mar 2026 10:00:00 +0800</pubDate>
-      <guid>http://localhost:1313/about/me/</guid>
-      <description>A test about page for validating the new about section and page bundle structure.</description>
     </item>
     <item>
       <title>Post Test</title>
