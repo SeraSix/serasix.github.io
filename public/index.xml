@@ -6,8 +6,15 @@
     <description>Recent content in Technical Art Portfolio and Blog on Sera&#39;s Portfolio</description>
     <generator>Hugo</generator>
     <language>en-us</language>
-    <lastBuildDate>Sat, 14 Mar 2026 10:00:00 +0800</lastBuildDate>
+    <lastBuildDate>Sat, 14 Mar 2026 14:14:00 +0800</lastBuildDate>
     <atom:link href="http://localhost:1313/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>LD56: Night at the 8th Warehouse</title>
+      <link>http://localhost:1313/projects/ld56/</link>
+      <pubDate>Sat, 14 Mar 2026 14:14:00 +0800</pubDate>
+      <guid>http://localhost:1313/projects/ld56/</guid>
+      <description>My very first journey in game development and CG</description>
+    </item>
     <item>
       <title>About Me</title>
       <link>http://localhost:1313/about/me/</link>
