@@ -1,42 +1,28 @@
-<section style="background:transparent; border:none; border-radius:0; padding:40px 32px; margin:16px 0 24px; text-align:center; box-shadow:none;">
+<section class="home-hero">
   <img
     src="{{ `/images/avatar-v2.jpg` | relURL }}"
     alt="SeraSix avatar"
     width="160"
     height="160"
-    style="display:block; width:160px; height:160px; margin:0 auto 32px; border-radius:999px; object-fit:cover; box-shadow:0 12px 30px rgba(0, 0, 0, 0.22);"
+    class="home-hero__avatar"
   >
 
-  <!-- 标题缩小 -->
-  <h1 style="margin:0; font-size:40px; line-height:1.0; color:#A9A9B3;">SeraSix</h1>
+  <h1 class="home-hero__name">SeraSix</h1>
 
-  <p style="margin:16px 0 24px; font-size:24px; color:#A9A9B3;">A growing collection of projects, experiments, and explorations.</p>
+  <p class="home-hero__bio">A growing collection of projects, experiments, and explorations.</p>
 
-  <div style="display:flex; flex-wrap:wrap; justify-content:center; gap:20px; margin-top:12px;">
-
-    <!-- bilibili -->
+  <div class="home-hero__socials">
     <a href="https://space.bilibili.com/662549891?spm_id_from=333.1007.0.0" target="_blank" rel="noopener noreferrer">
-      <img src="{{ `/icons/bilibili.webp` | relURL }}" alt="Bilibili" width="32" height="32"
-      style="display:block; width:32px; height:32px; object-fit:contain; filter:brightness(0) saturate(100%) invert(71%) sepia(7%) saturate(258%) hue-rotate(202deg) brightness(90%) contrast(88%);">
+      <img src="{{ `/icons/bilibili.webp` | relURL }}" alt="Bilibili" width="32" height="32" class="home-hero__social-icon">
     </a>
-
-    <!-- github -->
     <a href="https://github.com/SeraSix" target="_blank" rel="noopener noreferrer">
-      <img src="{{ `/icons/github.png` | relURL }}" alt="GitHub" width="32" height="32"
-      style="display:block; width:32px; height:32px; object-fit:contain; filter:brightness(0) saturate(100%) invert(71%) sepia(7%) saturate(258%) hue-rotate(202deg) brightness(90%) contrast(88%);">
+      <img src="{{ `/icons/github.png` | relURL }}" alt="GitHub" width="32" height="32" class="home-hero__social-icon">
     </a>
-
-    <!-- zhihu -->
     <a href="https://www.zhihu.com/people/xiao-lu-ban-bi-58-9" target="_blank" rel="noopener noreferrer">
-      <img src="{{ `/icons/zhihu.png` | relURL }}" alt="Zhihu" width="32" height="32"
-      style="display:block; width:32px; height:32px; object-fit:contain; filter:brightness(0) saturate(100%) invert(71%) sepia(7%) saturate(258%) hue-rotate(202deg) brightness(90%) contrast(88%);">
+      <img src="{{ `/icons/zhihu.png` | relURL }}" alt="Zhihu" width="32" height="32" class="home-hero__social-icon">
     </a>
-
-    <!-- rednote -->
     <a href="https://www.xiaohongshu.com/user/profile/641726800000000012010324" target="_blank" rel="noopener noreferrer">
-      <img src="{{ `/icons/rednote_new.png` | relURL }}" alt="Xiaohongshu" width="32" height="32"
-      style="display:block; width:32px; height:32px; object-fit:contain; filter:brightness(0) saturate(100%) invert(71%) sepia(7%) saturate(258%) hue-rotate(202deg) brightness(90%) contrast(88%);">
+      <img src="{{ `/icons/rednote_new.png` | relURL }}" alt="Xiaohongshu" width="32" height="32" class="home-hero__social-icon">
     </a>
-
   </div>
 </section>

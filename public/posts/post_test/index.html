@@ -8,10 +8,11 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;800&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="/css/custom.css">
+<link rel="stylesheet" href="/css/layout.css">
+<link rel="stylesheet" href="/css/markdown.css">
 
 </head>
-<body style="margin:0; min-height:100vh; display:flex; flex-direction:column; font-family: var(--site-font-sans, Arial, sans-serif); color:#A9A9B3; background-color:#292A2D;">
+<body class="site-body">
   <header class="site-header">
   <div class="site-header__inner">
     <a href="/" class="site-header__brand">
@@ -33,74 +34,22 @@
   </div>
 </header>
 
-  <main style="flex:1; width:100%; max-width: var(--site-container, 1280px); margin: 0 auto; padding: 32px 48px 48px; box-sizing:border-box;">
+  <main class="site-main">
     
-  <style>
-    .single-layout {
-      display: flex;
-      gap: 24px;
-      align-items: flex-start;
-    }
-
-    .single-article {
-      flex: 1;
-      min-width: 0;
-      background-color: #333333;
-      border: 0px solid #404247;
-      border-radius: 0px;
-      padding: 32px;
-    }
-
-    .single-toc {
-      width: 260px;
-      flex-shrink: 0;
-      position: sticky;
-      top: 24px;
-      background-color: #292A2D;
-      border: 0px solid #404247;
-      border-radius: 16px;
-      padding: 20px;
-      font-family: var(--site-font-sans, Arial, sans-serif);
-    }
-
-    .single-toc,
-    .single-toc a,
-    .single-toc li,
-    .single-toc ul {
-      color: #A9A9B3;
-    }
-
-    .single-toc a {
-      text-decoration: none;
-    }
-
-    @media (max-width: 1000px) {
-      .single-layout {
-        display: block;
-      }
-
-      .single-toc {
-        display: none;
-      }
-    }
-  </style>
-
   <div class="single-layout">
     <article class="single-article">
-      <div style="margin-bottom:12px;">
-        <span style="display:inline-block; padding:4px 10px; border-radius:999px; background-color:#252627; color:#A9A9B3; font-size:12px; font-weight:700; text-transform:uppercase;">
-          posts
-        </span>
+      <div class="single-section-wrap">
+        <span class="single-section-badge">posts</span>
       </div>
 
-      <h1 style="margin:0 0 12px; font-size:42px; color:#A9A9B3;">Post Test</h1>
+      <h1 class="single-title">Post Test</h1>
 
-      <div style="color:#A9A9B3; font-size:14px; margin-bottom:24px; opacity:0.8;">
+      <div class="single-meta">
         <span>March 11, 2026</span>
         <span> | Author: Sera</span>
       </div>
 
-      <div class="markdown-body" style="font-size:18px; line-height:1.8; color:#A9A9B3;">
+      <div class="markdown-body">
         <h2 id="heading-level-2">Heading Level 2</h2>
 <p>This post verifies common Markdown rendering in Hugo page bundles.</p>
 <h3 id="heading-level-21">Heading Level 2.1</h3>
@@ -163,9 +112,8 @@ It is useful for notes, warnings, and tips.</p></div>
     </article>
 
     <aside class="single-toc">
-      <h2 style="margin:0 0 12px; font-size:18px; color:#A9A9B3;">On This Page</h2>
-
-      <div style="font-size:18px; line-height:1.8; color:#A9A9B3; font-family:var(--site-font-sans, Arial, sans-serif);">
+      <h2 class="single-toc-title">On This Page</h2>
+      <div class="single-toc-body">
         <nav id="TableOfContents">
   <ul>
     <li><a href="#heading-level-2">Heading Level 2</a>
@@ -182,12 +130,11 @@ It is useful for notes, warnings, and tips.</p></div>
   </div>
 
   </main>
-  <footer style="border-top:1px solid #404247; background-color:#252627;">
-  <div style="max-width: var(--site-container, 1280px); margin: 0 auto; padding: 20px 24px; color:#A9A9B3; font-size:14px;">
+  <footer class="site-footer">
+  <div class="site-footer__inner">
     <p style="margin:0;">&copy; 2026 My Portfolio. Built with Hugo.</p>
   </div>
 </footer>
 
 </body>
 </html>
-

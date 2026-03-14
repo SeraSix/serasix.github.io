@@ -8,10 +8,11 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;800&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="/css/custom.css">
+<link rel="stylesheet" href="/css/layout.css">
+<link rel="stylesheet" href="/css/markdown.css">
 
 </head>
-<body style="margin:0; min-height:100vh; display:flex; flex-direction:column; font-family: var(--site-font-sans, Arial, sans-serif); color:#A9A9B3; background-color:#292A2D;">
+<body class="site-body">
   <header class="site-header">
   <div class="site-header__inner">
     <a href="/" class="site-header__brand">
@@ -33,7 +34,7 @@
   </div>
 </header>
 
-  <main style="flex:1; width:100%; max-width: var(--site-container, 1280px); margin: 0 auto; padding: 32px 48px 48px; box-sizing:border-box;">
+  <main class="site-main">
     
   <section class="list-hero">
     <h1 class="list-title">Tags</h1>
@@ -45,12 +46,11 @@
   </section>
 
   </main>
-  <footer style="border-top:1px solid #404247; background-color:#252627;">
-  <div style="max-width: var(--site-container, 1280px); margin: 0 auto; padding: 20px 24px; color:#A9A9B3; font-size:14px;">
+  <footer class="site-footer">
+  <div class="site-footer__inner">
     <p style="margin:0;">&copy; 2026 My Portfolio. Built with Hugo.</p>
   </div>
 </footer>
 
 </body>
 </html>
-
