@@ -4,9 +4,10 @@
     <div class="list-description">{{ .Content }}</div>
   </section>
 
-  <section class="content-grid">
+  <section class="section-content-grid">
     {{ range .Pages.ByDate.Reverse }}
       {{ partial "card.html" . }}
     {{ end }}
   </section>
 {{ end }}
+
