@@ -4,7 +4,7 @@ date: 2026-03-18T3:07:00+08:00
 draft: false
 author: "Sera"
 summary: "基于LiveLink + ARKit的面部捕捉流程"
-cover: "cover.png"
+cover: "FinalEffect.gif"
 ---
 
 ## 概述：
