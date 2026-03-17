@@ -1,12 +1,148 @@
-<!doctype html><html lang=en-us><head><meta charset=UTF-8><meta name=viewport content="width=device-width,initial-scale=1"><meta http-equiv=X-UA-Compatible content="ie=edge"><title>第十一届世界渲染大赛 | Sera's Portfolio</title><link rel=preconnect href=https://fonts.googleapis.com><link rel=preconnect href=https://fonts.gstatic.com crossorigin><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;800&display=swap" rel=stylesheet><link rel=stylesheet href=/css/layout.css><link rel=stylesheet href=/css/markdown.css></head><body class=site-body><header class=site-header><div class=site-header__inner><a href=/ class=site-header__brand><span>SERASIX</span></a><nav class=site-header__nav><a href=/Webpage/about/ class=site-header__link>About</a>
-<a href=/Webpage/posts/ class=site-header__link>Blog</a>
-<a href=/Webpage/projects/ class=site-header__link>Project</a></nav></div></header><main class=site-main><div class=single-layout><article class=single-article><div class=single-section-wrap><span class=single-section-badge>projects</span></div><h1 class=single-title>第十一届世界渲染大赛</h1><div class=single-meta><span>March 15, 2026</span></div><div class=markdown-body><h2 id=概览>概览</h2><img src=wrc11.gif><h2 id=细节拆解>细节拆解</h2><h3 id=建模>建模</h3><p>人物建模</p><div style=display:grid;grid-template-columns:repeat(3,2fr);gap:16px><img src=f02a28dd-efe1-4cdb-b69a-8748b98666db.png>
-<img src=s1side.png>
-<img src=s1back.png>
-<img src=s2front.png>
-<img src=1e19f5c8-c390-4019-b029-c4c1afff248d.png>
-<img src=s2back.png></div><p>uv 拆分：
-<img src=/Webpage/projects/wrc11/uv.png alt=uv.png loading=lazy></p><h3 id=人物绑定与动画>人物绑定与动画</h3><p>人物骨骼：rigify + 自建骨骼</p><div style=display:grid;grid-template-columns:repeat(2,1fr);gap:16px><img src=s1rig.png>
-<img src=s2rig.png></div><p>动物：自建骨骼绑定 + 形态键</p><p align=center>  <img src=animals.gif></p><h3 id=几何节点>几何节点</h3><p>玉米地</p><ul><li>利用空游标与网格面的插值做动画</li><li>根据距离改变大小以达到“生长”</li></ul><img src=/Webpage/projects/wrc11/image.png alt=image.png loading=lazy><h2 id=后记>后记</h2><p>第一次全流程动画的尝试，没想到建模技术只有3岁宝宝走路实力的我和只有 8G 内存的 mac 可以合作出这样的作品，期间被 blender 暴击多次，但最后看着序列帧一帧一帧渲染出来的时候真的很开心！</p><img src=/Webpage/projects/wrc11/frame.png alt=frame.png loading=lazy><p>这个作品的灵感几乎可以用下面这张图全部概括，25年暑假f1电影热映，而我还在练车场里思考如何才能不撞墙</p><p align=center>  <img src=reason.jpg width=400></p><p>东北有很多驾校在农村，练车时两边是一望无际的玉米地，有时早上能遇到农民带着羊群牛群遛弯。我的车技不好，但我能轻松超越小动物。大概是基于这个产生了 “穿越去动物世界比赛” 的想法</p><div style=display:grid;grid-template-columns:repeat(2,1fr);gap:16px><img src=field2.jpg>
-<img src=field3.jpg></div><p>值得一提的是，我本来以为我的 lowpoly 大作难以入各大社交媒体的法眼，没想到以摆烂的心态发布后竟然收获了很多暖心的评论，小红书真是一个美好的地方</p><div style=display:grid;grid-template-columns:repeat(2,1fr);gap:16px><img src=comment1.jpg>
-<img src=comment2.jpg></div></div></article><aside class=single-toc><h2 class=single-toc-title>On This Page</h2><div class=single-toc-body><nav id=TableOfContents><ul><li><a href=#概览>概览</a></li><li><a href=#细节拆解>细节拆解</a><ul><li><a href=#建模>建模</a></li><li><a href=#人物绑定与动画>人物绑定与动画</a></li><li><a href=#几何节点>几何节点</a></li></ul></li><li><a href=#后记>后记</a></li></ul></nav></div></aside></div></main><footer class=site-footer><div class=site-footer__inner><p style=margin:0>&copy; 2026 Sera's Portfolio. Built with Hugo.</p></div></footer></body></html>
+<!DOCTYPE html>
+<html lang="en-us">
+<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+<title>第十一届世界渲染大赛 | Sera&#39;s Portfolio</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/css/layout.css">
+<link rel="stylesheet" href="/css/markdown.css">
+
+</head>
+<body class="site-body">
+  <header class="site-header">
+  <div class="site-header__inner">
+    <a href="/" class="site-header__brand">
+      <span>SERASIX</span>
+    </a>
+    <nav class="site-header__nav">
+      
+        
+      
+        
+          <a href="/about/" class="site-header__link">About</a>
+        
+      
+        
+          <a href="/posts/" class="site-header__link">Blog</a>
+        
+      
+        
+          <a href="/projects/" class="site-header__link">Project</a>
+        
+      
+    </nav>
+  </div>
+</header>
+
+  <main class="site-main">
+    
+  <div class="single-layout">
+    <article class="single-article">
+      <div class="single-section-wrap">
+        <span class="single-section-badge">projects</span>
+      </div>
+
+      <h1 class="single-title">第十一届世界渲染大赛</h1>
+
+      <div class="single-meta">
+        <span>March 15, 2026</span>
+        
+      </div>
+
+      <div class="markdown-body">
+        <h2 id="概览">概览</h2>
+<img src="wrc11.gif">  
+<h2 id="细节拆解">细节拆解</h2>
+<h3 id="建模">建模</h3>
+<p>人物建模</p>
+<!-- ![s1front.png](f02a28dd-efe1-4cdb-b69a-8748b98666db.png)
+![s1side.png](s1side.png)
+![s1back.png](s1back.png)
+![s2front.png](s2front.png)
+![s2side.png](1e19f5c8-c390-4019-b029-c4c1afff248d.png)
+![s2back.png](s2back.png)
+![uv.png](uv.png) -->
+<div style="display: grid; grid-template-columns: repeat(3, 2fr); gap: 16px;">
+  <img src="f02a28dd-efe1-4cdb-b69a-8748b98666db.png">
+  <img src="s1side.png">
+  <img src="s1back.png">
+  <img src="s2front.png">
+  <img src="1e19f5c8-c390-4019-b029-c4c1afff248d.png">
+  <img src="s2back.png">
+</div>
+<p>uv 拆分：
+<img src="/projects/wrc11/uv.png" alt="uv.png" loading="lazy"></p>
+<h3 id="人物绑定与动画">人物绑定与动画</h3>
+<p>人物骨骼：rigify + 自建骨骼</p>
+<!-- ![s1rig.png](s1rig.png)
+![s2rig.png](s2rig.png) -->
+<div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px;">
+  <img src="s1rig.png">
+  <img src="s2rig.png">
+</div>
+<p>动物：自建骨骼绑定 + 形态键</p>
+<p align="center">
+  <img src="animals.gif">
+</p>
+<h3 id="几何节点">几何节点</h3>
+<p>玉米地</p>
+<ul>
+<li>利用空游标与网格面的插值做动画</li>
+<li>根据距离改变大小以达到“生长”</li>
+</ul>
+<img src="/projects/wrc11/image.png" alt="image.png" loading="lazy"><h2 id="后记">后记</h2>
+<p>第一次全流程动画的尝试，没想到建模技术只有3岁宝宝走路实力的我和只有 8G 内存的 mac 可以合作出这样的作品，期间被 blender 暴击多次，但最后看着序列帧一帧一帧渲染出来的时候真的很开心！</p>
+<img src="/projects/wrc11/frame.png" alt="frame.png" loading="lazy"><p>这个作品的灵感几乎可以用下面这张图全部概括，25年暑假f1电影热映，而我还在练车场里思考如何才能不撞墙</p>
+<p align="center">
+  <img src="reason.jpg" width="400">
+</p>
+<p>东北有很多驾校在农村，练车时两边是一望无际的玉米地，有时早上能遇到农民带着羊群牛群遛弯。我的车技不好，但我能轻松超越小动物。大概是基于这个产生了 “穿越去动物世界比赛” 的想法</p>
+<!-- ![field2.jpg](field2.jpg)
+[https://www.notion.so](https://www.notion.so) -->
+<div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px;">
+  <img src="field2.jpg">
+  <img src="field3.jpg">
+</div>
+<p>值得一提的是，我本来以为我的 lowpoly 大作难以入各大社交媒体的法眼，没想到以摆烂的心态发布后竟然收获了很多暖心的评论，小红书真是一个美好的地方</p>
+<!-- ![comment1.jpg](comment1.jpg)
+![comment2.jpg](comment2.jpg) -->
+<div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px;">
+  <img src="comment1.jpg">
+  <img src="comment2.jpg">
+</div>
+      </div>
+    </article>
+
+    <aside class="single-toc">
+      <h2 class="single-toc-title">On This Page</h2>
+      <div class="single-toc-body">
+        <nav id="TableOfContents">
+  <ul>
+    <li><a href="#概览">概览</a></li>
+    <li><a href="#细节拆解">细节拆解</a>
+      <ul>
+        <li><a href="#建模">建模</a></li>
+        <li><a href="#人物绑定与动画">人物绑定与动画</a></li>
+        <li><a href="#几何节点">几何节点</a></li>
+      </ul>
+    </li>
+    <li><a href="#后记">后记</a></li>
+  </ul>
+</nav>
+      </div>
+    </aside>
+  </div>
+
+  </main>
+  <footer class="site-footer">
+  <div class="site-footer__inner">
+    <p style="margin:0;">&copy; 2026 Sera&#39;s Portfolio. Built with Hugo.</p>
+  </div>
+</footer>
+
+</body>
+</html>

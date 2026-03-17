@@ -1,1 +1,40 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Projects on Sera's Portfolio</title><link>https://example.github.io/Webpage/projects/</link><description>Recent content in Projects on Sera's Portfolio</description><generator>Hugo</generator><language>en-us</language><lastBuildDate>Wed, 18 Mar 2026 03:07:00 +0800</lastBuildDate><atom:link href="https://example.github.io/Webpage/projects/index.xml" rel="self" type="application/rss+xml"/><item><title>UE 面部捕捉实现</title><link>https://example.github.io/Webpage/projects/facemocap/</link><pubDate>Wed, 18 Mar 2026 03:07:00 +0800</pubDate><guid>https://example.github.io/Webpage/projects/facemocap/</guid><description>基于LiveLink + ARKit的面部捕捉流程</description></item><item><title>第十一届世界渲染大赛</title><link>https://example.github.io/Webpage/projects/wrc11/</link><pubDate>Sun, 15 Mar 2026 00:15:00 +0800</pubDate><guid>https://example.github.io/Webpage/projects/wrc11/</guid><description>My first full pipeline animation project</description></item><item><title>LD58: HeartKeys</title><link>https://example.github.io/Webpage/projects/ld58/</link><pubDate>Sat, 14 Mar 2026 20:39:00 +0800</pubDate><guid>https://example.github.io/Webpage/projects/ld58/</guid><description>Leading artist and technical artist of the team</description></item><item><title>LD56: Night at the 8th Warehouse</title><link>https://example.github.io/Webpage/projects/ld56/</link><pubDate>Sat, 14 Mar 2026 14:14:00 +0800</pubDate><guid>https://example.github.io/Webpage/projects/ld56/</guid><description>My very first journey in game development and CG</description></item></channel></rss>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Projects on Sera&#39;s Portfolio</title>
+    <link>http://localhost:1313/projects/</link>
+    <description>Recent content in Projects on Sera&#39;s Portfolio</description>
+    <generator>Hugo</generator>
+    <language>en-us</language>
+    <lastBuildDate>Wed, 18 Mar 2026 03:07:00 +0800</lastBuildDate>
+    <atom:link href="http://localhost:1313/projects/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>UE 面部捕捉实现</title>
+      <link>http://localhost:1313/projects/facemocap/</link>
+      <pubDate>Wed, 18 Mar 2026 03:07:00 +0800</pubDate>
+      <guid>http://localhost:1313/projects/facemocap/</guid>
+      <description>基于LiveLink + ARKit的面部捕捉流程</description>
+    </item>
+    <item>
+      <title>第十一届世界渲染大赛</title>
+      <link>http://localhost:1313/projects/wrc11/</link>
+      <pubDate>Sun, 15 Mar 2026 00:15:00 +0800</pubDate>
+      <guid>http://localhost:1313/projects/wrc11/</guid>
+      <description>My first full pipeline animation project</description>
+    </item>
+    <item>
+      <title>LD58: HeartKeys</title>
+      <link>http://localhost:1313/projects/ld58/</link>
+      <pubDate>Sat, 14 Mar 2026 20:39:00 +0800</pubDate>
+      <guid>http://localhost:1313/projects/ld58/</guid>
+      <description>Leading artist and technical artist of the team</description>
+    </item>
+    <item>
+      <title>LD56: Night at the 8th Warehouse</title>
+      <link>http://localhost:1313/projects/ld56/</link>
+      <pubDate>Sat, 14 Mar 2026 14:14:00 +0800</pubDate>
+      <guid>http://localhost:1313/projects/ld56/</guid>
+      <description>My very first journey in game development and CG</description>
+    </item>
+  </channel>
+</rss>

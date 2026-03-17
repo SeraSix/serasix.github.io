@@ -1,69 +1,206 @@
-<!doctype html><html lang=en-us><head><meta charset=UTF-8><meta name=viewport content="width=device-width,initial-scale=1"><meta http-equiv=X-UA-Compatible content="ie=edge"><title>Bubble Shader | Sera's Portfolio</title><link rel=preconnect href=https://fonts.googleapis.com><link rel=preconnect href=https://fonts.gstatic.com crossorigin><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;800&display=swap" rel=stylesheet><link rel=stylesheet href=/css/layout.css><link rel=stylesheet href=/css/markdown.css></head><body class=site-body><header class=site-header><div class=site-header__inner><a href=/ class=site-header__brand><span>SERASIX</span></a><nav class=site-header__nav><a href=/Webpage/about/ class=site-header__link>About</a>
-<a href=/Webpage/posts/ class=site-header__link>Blog</a>
-<a href=/Webpage/projects/ class=site-header__link>Project</a></nav></div></header><main class=site-main><div class=single-layout><article class=single-article><div class=single-section-wrap><span class=single-section-badge>posts</span></div><h1 class=single-title>Bubble Shader</h1><div class=single-meta><span>March 15, 2026</span>
-<span>| Author: Sera</span></div><div class=markdown-body><p>基于 Gerstner Wave 的五彩泡泡实现</p><img src=cover.gif><p>蓝图节点：</p><img src=image%201.png alt=image.png loading=lazy><p>五彩材质效果</p><h2 id=ue-材质设置>UE 材质设置</h2><p>采用和玻璃一样的设置：</p><ul><li>Blend Mode：Translucent</li><li>Lighting Mode：Surface Translucency Volume</li></ul><h2 id=怎么模拟泡泡>怎么模拟泡泡？</h2><p>产生彩虹效果的核心原理：薄膜干涉</p><img src=image%202.png alt=image.png loading=lazy><p>由上图可知，彩色效果主要由以下两个因素决定：</p><ul><li><p>自然光摄入角度——根据角度的不同来对以下进行贴图采样</p><img src=/Webpage/posts/bubble/Bubble_Gradient_Color2.png alt=Bubble_Gradient_Color2.png loading=lazy></li><li><p>薄膜厚度——采样特殊的噪声贴图：取泡泡显微摄影图片，转为灰色后得到</p></li></ul><p align=center>  <img src=Bubble_Noise.jpg width=500></p><h3 id=1-自然光摄入角度>1. 自然光摄入角度</h3><img src=image%203.png alt=image.png loading=lazy><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none><code class=language-glsl data-lang=glsl><span style=display:flex><span>u <span style=color:#f92672>=</span> <span style=color:#ae81ff>1</span> <span style=color:#f92672>-</span> (<span style=color:#ae81ff>0.5</span> N<span style=color:#960050;background-color:#1e0010>·</span>L <span style=color:#f92672>+</span> <span style=color:#ae81ff>0.5</span>);
-</span></span><span style=display:flex><span>float2 uv <span style=color:#f92672>=</span> append(u, <span style=color:#ae81ff>0.5</span>);
-</span></span></code></pre></div><img src=image%204.png alt=image.png loading=lazy><h3 id=2-薄膜厚度>2. 薄膜厚度</h3><img src=image%205.png alt=image.png loading=lazy><ul><li>metalic 设置成1：specular 设置成1的意思</li><li>Roughness 设置成 0</li><li>Opacity 使用 Fresnel 节点设置，边缘薄一点</li></ul><h2 id=波动效果>波动效果</h2><p>用两个 GerstnerWave 实现</p><p>GerstnerWave 的核心公式：<code>float speed = Time * SquareRoot(9.8 * 2PI / WaveLength);</code></p><h3 id=自定义-gerstner-wave-节点>自定义 Gerstner Wave 节点</h3><p>输入：</p><ul><li><code>WorldPos</code> ← <strong>AbsoluteWorldPosition</strong></li><li><code>Time</code> ← <strong>Time</strong></li><li><code>WaveDirection</code> ← 例如 <code>(1,0,0)</code> 或 <code>(0.7,0,0.7)</code> 波的方向</li><li><code>WaveLength</code> ← 标量参数（如 200）波长</li><li><code>WaveHeight</code> ← 标量参数（如 5）波的高度</li><li><code>PeakSharpness</code> ← 标量参数（0~1，如 0.5）</li></ul><p>输出</p><ul><li><code>Offset（3）</code>← 计算后该点的位移</li><li><code>Normal（3）</code>← 计算后该点的法线</li></ul><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none><code class=language-csharp data-lang=csharp><span style=display:flex><span><span style=color:#75715e>// 1) 归一化波的传播方向（只使用 XY 平面）</span>
-</span></span><span style=display:flex><span>float2 D = normalize(WaveDirection.xy);
-</span></span><span style=display:flex><span>
-</span></span><span style=display:flex><span><span style=color:#75715e>// 2) 计算波数 k</span>
-</span></span><span style=display:flex><span><span style=color:#75715e>// 波数公式：k = 2π / 波长</span>
-</span></span><span style=display:flex><span><span style=color:#66d9ef>float</span> k = <span style=color:#ae81ff>6.2831853</span> / max(WaveLength, <span style=color:#ae81ff>1e-4</span>);
-</span></span><span style=display:flex><span>
-</span></span><span style=display:flex><span><span style=color:#75715e>// 角频率 w，使用深水波色散关系：w = sqrt(g * k)</span>
-</span></span><span style=display:flex><span><span style=color:#66d9ef>float</span> w = sqrt(<span style=color:#ae81ff>9.81</span> * k);
-</span></span><span style=display:flex><span>
-</span></span><span style=display:flex><span><span style=color:#75715e>// 波幅（波浪高度）</span>
-</span></span><span style=display:flex><span><span style=color:#66d9ef>float</span> A = WaveHeight;
-</span></span><span style=display:flex><span>
-</span></span><span style=display:flex><span><span style=color:#75715e>// 波峰尖锐度（控制水平位移强度）</span>
-</span></span><span style=display:flex><span><span style=color:#75715e>// 限制在 [0,1] 范围，防止波浪自交</span>
-</span></span><span style=display:flex><span><span style=color:#66d9ef>float</span> Q = saturate(PeakSharpness);
-</span></span><span style=display:flex><span>
-</span></span><span style=display:flex><span><span style=color:#75715e>// 3) 计算相位 Phase，表示波在空间 + 时间中的传播</span>
-</span></span><span style=display:flex><span><span style=color:#75715e>// phase = k * (方向 · 位置) - w * t</span>
-</span></span><span style=display:flex><span><span style=color:#75715e>// dot(D, WorldPos.xy) 表示沿波传播方向的距离</span>
-</span></span><span style=display:flex><span><span style=color:#75715e>// - w * Time 表示随时间移动</span>
-</span></span><span style=display:flex><span><span style=color:#66d9ef>float</span> phase = k * dot(D, WorldPos.xy) - w * Time;
-</span></span><span style=display:flex><span>
-</span></span><span style=display:flex><span><span style=color:#75715e>// 提前计算 sin 和 cos</span>
-</span></span><span style=display:flex><span><span style=color:#66d9ef>float</span> s = sin(phase);
-</span></span><span style=display:flex><span><span style=color:#66d9ef>float</span> c = cos(phase);
-</span></span><span style=display:flex><span>
-</span></span><span style=display:flex><span><span style=color:#75715e>// 4) 计算波的垂直位移</span>
-</span></span><span style=display:flex><span><span style=color:#75715e>// Gerstner wave 的高度变化</span>
-</span></span><span style=display:flex><span><span style=color:#66d9ef>float</span> offsetZ = A * s;
-</span></span><span style=display:flex><span>
-</span></span><span style=display:flex><span><span style=color:#75715e>// 5) 方向分量</span>
-</span></span><span style=display:flex><span><span style=color:#66d9ef>float</span> dX = D.x;
-</span></span><span style=display:flex><span><span style=color:#66d9ef>float</span> dY = D.y;
-</span></span><span style=display:flex><span>
-</span></span><span style=display:flex><span><span style=color:#75715e>// 6) 计算高度函数的偏导数</span>
-</span></span><span style=display:flex><span><span style=color:#75715e>// 用于计算法线</span>
-</span></span><span style=display:flex><span><span style=color:#66d9ef>float</span> dZdx = A * k * c * dX;
-</span></span><span style=display:flex><span><span style=color:#66d9ef>float</span> dZdy = A * k * c * dY;
-</span></span><span style=display:flex><span>
-</span></span><span style=display:flex><span><span style=color:#75715e>// 7) 计算水平位移的 Jacobian</span>
-</span></span><span style=display:flex><span><span style=color:#75715e>// Gerstner wave 不只是上下移动</span>
-</span></span><span style=display:flex><span><span style=color:#75715e>// 还会产生水平位移</span>
-</span></span><span style=display:flex><span><span style=color:#66d9ef>float</span> dXdx = <span style=color:#ae81ff>1.0</span> - Q * A * k * s * dX * dX;
-</span></span><span style=display:flex><span><span style=color:#66d9ef>float</span> dXdy = - Q * A * k * s * dX * dY;
-</span></span><span style=display:flex><span><span style=color:#66d9ef>float</span> dYdx = - Q * A * k * s * dY * dX;
-</span></span><span style=display:flex><span><span style=color:#66d9ef>float</span> dYdy = <span style=color:#ae81ff>1.0</span> - Q * A * k * s * dY * dY;
-</span></span><span style=display:flex><span>
-</span></span><span style=display:flex><span><span style=color:#75715e>// 8) 构建切线向量</span>
-</span></span><span style=display:flex><span><span style=color:#75715e>// 表示曲面在 X/Y 方向的变化</span>
-</span></span><span style=display:flex><span>float3 Tx = float3(dXdx, dYdx, dZdx);
-</span></span><span style=display:flex><span>float3 Ty = float3(dXdy, dYdy, dZdy);
-</span></span><span style=display:flex><span>
-</span></span><span style=display:flex><span><span style=color:#75715e>// 9) 通过叉乘计算法线</span>
-</span></span><span style=display:flex><span><span style=color:#75715e>// normal = normalize(Tx × Ty)</span>
-</span></span><span style=display:flex><span>float3 N = normalize(cross(Tx, Ty));
-</span></span><span style=display:flex><span>
-</span></span><span style=display:flex><span><span style=color:#75715e>// 10) 输出结果</span>
-</span></span><span style=display:flex><span><span style=color:#75715e>// 波浪高度偏移</span>
-</span></span><span style=display:flex><span>out_offsetZ = offsetZ;
-</span></span><span style=display:flex><span><span style=color:#75715e>// 水面法线</span>
-</span></span><span style=display:flex><span>out_normal = N;
-</span></span><span style=display:flex><span><span style=color:#66d9ef>return</span> <span style=color:#ae81ff>0</span>;
-</span></span></code></pre></div></div></article><aside class=single-toc><h2 class=single-toc-title>On This Page</h2><div class=single-toc-body><nav id=TableOfContents><ul><li><a href=#ue-材质设置>UE 材质设置</a></li><li><a href=#怎么模拟泡泡>怎么模拟泡泡？</a><ul><li><a href=#1-自然光摄入角度>1. 自然光摄入角度</a></li><li><a href=#2-薄膜厚度>2. 薄膜厚度</a></li></ul></li><li><a href=#波动效果>波动效果</a><ul><li><a href=#自定义-gerstner-wave-节点>自定义 Gerstner Wave 节点</a></li></ul></li></ul></nav></div></aside></div></main><footer class=site-footer><div class=site-footer__inner><p style=margin:0>&copy; 2026 Sera's Portfolio. Built with Hugo.</p></div></footer></body></html>
+<!DOCTYPE html>
+<html lang="en-us">
+<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+<title>Bubble Shader | Sera&#39;s Portfolio</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/css/layout.css">
+<link rel="stylesheet" href="/css/markdown.css">
+
+</head>
+<body class="site-body">
+  <header class="site-header">
+  <div class="site-header__inner">
+    <a href="/" class="site-header__brand">
+      <span>SERASIX</span>
+    </a>
+    <nav class="site-header__nav">
+      
+        
+      
+        
+          <a href="/about/" class="site-header__link">About</a>
+        
+      
+        
+          <a href="/posts/" class="site-header__link">Blog</a>
+        
+      
+        
+          <a href="/projects/" class="site-header__link">Project</a>
+        
+      
+    </nav>
+  </div>
+</header>
+
+  <main class="site-main">
+    
+  <div class="single-layout">
+    <article class="single-article">
+      <div class="single-section-wrap">
+        <span class="single-section-badge">posts</span>
+      </div>
+
+      <h1 class="single-title">Bubble Shader</h1>
+
+      <div class="single-meta">
+        <span>March 15, 2026</span>
+        <span> | Author: Sera</span>
+      </div>
+
+      <div class="markdown-body">
+        <p>基于 Gerstner Wave 的五彩泡泡实现</p>
+<img src="cover.gif">  
+<p>蓝图节点：</p>
+<img src="image%201.png" alt="image.png" loading="lazy"><p>五彩材质效果</p>
+<h2 id="ue-材质设置">UE 材质设置</h2>
+<p>采用和玻璃一样的设置：</p>
+<ul>
+<li>Blend Mode：Translucent</li>
+<li>Lighting Mode：Surface Translucency Volume</li>
+</ul>
+<h2 id="怎么模拟泡泡">怎么模拟泡泡？</h2>
+<p>产生彩虹效果的核心原理：薄膜干涉</p>
+<img src="image%202.png" alt="image.png" loading="lazy"><p>由上图可知，彩色效果主要由以下两个因素决定：</p>
+<ul>
+<li>
+<p>自然光摄入角度——根据角度的不同来对以下进行贴图采样</p>
+<img src="/posts/bubble/Bubble_Gradient_Color2.png" alt="Bubble_Gradient_Color2.png" loading="lazy"></li>
+<li>
+<p>薄膜厚度——采样特殊的噪声贴图：取泡泡显微摄影图片，转为灰色后得到</p>
+</li>
+</ul>
+<p align="center">
+  <img src="Bubble_Noise.jpg" width="500">
+</p>
+<h3 id="1-自然光摄入角度">1. 自然光摄入角度</h3>
+<img src="image%203.png" alt="image.png" loading="lazy"><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-glsl" data-lang="glsl"><span style="display:flex;"><span>u <span style="color:#f92672">=</span> <span style="color:#ae81ff">1</span> <span style="color:#f92672">-</span> (<span style="color:#ae81ff">0.5</span> N<span style="color:#960050;background-color:#1e0010">·</span>L <span style="color:#f92672">+</span> <span style="color:#ae81ff">0.5</span>);
+</span></span><span style="display:flex;"><span>float2 uv <span style="color:#f92672">=</span> append(u, <span style="color:#ae81ff">0.5</span>);
+</span></span></code></pre></div><img src="image%204.png" alt="image.png" loading="lazy"><h3 id="2-薄膜厚度">2. 薄膜厚度</h3>
+<img src="image%205.png" alt="image.png" loading="lazy"><ul>
+<li>metalic 设置成1：specular 设置成1的意思</li>
+<li>Roughness 设置成 0</li>
+<li>Opacity 使用 Fresnel 节点设置，边缘薄一点</li>
+</ul>
+<h2 id="波动效果">波动效果</h2>
+<p>用两个 GerstnerWave  实现</p>
+<p>GerstnerWave 的核心公式：<code>float speed = Time * SquareRoot(9.8 * 2PI / WaveLength);</code></p>
+<h3 id="自定义-gerstner-wave-节点">自定义 Gerstner Wave 节点</h3>
+<p>输入：</p>
+<ul>
+<li><code>WorldPos</code> ← <strong>AbsoluteWorldPosition</strong></li>
+<li><code>Time</code> ← <strong>Time</strong></li>
+<li><code>WaveDirection</code> ← 例如 <code>(1,0,0)</code> 或 <code>(0.7,0,0.7)</code> 波的方向</li>
+<li><code>WaveLength</code> ← 标量参数（如 200）波长</li>
+<li><code>WaveHeight</code> ← 标量参数（如 5）波的高度</li>
+<li><code>PeakSharpness</code> ← 标量参数（0~1，如 0.5）</li>
+</ul>
+<p>输出</p>
+<ul>
+<li><code>Offset（3）</code>← 计算后该点的位移</li>
+<li><code>Normal（3）</code>← 计算后该点的法线</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-csharp" data-lang="csharp"><span style="display:flex;"><span><span style="color:#75715e">// 1) 归一化波的传播方向（只使用 XY 平面）</span>
+</span></span><span style="display:flex;"><span>float2 D = normalize(WaveDirection.xy);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// 2) 计算波数 k</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// 波数公式：k = 2π / 波长</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">float</span> k = <span style="color:#ae81ff">6.2831853</span> / max(WaveLength, <span style="color:#ae81ff">1e-4</span>);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// 角频率 w，使用深水波色散关系：w = sqrt(g * k)</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">float</span> w = sqrt(<span style="color:#ae81ff">9.81</span> * k);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// 波幅（波浪高度）</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">float</span> A = WaveHeight;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// 波峰尖锐度（控制水平位移强度）</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// 限制在 [0,1] 范围，防止波浪自交</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">float</span> Q = saturate(PeakSharpness);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// 3) 计算相位 Phase，表示波在空间 + 时间中的传播</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// phase = k * (方向 · 位置) - w * t</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// dot(D, WorldPos.xy) 表示沿波传播方向的距离</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// - w * Time 表示随时间移动</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">float</span> phase = k * dot(D, WorldPos.xy) - w * Time;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// 提前计算 sin 和 cos</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">float</span> s = sin(phase);
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">float</span> c = cos(phase);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// 4) 计算波的垂直位移</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// Gerstner wave 的高度变化</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">float</span> offsetZ = A * s;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// 5) 方向分量</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">float</span> dX = D.x;
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">float</span> dY = D.y;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// 6) 计算高度函数的偏导数</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// 用于计算法线</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">float</span> dZdx = A * k * c * dX;
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">float</span> dZdy = A * k * c * dY;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// 7) 计算水平位移的 Jacobian</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// Gerstner wave 不只是上下移动</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// 还会产生水平位移</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">float</span> dXdx = <span style="color:#ae81ff">1.0</span> - Q * A * k * s * dX * dX;
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">float</span> dXdy = - Q * A * k * s * dX * dY;
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">float</span> dYdx = - Q * A * k * s * dY * dX;
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">float</span> dYdy = <span style="color:#ae81ff">1.0</span> - Q * A * k * s * dY * dY;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// 8) 构建切线向量</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// 表示曲面在 X/Y 方向的变化</span>
+</span></span><span style="display:flex;"><span>float3 Tx = float3(dXdx, dYdx, dZdx);
+</span></span><span style="display:flex;"><span>float3 Ty = float3(dXdy, dYdy, dZdy);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// 9) 通过叉乘计算法线</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// normal = normalize(Tx × Ty)</span>
+</span></span><span style="display:flex;"><span>float3 N = normalize(cross(Tx, Ty));
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// 10) 输出结果</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// 波浪高度偏移</span>
+</span></span><span style="display:flex;"><span>out_offsetZ = offsetZ;
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// 水面法线</span>
+</span></span><span style="display:flex;"><span>out_normal = N;
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">return</span> <span style="color:#ae81ff">0</span>;
+</span></span></code></pre></div>
+      </div>
+    </article>
+
+    <aside class="single-toc">
+      <h2 class="single-toc-title">On This Page</h2>
+      <div class="single-toc-body">
+        <nav id="TableOfContents">
+  <ul>
+    <li><a href="#ue-材质设置">UE 材质设置</a></li>
+    <li><a href="#怎么模拟泡泡">怎么模拟泡泡？</a>
+      <ul>
+        <li><a href="#1-自然光摄入角度">1. 自然光摄入角度</a></li>
+        <li><a href="#2-薄膜厚度">2. 薄膜厚度</a></li>
+      </ul>
+    </li>
+    <li><a href="#波动效果">波动效果</a>
+      <ul>
+        <li><a href="#自定义-gerstner-wave-节点">自定义 Gerstner Wave 节点</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+      </div>
+    </aside>
+  </div>
+
+  </main>
+  <footer class="site-footer">
+  <div class="site-footer__inner">
+    <p style="margin:0;">&copy; 2026 Sera&#39;s Portfolio. Built with Hugo.</p>
+  </div>
+</footer>
+
+</body>
+</html>
