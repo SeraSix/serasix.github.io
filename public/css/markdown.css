@@ -2,9 +2,9 @@
 
 .markdown-body {
   color: var(--site-text);
-  font-size: 25px;
-  line-height: 1.38;
-  letter-spacing: 0.002em;
+  font-size: 30px;
+  line-height: 1.8;
+  letter-spacing: 0.003em;
 }
 
 .markdown-body > :first-child {
@@ -60,7 +60,7 @@
 
 .markdown-body p {
   font-size: 1.2rem;
-  margin: 0.7rem 0;
+  margin: 1.8rem 0;
   color: var(--site-text);
   opacity: 0.85;
 }

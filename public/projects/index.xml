@@ -6,8 +6,15 @@
     <description>Recent content in Projects on Sera&#39;s Portfolio</description>
     <generator>Hugo</generator>
     <language>en-us</language>
-    <lastBuildDate>Sun, 15 Mar 2026 00:15:00 +0800</lastBuildDate>
+    <lastBuildDate>Wed, 18 Mar 2026 03:07:00 +0800</lastBuildDate>
     <atom:link href="http://localhost:1313/projects/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>UE 面部捕捉实现</title>
+      <link>http://localhost:1313/projects/facemocap/</link>
+      <pubDate>Wed, 18 Mar 2026 03:07:00 +0800</pubDate>
+      <guid>http://localhost:1313/projects/facemocap/</guid>
+      <description>基于LiveLink + ARKit的面部捕捉流程</description>
+    </item>
     <item>
       <title>第十一届世界渲染大赛</title>
       <link>http://localhost:1313/projects/wrc11/</link>

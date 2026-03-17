@@ -2,6 +2,12 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
+    <loc>http://localhost:1313/projects/facemocap/</loc>
+    <lastmod>2026-03-18T03:07:00+08:00</lastmod>
+  </url><url>
+    <loc>http://localhost:1313/about/me/</loc>
+    <lastmod>2026-03-15T01:33:00+08:00</lastmod>
+  </url><url>
     <loc>http://localhost:1313/projects/wrc11/</loc>
     <lastmod>2026-03-15T00:15:00+08:00</lastmod>
   </url><url>
@@ -10,9 +16,6 @@
   </url><url>
     <loc>http://localhost:1313/projects/ld56/</loc>
     <lastmod>2026-03-14T14:14:00+08:00</lastmod>
-  </url><url>
-    <loc>http://localhost:1313/about/me/</loc>
-    <lastmod>2026-03-14T10:00:00+08:00</lastmod>
   </url><url>
     <loc>http://localhost:1313/about/</loc>
     <lastmod>2026-03-14T00:00:00+08:00</lastmod>

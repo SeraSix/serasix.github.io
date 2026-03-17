@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="en-us">
+<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+<title>UE 面部捕捉实现 | Sera&#39;s Portfolio</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/css/layout.css">
+<link rel="stylesheet" href="/css/markdown.css">
+
+</head>
+<body class="site-body">
+  <header class="site-header">
+  <div class="site-header__inner">
+    <a href="/" class="site-header__brand">
+      <span>SERASIX</span>
+    </a>
+    <nav class="site-header__nav">
+      
+        
+      
+        
+          <a href="/about/" class="site-header__link">About</a>
+        
+      
+        
+          <a href="/posts/" class="site-header__link">Blog</a>
+        
+      
+        
+          <a href="/projects/" class="site-header__link">Project</a>
+        
+      
+    </nav>
+  </div>
+</header>
+
+  <main class="site-main">
+    
+  <div class="single-layout">
+    <article class="single-article">
+      <div class="single-section-wrap">
+        <span class="single-section-badge">projects</span>
+      </div>
+
+      <h1 class="single-title">UE 面部捕捉实现</h1>
+
+      <div class="single-meta">
+        <span>March 18, 2026</span>
+        <span> | Author: Sera</span>
+      </div>
+
+      <div class="markdown-body">
+        <h2 id="概述">概述：</h2>
+<p>效果：</p>
+<img src="FinalEffect.gif">  
+<p>核心流程：</p>
+<img src="/projects/facemocap/image.png" alt="image.png" loading="lazy"><h2 id="面部建模与绑定">面部建模与绑定</h2>
+<!-- ![ModelingFront.png](ModelingFront.png)
+![ModelingSide.png](ModelingSide.png) -->
+<div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px;">
+  <img src="ModelingFront.png">
+  <img src="ModelingSide.png">
+</div>
+<p>绑定工具：Faceit 脸部骨骼</p>
+<!-- ![FaceRig1.png](FaceRig1.png)
+![FaceRig2.png](FaceRig2.png) -->
+<div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px;">
+  <img src="FaceRig1.png">
+  <img src="FaceRig2.png">
+</div>
+<h2 id="刷权重">刷权重</h2>
+<p>刷权重直至特殊动作形态正常</p>
+<div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px;">
+  <img src="MouthOpen2.png">
+  <img src="Smile.png">
+  <img src="EyeDown.png">
+  <img src="MouthOpen.png">
+</div>
+<h2 id="制作形态键">制作形态键</h2>
+<p>制作 ARKit 52 个形态键：</p>
+<p align="center">
+  <img src="ShapeKeys.png" width="400">
+</p>
+<p>效果如下：</p>
+<p>插入6 个 GIF 图</p>
+<div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px;">
+  <img src="EyeRoll.gif">
+  <img src="EyeBlink.gif">
+  <img src="Nose.gif" >
+  <img src="Blow.gif">
+  <img src="MouthMove1.gif">
+  <img src="MouthMove2.gif" >
+</div>
+<h2 id="livelink-读入--控制">livelink 读入 + 控制</h2>
+<p>处理完之后将模型导入 UE，UE 中的操作流程大致如下：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-csharp" data-lang="csharp"><span style="display:flex;"><span>Live Link Source  
+</span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">↓</span>  
+</span></span><span style="display:flex;"><span>LiveLinkRemapAsset  
+</span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">（改名字</span> / <span style="color:#960050;background-color:#1e0010">改数值）</span>  
+</span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">↓</span>  
+</span></span><span style="display:flex;"><span>Animation Blueprint  
+</span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">（读取曲线）</span>  
+</span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">↓</span>  
+</span></span><span style="display:flex;"><span>Set Morph Target  
+</span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">↓</span>  
+</span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">角色表情</span>
+</span></span></code></pre></div><h3 id="livelink-读入数据">livelink 读入数据</h3>
+<p>借用了 UE meta human 的读入功能，实时读入 260 个关键数据</p>
+<p align="center">
+  <img src="image%201.png" width="400">
+</p>
+<h3 id="实时设置形态键的值">实时设置形态键的值</h3>
+<ul>
+<li>从 260 个值中选取最合适的值输给 52ARKit，测试效果如下：</li>
+</ul>
+<p align="center">
+  <img src="image%202.png">
+</p>
+<ul>
+<li>设置 52 个 ARKit + 用对象列表简化</li>
+<li>为了便于调试我分成了左中右三个组</li>
+</ul>
+<img src="/projects/facemocap/AnimBP1.png" alt="AnimBP1.png" loading="lazy"><p>左 / 右部分对应表格如下:</p>
+<table>
+  <thead>
+      <tr>
+          <th>ARKit / Faceit</th>
+          <th>MetaHuman Curve</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td>browDownLeft</td>
+          <td>CTRL_expressions_browDownL</td>
+      </tr>
+      <tr>
+          <td>browOuterUpLeft</td>
+          <td>CTRL_expressions_browRaiseOuterL</td>
+      </tr>
+      <tr>
+          <td>cheekSquintLeft</td>
+          <td>CTRL_expressions_eyeCheekRaiseL</td>
+      </tr>
+      <tr>
+          <td>eyeBlinkLeft</td>
+          <td>CTRL_expressions_eyeBlinkL</td>
+      </tr>
+      <tr>
+          <td>eyeLookDownLeft</td>
+          <td>CTRL_expressions_eyeLookDownL</td>
+      </tr>
+      <tr>
+          <td>eyeLookInLeft</td>
+          <td>CTRL_expressions_eyeLookRightL</td>
+      </tr>
+      <tr>
+          <td>eyeLookOutLeft</td>
+          <td>CTRL_expressions_eyeLookLeftL</td>
+      </tr>
+      <tr>
+          <td>eyeLookUpLeft</td>
+          <td>CTRL_expressions_eyeLookUpL</td>
+      </tr>
+      <tr>
+          <td>eyeSquintLeft</td>
+          <td>CTRL_expressions_eyeSquintInnerL</td>
+      </tr>
+      <tr>
+          <td>eyeWideLeft</td>
+          <td>CTRL_expressions_eyeWidenL</td>
+      </tr>
+      <tr>
+          <td>mouthDimpleLeft</td>
+          <td>CTRL_expressions_mouthDimpleL</td>
+      </tr>
+      <tr>
+          <td>mouthFrownLeft</td>
+          <td>CTRL_expressions_mouthCornerDepressL</td>
+      </tr>
+      <tr>
+          <td>mouthLowerDownLeft</td>
+          <td>CTRL_expressions_mouthLowerLipDepressL</td>
+      </tr>
+      <tr>
+          <td>mouthPressLeft</td>
+          <td>CTRL_expressions_mouthPressDL</td>
+      </tr>
+      <tr>
+          <td>mouthSmileLeft</td>
+          <td>CTRL_expressions_mouthCornerPullL</td>
+      </tr>
+      <tr>
+          <td>mouthStretchLeft</td>
+          <td>CTRL_expressions_mouthStretchL</td>
+      </tr>
+      <tr>
+          <td>mouthUpperUpLeft</td>
+          <td>CTRL_expressions_mouthUpperLipRaiseL</td>
+      </tr>
+      <tr>
+          <td>noseSneerLeft</td>
+          <td>CTRL_expressions_noseWrinkleL</td>
+      </tr>
+  </tbody>
+</table>
+<p>无左右的形态键如下：</p>
+<table>
+  <thead>
+      <tr>
+          <th>ARKit / Faceit</th>
+          <th>MetaHuman Curve</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td>browInnerUp</td>
+          <td>CTRL_expressions_browLateralL</td>
+      </tr>
+      <tr>
+          <td>cheekPuff</td>
+          <td>CTRL_expressions_mouthCheekBlowL</td>
+      </tr>
+      <tr>
+          <td>jawForward</td>
+          <td>CTRL_expressions_jawFwd</td>
+      </tr>
+      <tr>
+          <td>jawLeft</td>
+          <td>CTRL_expressions_jawLeft</td>
+      </tr>
+      <tr>
+          <td>jawOpen</td>
+          <td>CTRL_expressions_jawOpen</td>
+      </tr>
+      <tr>
+          <td>jawRight</td>
+          <td>CTRL_expressions_jawRight</td>
+      </tr>
+      <tr>
+          <td>mouthClose</td>
+          <td>CTRL_expressions_mouthLipsPurseUL</td>
+      </tr>
+      <tr>
+          <td>mouthFunnel</td>
+          <td>CTRL_expressions_mouthFunnelUL</td>
+      </tr>
+      <tr>
+          <td>mouthLeft</td>
+          <td>CTRL_expressions_mouthLeft</td>
+      </tr>
+      <tr>
+          <td>mouthRight</td>
+          <td>CTRL_expressions_mouthRight</td>
+      </tr>
+      <tr>
+          <td>mouthPucker</td>
+          <td>CTRL_expressions_mouthLipsPurseUR</td>
+      </tr>
+      <tr>
+          <td><strong>mouthRollLower</strong></td>
+          <td>CTRL_expressions_mouthLowerLipRollInL</td>
+      </tr>
+      <tr>
+          <td><strong>mouthRollUpper</strong></td>
+          <td>CTRL_expressions_mouthUpperLipRollInL</td>
+      </tr>
+      <tr>
+          <td>mouthShrugLower</td>
+          <td>CTRL_expressions_jawChinRaiseDL</td>
+      </tr>
+      <tr>
+          <td>mouthShrugUpper</td>
+          <td>CTRL_expressions_jawChinRaiseUL</td>
+      </tr>
+      <tr>
+          <td>tongueOut</td>
+          <td>CTRL_expressions_tongueOut</td>
+      </tr>
+  </tbody>
+</table>
+<h3 id="设置头部转动">设置头部转动</h3>
+<p>核心：读取 HeadRoll / HeadPitch / HeadYaw 来控制骨骼动画</p>
+<img src="/projects/facemocap/AnimBP2.png" alt="AnimBP2.png" loading="lazy">
+      </div>
+    </article>
+
+    <aside class="single-toc">
+      <h2 class="single-toc-title">On This Page</h2>
+      <div class="single-toc-body">
+        <nav id="TableOfContents">
+  <ul>
+    <li><a href="#概述">概述：</a></li>
+    <li><a href="#面部建模与绑定">面部建模与绑定</a></li>
+    <li><a href="#刷权重">刷权重</a></li>
+    <li><a href="#制作形态键">制作形态键</a></li>
+    <li><a href="#livelink-读入--控制">livelink 读入 + 控制</a>
+      <ul>
+        <li><a href="#livelink-读入数据">livelink 读入数据</a></li>
+        <li><a href="#实时设置形态键的值">实时设置形态键的值</a></li>
+        <li><a href="#设置头部转动">设置头部转动</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+      </div>
+    </aside>
+  </div>
+
+  </main>
+  <footer class="site-footer">
+  <div class="site-footer__inner">
+    <p style="margin:0;">&copy; 2026 Sera&#39;s Portfolio. Built with Hugo.</p>
+  </div>
+</footer>
+
+</body>
+</html>
