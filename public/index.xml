@@ -51,11 +51,11 @@
       <description>My very first journey in game development and CG</description>
     </item>
     <item>
-      <title>Post Test</title>
-      <link>http://localhost:1313/posts/post_test-copy/</link>
-      <pubDate>Wed, 11 Mar 2026 10:00:00 +0800</pubDate>
-      <guid>http://localhost:1313/posts/post_test-copy/</guid>
-      <description>A test blog post for validating Hugo page bundle content and single page rendering.</description>
+      <title>Unity 后处理基础</title>
+      <link>http://localhost:1313/posts/posteffect/</link>
+      <pubDate>Thu, 12 Mar 2026 10:00:00 +0800</pubDate>
+      <guid>http://localhost:1313/posts/posteffect/</guid>
+      <description>Unity 内置渲染管线里的简单后处理实现</description>
     </item>
   </channel>
 </rss>
