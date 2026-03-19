@@ -417,7 +417,25 @@
 /* ---------------- Mobile Layout Adjustments ---------------- */
 @media (max-width: 720px) {
   .site-header__inner {
-    padding: 16px 32px;
+    padding: 16px 20px;
+  }
+
+  .site-main {
+    padding: 20px 0 32px;
+  }
+
+  .single-layout {
+    width: 100%;
+  }
+
+  .single-article {
+    width: 100%;
+    padding: 20px 20px 28px;
+    box-sizing: border-box;
+  }
+
+  .single-title {
+    font-size: 34px;
   }
 
   .home-hero__bio {
@@ -443,6 +461,7 @@
     gap: 8px;
   }
 }
+
 
 
 
