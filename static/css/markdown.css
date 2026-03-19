@@ -198,13 +198,15 @@
 
 .markdown-body table {
   width: 100%;
+  max-width: 100%;
   margin: 2rem 0;
+  table-layout: fixed;
   border-collapse: separate;
   border-spacing: 0;
-  overflow: hidden;
   background: #333333;
   border: 3px solid rgba(169,169,179,0.12);
   border-radius: 0;
+  box-sizing: border-box;
 }
 
 /* ---------------- Tables text ---------------- */
@@ -214,6 +216,10 @@
   border-right: 2px solid rgba(169,169,179,0.1);
   border-bottom: 2px solid rgba(169,169,179,0.1);
   text-align: left;
+  white-space: normal;
+  overflow-wrap: anywhere;
+  word-break: break-word;
+  hyphens: auto;
   color: var(--site-text);
   font-size: 1.2rem;
 }
@@ -224,6 +230,14 @@
   opacity: 1;
   font-size: 1.15rem;
   font-weight: 600;
+}
+
+.markdown-body th a,
+.markdown-body td a,
+.markdown-body th code,
+.markdown-body td code {
+  overflow-wrap: anywhere;
+  word-break: break-word;
 }
 
 .markdown-body tr:last-child td {
@@ -284,6 +298,18 @@
 
 /* ---------------- Responsive ---------------- */
 
+@media (max-width: 1280px) {
+  .markdown-body table {
+    margin: 1.5rem 0;
+  }
+
+  .markdown-body th,
+  .markdown-body td {
+    padding: 0.45rem 0.5rem;
+    font-size: 1rem;
+  }
+}
+
 @media (max-width: 640px) {
   .markdown-body {
     font-size: 19px;
@@ -296,4 +322,12 @@
   .markdown-body h2 {
     font-size: 1.45rem;
   }
+
+  .markdown-body th,
+  .markdown-body td {
+    padding: 0.55rem 0.65rem;
+    font-size: 0.95rem;
+  }
 }
+
+
