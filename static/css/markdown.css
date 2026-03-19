@@ -186,7 +186,8 @@
 /* 如果 markdown 写了 width，就尊重*/
 .markdown-body img[width],
 .markdown-body video[width] {
-  max-width: none;
+  max-width: 100%;
+  height: auto;
 }
 
 .markdown-body video {
@@ -329,5 +330,6 @@
     font-size: 0.95rem;
   }
 }
+
 
 
