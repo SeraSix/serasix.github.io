@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="en-us">
-<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script>
+<head>
   <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta http-equiv="X-UA-Compatible" content="ie=edge">
@@ -79,8 +79,8 @@
   <img src="Bubble_Noise.jpg" width="500">
 </p>
 <h3 id="1-自然光摄入角度">1. 自然光摄入角度</h3>
-<img src="image%203.png" alt="image.png" loading="lazy"><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-glsl" data-lang="glsl"><span style="display:flex;"><span>u <span style="color:#f92672">=</span> <span style="color:#ae81ff">1</span> <span style="color:#f92672">-</span> (<span style="color:#ae81ff">0.5</span> N<span style="color:#960050;background-color:#1e0010">·</span>L <span style="color:#f92672">+</span> <span style="color:#ae81ff">0.5</span>);
-</span></span><span style="display:flex;"><span>float2 uv <span style="color:#f92672">=</span> append(u, <span style="color:#ae81ff">0.5</span>);
+<img src="image%203.png" alt="image.png" loading="lazy"><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-glsl" data-lang="glsl"><span class="line"><span class="cl"><span class="n">u</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">-</span> <span class="p">(</span><span class="mf">0.5</span> <span class="n">N</span><span class="err">·</span><span class="n">L</span> <span class="o">+</span> <span class="mf">0.5</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="n">float2</span> <span class="n">uv</span> <span class="o">=</span> <span class="n">append</span><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">);</span>
 </span></span></code></pre></div><img src="image%204.png" alt="image.png" loading="lazy"><h3 id="2-薄膜厚度">2. 薄膜厚度</h3>
 <img src="image%205.png" alt="image.png" loading="lazy"><ul>
 <li>metalic 设置成1：specular 设置成1的意思</li>
@@ -105,69 +105,69 @@
 <li><code>Offset（3）</code>← 计算后该点的位移</li>
 <li><code>Normal（3）</code>← 计算后该点的法线</li>
 </ul>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-csharp" data-lang="csharp"><span style="display:flex;"><span><span style="color:#75715e">// 1) 归一化波的传播方向（只使用 XY 平面）</span>
-</span></span><span style="display:flex;"><span>float2 D = normalize(WaveDirection.xy);
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#75715e">// 2) 计算波数 k</span>
-</span></span><span style="display:flex;"><span><span style="color:#75715e">// 波数公式：k = 2π / 波长</span>
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">float</span> k = <span style="color:#ae81ff">6.2831853</span> / max(WaveLength, <span style="color:#ae81ff">1e-4</span>);
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#75715e">// 角频率 w，使用深水波色散关系：w = sqrt(g * k)</span>
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">float</span> w = sqrt(<span style="color:#ae81ff">9.81</span> * k);
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#75715e">// 波幅（波浪高度）</span>
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">float</span> A = WaveHeight;
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#75715e">// 波峰尖锐度（控制水平位移强度）</span>
-</span></span><span style="display:flex;"><span><span style="color:#75715e">// 限制在 [0,1] 范围，防止波浪自交</span>
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">float</span> Q = saturate(PeakSharpness);
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#75715e">// 3) 计算相位 Phase，表示波在空间 + 时间中的传播</span>
-</span></span><span style="display:flex;"><span><span style="color:#75715e">// phase = k * (方向 · 位置) - w * t</span>
-</span></span><span style="display:flex;"><span><span style="color:#75715e">// dot(D, WorldPos.xy) 表示沿波传播方向的距离</span>
-</span></span><span style="display:flex;"><span><span style="color:#75715e">// - w * Time 表示随时间移动</span>
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">float</span> phase = k * dot(D, WorldPos.xy) - w * Time;
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#75715e">// 提前计算 sin 和 cos</span>
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">float</span> s = sin(phase);
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">float</span> c = cos(phase);
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#75715e">// 4) 计算波的垂直位移</span>
-</span></span><span style="display:flex;"><span><span style="color:#75715e">// Gerstner wave 的高度变化</span>
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">float</span> offsetZ = A * s;
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#75715e">// 5) 方向分量</span>
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">float</span> dX = D.x;
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">float</span> dY = D.y;
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#75715e">// 6) 计算高度函数的偏导数</span>
-</span></span><span style="display:flex;"><span><span style="color:#75715e">// 用于计算法线</span>
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">float</span> dZdx = A * k * c * dX;
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">float</span> dZdy = A * k * c * dY;
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#75715e">// 7) 计算水平位移的 Jacobian</span>
-</span></span><span style="display:flex;"><span><span style="color:#75715e">// Gerstner wave 不只是上下移动</span>
-</span></span><span style="display:flex;"><span><span style="color:#75715e">// 还会产生水平位移</span>
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">float</span> dXdx = <span style="color:#ae81ff">1.0</span> - Q * A * k * s * dX * dX;
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">float</span> dXdy = - Q * A * k * s * dX * dY;
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">float</span> dYdx = - Q * A * k * s * dY * dX;
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">float</span> dYdy = <span style="color:#ae81ff">1.0</span> - Q * A * k * s * dY * dY;
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#75715e">// 8) 构建切线向量</span>
-</span></span><span style="display:flex;"><span><span style="color:#75715e">// 表示曲面在 X/Y 方向的变化</span>
-</span></span><span style="display:flex;"><span>float3 Tx = float3(dXdx, dYdx, dZdx);
-</span></span><span style="display:flex;"><span>float3 Ty = float3(dXdy, dYdy, dZdy);
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#75715e">// 9) 通过叉乘计算法线</span>
-</span></span><span style="display:flex;"><span><span style="color:#75715e">// normal = normalize(Tx × Ty)</span>
-</span></span><span style="display:flex;"><span>float3 N = normalize(cross(Tx, Ty));
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#75715e">// 10) 输出结果</span>
-</span></span><span style="display:flex;"><span><span style="color:#75715e">// 波浪高度偏移</span>
-</span></span><span style="display:flex;"><span>out_offsetZ = offsetZ;
-</span></span><span style="display:flex;"><span><span style="color:#75715e">// 水面法线</span>
-</span></span><span style="display:flex;"><span>out_normal = N;
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">return</span> <span style="color:#ae81ff">0</span>;
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-csharp" data-lang="csharp"><span class="line"><span class="cl"><span class="c1">// 1) 归一化波的传播方向（只使用 XY 平面）</span>
+</span></span><span class="line"><span class="cl"><span class="n">float2</span> <span class="n">D</span> <span class="p">=</span> <span class="n">normalize</span><span class="p">(</span><span class="n">WaveDirection</span><span class="p">.</span><span class="n">xy</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">// 2) 计算波数 k</span>
+</span></span><span class="line"><span class="cl"><span class="c1">// 波数公式：k = 2π / 波长</span>
+</span></span><span class="line"><span class="cl"><span class="kt">float</span> <span class="n">k</span> <span class="p">=</span> <span class="m">6.2831853</span> <span class="p">/</span> <span class="n">max</span><span class="p">(</span><span class="n">WaveLength</span><span class="p">,</span> <span class="m">1e-4</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">// 角频率 w，使用深水波色散关系：w = sqrt(g * k)</span>
+</span></span><span class="line"><span class="cl"><span class="kt">float</span> <span class="n">w</span> <span class="p">=</span> <span class="n">sqrt</span><span class="p">(</span><span class="m">9.81</span> <span class="p">*</span> <span class="n">k</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">// 波幅（波浪高度）</span>
+</span></span><span class="line"><span class="cl"><span class="kt">float</span> <span class="n">A</span> <span class="p">=</span> <span class="n">WaveHeight</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">// 波峰尖锐度（控制水平位移强度）</span>
+</span></span><span class="line"><span class="cl"><span class="c1">// 限制在 [0,1] 范围，防止波浪自交</span>
+</span></span><span class="line"><span class="cl"><span class="kt">float</span> <span class="n">Q</span> <span class="p">=</span> <span class="n">saturate</span><span class="p">(</span><span class="n">PeakSharpness</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">// 3) 计算相位 Phase，表示波在空间 + 时间中的传播</span>
+</span></span><span class="line"><span class="cl"><span class="c1">// phase = k * (方向 · 位置) - w * t</span>
+</span></span><span class="line"><span class="cl"><span class="c1">// dot(D, WorldPos.xy) 表示沿波传播方向的距离</span>
+</span></span><span class="line"><span class="cl"><span class="c1">// - w * Time 表示随时间移动</span>
+</span></span><span class="line"><span class="cl"><span class="kt">float</span> <span class="n">phase</span> <span class="p">=</span> <span class="n">k</span> <span class="p">*</span> <span class="n">dot</span><span class="p">(</span><span class="n">D</span><span class="p">,</span> <span class="n">WorldPos</span><span class="p">.</span><span class="n">xy</span><span class="p">)</span> <span class="p">-</span> <span class="n">w</span> <span class="p">*</span> <span class="n">Time</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">// 提前计算 sin 和 cos</span>
+</span></span><span class="line"><span class="cl"><span class="kt">float</span> <span class="n">s</span> <span class="p">=</span> <span class="n">sin</span><span class="p">(</span><span class="n">phase</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="kt">float</span> <span class="n">c</span> <span class="p">=</span> <span class="n">cos</span><span class="p">(</span><span class="n">phase</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">// 4) 计算波的垂直位移</span>
+</span></span><span class="line"><span class="cl"><span class="c1">// Gerstner wave 的高度变化</span>
+</span></span><span class="line"><span class="cl"><span class="kt">float</span> <span class="n">offsetZ</span> <span class="p">=</span> <span class="n">A</span> <span class="p">*</span> <span class="n">s</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">// 5) 方向分量</span>
+</span></span><span class="line"><span class="cl"><span class="kt">float</span> <span class="n">dX</span> <span class="p">=</span> <span class="n">D</span><span class="p">.</span><span class="n">x</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="kt">float</span> <span class="n">dY</span> <span class="p">=</span> <span class="n">D</span><span class="p">.</span><span class="n">y</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">// 6) 计算高度函数的偏导数</span>
+</span></span><span class="line"><span class="cl"><span class="c1">// 用于计算法线</span>
+</span></span><span class="line"><span class="cl"><span class="kt">float</span> <span class="n">dZdx</span> <span class="p">=</span> <span class="n">A</span> <span class="p">*</span> <span class="n">k</span> <span class="p">*</span> <span class="n">c</span> <span class="p">*</span> <span class="n">dX</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="kt">float</span> <span class="n">dZdy</span> <span class="p">=</span> <span class="n">A</span> <span class="p">*</span> <span class="n">k</span> <span class="p">*</span> <span class="n">c</span> <span class="p">*</span> <span class="n">dY</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">// 7) 计算水平位移的 Jacobian</span>
+</span></span><span class="line"><span class="cl"><span class="c1">// Gerstner wave 不只是上下移动</span>
+</span></span><span class="line"><span class="cl"><span class="c1">// 还会产生水平位移</span>
+</span></span><span class="line"><span class="cl"><span class="kt">float</span> <span class="n">dXdx</span> <span class="p">=</span> <span class="m">1.0</span> <span class="p">-</span> <span class="n">Q</span> <span class="p">*</span> <span class="n">A</span> <span class="p">*</span> <span class="n">k</span> <span class="p">*</span> <span class="n">s</span> <span class="p">*</span> <span class="n">dX</span> <span class="p">*</span> <span class="n">dX</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="kt">float</span> <span class="n">dXdy</span> <span class="p">=</span> <span class="p">-</span> <span class="n">Q</span> <span class="p">*</span> <span class="n">A</span> <span class="p">*</span> <span class="n">k</span> <span class="p">*</span> <span class="n">s</span> <span class="p">*</span> <span class="n">dX</span> <span class="p">*</span> <span class="n">dY</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="kt">float</span> <span class="n">dYdx</span> <span class="p">=</span> <span class="p">-</span> <span class="n">Q</span> <span class="p">*</span> <span class="n">A</span> <span class="p">*</span> <span class="n">k</span> <span class="p">*</span> <span class="n">s</span> <span class="p">*</span> <span class="n">dY</span> <span class="p">*</span> <span class="n">dX</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="kt">float</span> <span class="n">dYdy</span> <span class="p">=</span> <span class="m">1.0</span> <span class="p">-</span> <span class="n">Q</span> <span class="p">*</span> <span class="n">A</span> <span class="p">*</span> <span class="n">k</span> <span class="p">*</span> <span class="n">s</span> <span class="p">*</span> <span class="n">dY</span> <span class="p">*</span> <span class="n">dY</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">// 8) 构建切线向量</span>
+</span></span><span class="line"><span class="cl"><span class="c1">// 表示曲面在 X/Y 方向的变化</span>
+</span></span><span class="line"><span class="cl"><span class="n">float3</span> <span class="n">Tx</span> <span class="p">=</span> <span class="n">float3</span><span class="p">(</span><span class="n">dXdx</span><span class="p">,</span> <span class="n">dYdx</span><span class="p">,</span> <span class="n">dZdx</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="n">float3</span> <span class="n">Ty</span> <span class="p">=</span> <span class="n">float3</span><span class="p">(</span><span class="n">dXdy</span><span class="p">,</span> <span class="n">dYdy</span><span class="p">,</span> <span class="n">dZdy</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">// 9) 通过叉乘计算法线</span>
+</span></span><span class="line"><span class="cl"><span class="c1">// normal = normalize(Tx × Ty)</span>
+</span></span><span class="line"><span class="cl"><span class="n">float3</span> <span class="n">N</span> <span class="p">=</span> <span class="n">normalize</span><span class="p">(</span><span class="n">cross</span><span class="p">(</span><span class="n">Tx</span><span class="p">,</span> <span class="n">Ty</span><span class="p">));</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">// 10) 输出结果</span>
+</span></span><span class="line"><span class="cl"><span class="c1">// 波浪高度偏移</span>
+</span></span><span class="line"><span class="cl"><span class="n">out_offsetZ</span> <span class="p">=</span> <span class="n">offsetZ</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="c1">// 水面法线</span>
+</span></span><span class="line"><span class="cl"><span class="n">out_normal</span> <span class="p">=</span> <span class="n">N</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="k">return</span> <span class="m">0</span><span class="p">;</span>
 </span></span></code></pre></div>
       </div>
     </article>

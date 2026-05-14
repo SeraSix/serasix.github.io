@@ -21,6 +21,8 @@ title = "Sera's Portfolio"
     weight = 4
 
 [markup]
+  [markup.highlight]
+    noClasses = false
   [markup.goldmark]
     [markup.goldmark.parser]
       wrapStandAloneImageWithinParagraph = false

@@ -7,8 +7,9 @@
   --site-border: #404247;
   --site-shadow: rgba(0, 0, 0, 0.22);
   --site-container: 1280px;
-  --site-font-sans: "Inter", "Helvetica Neue", Helvetica, Arial, sans-serif;
-  --site-font-mono: "SFMono-Regular", "Consolas", "Liberation Mono", monospace;
+  --site-font-cjk: "Noto Sans CJK SC", "Noto Sans SC", "Microsoft YaHei UI", "Microsoft YaHei", "PingFang SC", "Hiragino Sans GB", sans-serif;
+  --site-font-sans: "Inter", "Helvetica Neue", Helvetica, Arial, var(--site-font-cjk);
+  --site-font-mono: "Cascadia Mono", "SFMono-Regular", "Consolas", "Liberation Mono", "Noto Sans Mono CJK SC", "Microsoft YaHei UI", "Microsoft YaHei", monospace;
 }
 
 /* ---------------- Global Page Frame ---------------- */

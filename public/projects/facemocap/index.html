@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="en-us">
-<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script>
+<head>
   <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta http-equiv="X-UA-Compatible" content="ie=edge">
@@ -97,17 +97,17 @@
 </div>
 <h2 id="livelink-读入--控制">livelink 读入 + 控制</h2>
 <p>处理完之后将模型导入 UE，UE 中的操作流程大致如下：</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-csharp" data-lang="csharp"><span style="display:flex;"><span>Live Link Source  
-</span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">↓</span>  
-</span></span><span style="display:flex;"><span>LiveLinkRemapAsset  
-</span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">（改名字</span> / <span style="color:#960050;background-color:#1e0010">改数值）</span>  
-</span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">↓</span>  
-</span></span><span style="display:flex;"><span>Animation Blueprint  
-</span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">（读取曲线）</span>  
-</span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">↓</span>  
-</span></span><span style="display:flex;"><span>Set Morph Target  
-</span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">↓</span>  
-</span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">角色表情</span>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-csharp" data-lang="csharp"><span class="line"><span class="cl"><span class="n">Live</span> <span class="n">Link</span> <span class="n">Source</span>  
+</span></span><span class="line"><span class="cl"><span class="err">↓</span>  
+</span></span><span class="line"><span class="cl"><span class="n">LiveLinkRemapAsset</span>  
+</span></span><span class="line"><span class="cl"><span class="err">（改名字</span> <span class="p">/</span> <span class="err">改数值）</span>  
+</span></span><span class="line"><span class="cl"><span class="err">↓</span>  
+</span></span><span class="line"><span class="cl"><span class="n">Animation</span> <span class="n">Blueprint</span>  
+</span></span><span class="line"><span class="cl"><span class="err">（读取曲线）</span>  
+</span></span><span class="line"><span class="cl"><span class="err">↓</span>  
+</span></span><span class="line"><span class="cl"><span class="n">Set</span> <span class="n">Morph</span> <span class="n">Target</span>  
+</span></span><span class="line"><span class="cl"><span class="err">↓</span>  
+</span></span><span class="line"><span class="cl"><span class="err">角色表情</span>
 </span></span></code></pre></div><h3 id="livelink-读入数据">livelink 读入数据</h3>
 <p>借用了 UE meta human 的读入功能，实时读入 260 个关键数据</p>
 <p align="center">
