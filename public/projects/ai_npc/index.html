@@ -1,0 +1,597 @@
+<!DOCTYPE html>
+<html lang="en-us">
+<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+<title>AI NPC Dual-Character System | Sera&#39;s Portfolio</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/css/layout.css">
+<link rel="stylesheet" href="/css/markdown.css">
+
+</head>
+<body class="site-body">
+  <header class="site-header">
+  <div class="site-header__inner">
+    <a href="/" class="site-header__brand">
+      <span>SERASIX</span>
+    </a>
+    <nav class="site-header__nav">
+      
+        
+      
+        
+          <a href="/about/" class="site-header__link">About</a>
+        
+      
+        
+          <a href="/posts/" class="site-header__link">Blog</a>
+        
+      
+        
+          <a href="/projects/" class="site-header__link">Project</a>
+        
+      
+    </nav>
+  </div>
+</header>
+
+  <main class="site-main">
+    
+  <div class="single-layout">
+    <article class="single-article">
+      <div class="single-section-wrap">
+        <span class="single-section-badge">projects</span>
+      </div>
+
+      <h1 class="single-title">AI NPC Dual-Character System</h1>
+
+      <div class="single-meta">
+        <span>May 12, 2026</span>
+        
+      </div>
+
+      <div class="markdown-body">
+        <h2 id="ai-虚拟人动画">AI 虚拟人动画</h2>
+<p>演示视频:
+<img src="AInpc.gif" width="800"></p>
+<p>整体架构：</p>
+<img src="image.png" width="800">  
+<h2 id="动画系统">动画系统</h2>
+<h3 id="总框架">总框架：</h3>
+<h4 id="arkit-分通道">ARkit 分通道</h4>
+<p>一共三个 System 负责</p>
+<ul>
+<li><code>ExpressionController</code>：只产出“表情目标值”</li>
+<li><code>VisemeController</code>：只产出“口型目标值”</li>
+<li><code>LookAtController</code>：只控制骨骼旋转 / 眼球方向</li>
+</ul>
+<p>ExpressionController 负责的通道:</p>
+<pre tabindex="0"><code>browDownLeft / Right
+browInnerUp
+browOuterUpLeft / Right
+
+cheekPuff
+cheekSquintLeft / Right
+
+eyeBlinkLeft / Right
+eyeSquintLeft / Right
+eyeWideLeft / Right
+
+jawLeft / Right
+
+mouthDimpleLeft / Right
+mouthFrownLeft / Right
+mouthLeft / Right
+mouthShrugLower / Upper
+mouthSmileLeft / Right
+mouthUpperUpLeft / Right
+
+noseSneerLeft / Right
+</code></pre><p>VisemeController 负责的通道:</p>
+<pre tabindex="0"><code>jawForward
+jawOpen
+mouthClose
+mouthFunnel
+mouthLowerDownLeft / Right
+mouthPressLeft / Right
+mouthPucker
+mouthRollLower
+mouthRollUpper
+mouthStretchLeft / Right
+</code></pre><p>LookAtController 接管，不直接走 BlendShape:</p>
+<pre tabindex="0"><code>eyeLookDownLeft / Right
+eyeLookInLeft / Right
+eyeLookOutLeft / Right
+eyeLookUpLeft / Right
+eyeBlinkLeft / Right
+</code></pre><h4 id="底层接口">底层接口</h4>
+<p>主要组件：</p>
+<ul>
+<li>FaceRendererBinder: 获取所有可用于面部BlendShape控制的Renderer，存入<code>SkinnedMeshRenderer[] result</code> , 以便于可以统一设置所有组件上相关的形态键</li>
+</ul>
+<img src="image 1.png" width="400">  
+<ul>
+<li>FaceBlendShapeController：用于统一设置 / 清空某一个形态键</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-csharp" data-lang="csharp"><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> ResetAllBlendShapes()
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> SetBlendShape(<span style="color:#66d9ef">string</span> blendShapeName, <span style="color:#66d9ef">float</span> weight)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> SetBlendShapeOnRenderer(SkinnedMeshRenderer smr, <span style="color:#66d9ef">string</span> blendShapeName, <span style="color:#66d9ef">float</span> weight)
+</span></span><span style="display:flex;"><span>    
+</span></span></code></pre></div><h4 id="动画分层">动画分层</h4>
+<div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px;">
+  <img src="image 2.png">
+  <img src="image 3.png">
+  <img src="image 4.png">
+</div>
+<ul>
+<li>Walk：以后用来 handle 跟随行走动画</li>
+<li>UpperLayer：负责说话时的动作</li>
+<li>LookAt：叠加头部动画</li>
+</ul>
+<hr>
+<h3 id="说话动作逻辑">说话动作逻辑</h3>
+<ul>
+<li>用动画树（2D Freeform Cartesian）来在一定程度随机生成说话动画
+<ul>
+<li>TalkStyle 0-1</li>
+<li>TalkIntensity 0-1</li>
+</ul>
+</li>
+</ul>
+<table>
+  <thead>
+      <tr>
+          <th>动画</th>
+          <th>TalkStyle</th>
+          <th>TalkIntensity</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td>talk1_small</td>
+          <td>0</td>
+          <td>0</td>
+      </tr>
+      <tr>
+          <td>talk1_strong</td>
+          <td>0</td>
+          <td>1</td>
+      </tr>
+      <tr>
+          <td>talk2_small</td>
+          <td>1</td>
+          <td>0</td>
+      </tr>
+      <tr>
+          <td>talk2_strong</td>
+          <td>1</td>
+          <td>1</td>
+      </tr>
+  </tbody>
+</table>
+<img src="image 5.png" width="400">  
+<ul>
+<li>Intensity 和表情有关：</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-csharp" data-lang="csharp"><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">float</span> GetTalkDensity(EmotionType type)
+</span></span><span style="display:flex;"><span>    {
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">switch</span> (type)
+</span></span><span style="display:flex;"><span>        {
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">case</span> EmotionType.Think:
+</span></span><span style="display:flex;"><span>                <span style="color:#66d9ef">return</span> <span style="color:#ae81ff">0.5f</span>;
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">case</span> EmotionType.Disaprove:
+</span></span><span style="display:flex;"><span>                <span style="color:#66d9ef">return</span> <span style="color:#ae81ff">0.6f</span>;
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">case</span> EmotionType.Aprove:
+</span></span><span style="display:flex;"><span>                <span style="color:#66d9ef">return</span> <span style="color:#ae81ff">0.2f</span>;
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">case</span> EmotionType.Angry:
+</span></span><span style="display:flex;"><span>                <span style="color:#66d9ef">return</span> <span style="color:#ae81ff">0.8f</span>;
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">case</span> EmotionType.Sad:
+</span></span><span style="display:flex;"><span>                <span style="color:#66d9ef">return</span> <span style="color:#ae81ff">0f</span>;
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">default</span>:
+</span></span><span style="display:flex;"><span>                <span style="color:#66d9ef">return</span> <span style="color:#ae81ff">0f</span>;
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>    }
+</span></span></code></pre></div><ul>
+<li>TalkStyle 为随机在 1 / 2 里筛选</li>
+</ul>
+<h3 id="expression-逻辑">Expression 逻辑</h3>
+<p>Expression Controller:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-csharp" data-lang="csharp"><span style="display:flex;"><span>Start()
+</span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">↓</span>
+</span></span><span style="display:flex;"><span>ApplyExpression(<span style="color:#960050;background-color:#1e0010">当前表情</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>Update()
+</span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">↓</span>
+</span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">如果表情变了</span>
+</span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">↓</span>
+</span></span><span style="display:flex;"><span>ApplyExpression(<span style="color:#960050;background-color:#1e0010">新表情</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">外部调用：</span>
+</span></span><span style="display:flex;"><span>SetExpression(...)
+</span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">↓</span>
+</span></span><span style="display:flex;"><span>ApplyExpression(...)
+</span></span></code></pre></div><p>表情预设：</p>
+<p>Happy:</p>
+<pre tabindex="0"><code>mouthSmileLeft / Right = 80
+cheekSquintLeft / Right = 40
+eyeSquintLeft / Right = 20
+browOuterUpLeft / Right = 10
+</code></pre><p>Surprise:</p>
+<pre tabindex="0"><code>jawOpen = 60
+eyeWideLeft / Right = 80
+browInnerUp = 70
+browOuterUpLeft / Right = 50
+mouthFunnel = 30
+</code></pre><p>Sad:</p>
+<pre tabindex="0"><code>mouthFrownLeft / Right = 70
+browInnerUp = 60
+browDownLeft / Right = 30
+eyeSquintLeft / Right = 20
+jawOpen = 10
+</code></pre><p>Angry:</p>
+<pre tabindex="0"><code>browDownLeft / Right = 80
+eyeSquintLeft / Right = 50
+mouthPressLeft / Right = 60
+jawForward = 20
+</code></pre><p>编辑器里可以手动调节：</p>
+<img src="image 6.png" width="400">  
+<h3 id="口型逻辑">口型逻辑</h3>
+<ul>
+<li>Viseme 控制逻辑</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-csharp" data-lang="csharp"><span style="display:flex;"><span>Start()
+</span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">↓</span>
+</span></span><span style="display:flex;"><span>ApplyViseme(VisemeType <span style="color:#960050;background-color:#1e0010">当前口型</span>) 
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>Update()
+</span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">↓</span>
+</span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">如果口型变了</span>
+</span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">↓</span>
+</span></span><span style="display:flex;"><span>ApplyViseme(VisemeType <span style="color:#960050;background-color:#1e0010">新口型</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">外部调用：</span>
+</span></span><span style="display:flex;"><span>SetViseme(VisemeType visemeType)
+</span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">↓</span>
+</span></span><span style="display:flex;"><span>ApplyViseme(VisemeType visemeType)
+</span></span></code></pre></div><p>Viseme 预设</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-csharp" data-lang="csharp"><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">enum</span> VisemeType
+</span></span><span style="display:flex;"><span>{
+</span></span><span style="display:flex;"><span>    None,
+</span></span><span style="display:flex;"><span>    Closed,
+</span></span><span style="display:flex;"><span>    A_Open,
+</span></span><span style="display:flex;"><span>    A_Wide,
+</span></span><span style="display:flex;"><span>    I,
+</span></span><span style="display:flex;"><span>    U,
+</span></span><span style="display:flex;"><span>    O,
+</span></span><span style="display:flex;"><span>    FV,
+</span></span><span style="display:flex;"><span>    L,
+</span></span><span style="display:flex;"><span>    SZ,
+</span></span><span style="display:flex;"><span>    SHCH,
+</span></span><span style="display:flex;"><span>    Rest
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// 设置了例如以下的：</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">new</span> VisemePreset
+</span></span><span style="display:flex;"><span>{
+</span></span><span style="display:flex;"><span>    visemeType = VisemeType.Closed,
+</span></span><span style="display:flex;"><span>    blendShapes = <span style="color:#66d9ef">new</span> List&lt;BlendShapeValue&gt;
+</span></span><span style="display:flex;"><span>    {
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">new</span> BlendShapeValue { shapeName = <span style="color:#e6db74">&#34;mouthClose&#34;</span>, <span style="color:#66d9ef">value</span> = <span style="color:#ae81ff">40f</span> },
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">new</span> BlendShapeValue { shapeName = <span style="color:#e6db74">&#34;mouthPressLeft&#34;</span>, <span style="color:#66d9ef">value</span> = <span style="color:#ae81ff">35f</span> },
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">new</span> BlendShapeValue { shapeName = <span style="color:#e6db74">&#34;mouthPressRight&#34;</span>, <span style="color:#66d9ef">value</span> = <span style="color:#ae81ff">35f</span> },
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">new</span> BlendShapeValue { shapeName = <span style="color:#e6db74">&#34;jawOpen&#34;</span>, <span style="color:#66d9ef">value</span> = <span style="color:#ae81ff">0f</span> }
+</span></span><span style="display:flex;"><span>     }
+</span></span><span style="display:flex;"><span>},
+</span></span></code></pre></div><img src="image 7.png" width="400">   
+<h3 id="blink-逻辑">Blink 逻辑</h3>
+<p>BlinkController</p>
+<ul>
+<li>通过 <code>FaceBlendShapeController.SetBlendShape()</code>  去控制 <code>eyeBlinkLeft</code> 和 <code>eyeBlinkRight</code></li>
+<li>核心代码逻辑：</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-csharp" data-lang="csharp"><span style="display:flex;"><span>Update()
+</span></span><span style="display:flex;"><span>  <span style="color:#960050;background-color:#1e0010">↓</span>
+</span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">是否需要眨眼？</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#960050;background-color:#1e0010">↓</span> <span style="color:#960050;background-color:#1e0010">是</span>
+</span></span><span style="display:flex;"><span>StartBlink(): <span style="color:#ae81ff">1.</span> <span style="color:#960050;background-color:#1e0010">随机生成眨眼强度</span> <span style="color:#ae81ff">2.</span> _blinkState = BlinkState.Closing;
+</span></span><span style="display:flex;"><span>  <span style="color:#960050;background-color:#1e0010">↓</span>
+</span></span><span style="display:flex;"><span>UpdateBlink() <span style="color:#960050;background-color:#1e0010">三个</span><span style="color:#66d9ef">case</span><span style="color:#960050;background-color:#1e0010">：不眨眼</span> / BlinkState.Closing / BlinkState.Opening
+</span></span><span style="display:flex;"><span>  <span style="color:#960050;background-color:#1e0010">↓</span>
+</span></span><span style="display:flex;"><span>Closing<span style="color:#960050;background-color:#1e0010">：闭眼</span> <span style="color:#ae81ff">0</span> -&gt; <span style="color:#960050;background-color:#1e0010">目标值</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#960050;background-color:#1e0010">↓</span> <span style="color:#960050;background-color:#1e0010">一段时间间隔后</span>  _blinkState = BlinkState.Opening 
+</span></span><span style="display:flex;"><span>Opening<span style="color:#960050;background-color:#1e0010">：睁眼</span> <span style="color:#960050;background-color:#1e0010">目标值</span> -&gt; <span style="color:#ae81ff">0</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#960050;background-color:#1e0010">↓</span>
+</span></span><span style="display:flex;"><span>ScheduleNextBlink()
+</span></span><span style="display:flex;"><span>  <span style="color:#960050;background-color:#1e0010">↓</span>
+</span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">回到</span> Update()
+</span></span></code></pre></div><h3 id="lookat-逻辑">LookAt 逻辑</h3>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-csharp" data-lang="csharp"><span style="display:flex;"><span>Update()
+</span></span><span style="display:flex;"><span>  <span style="color:#960050;background-color:#1e0010">↓</span>
+</span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">检查引用和目标是否有效</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#960050;background-color:#1e0010">↓</span>
+</span></span><span style="display:flex;"><span>ComputeEyeTarget()
+</span></span><span style="display:flex;"><span>  <span style="color:#960050;background-color:#1e0010">↓</span>
+</span></span><span style="display:flex;"><span>ComputeHeadTarget()
+</span></span><span style="display:flex;"><span>  <span style="color:#960050;background-color:#1e0010">↓</span>
+</span></span><span style="display:flex;"><span>UpdateEyeLogic()
+</span></span><span style="display:flex;"><span>  <span style="color:#960050;background-color:#1e0010">↓</span>
+</span></span><span style="display:flex;"><span>UpdateHeadLogic()
+</span></span></code></pre></div><ul>
+<li>compute 部分逻</li>
+</ul>
+<p>眼睛：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-csharp" data-lang="csharp"><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">目标位置</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#960050;background-color:#1e0010">↓</span>
+</span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">转换到</span> eyeReference <span style="color:#960050;background-color:#1e0010">的局部坐标</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#960050;background-color:#1e0010">↓</span>
+</span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">取</span> localOffset.x <span style="color:#960050;background-color:#1e0010">计算水平偏移</span>
+</span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">取</span> localOffset.y <span style="color:#960050;background-color:#1e0010">计算垂直偏移</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#960050;background-color:#1e0010">↓</span>
+</span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">根据</span> eyeHorizontalLimit / eyeVerticalLimit <span style="color:#960050;background-color:#1e0010">限制最大角度</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#960050;background-color:#1e0010">↓</span>
+</span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">归一化成</span> -<span style="color:#ae81ff">1</span> ~ <span style="color:#ae81ff">1</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#960050;background-color:#1e0010">↓</span>
+</span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">乘以</span> eyeHorizontalWeight / eyeVerticalWeight
+</span></span><span style="display:flex;"><span>  <span style="color:#960050;background-color:#1e0010">↓</span>
+</span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">减去当前头部转动量</span> _currentHeadX
+</span></span><span style="display:flex;"><span>  <span style="color:#960050;background-color:#1e0010">↓</span>
+</span></span><span style="display:flex;"><span>MoveTowards <span style="color:#960050;background-color:#1e0010">平滑移动</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#960050;background-color:#1e0010">↓</span>
+</span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">写入</span> eyeLook... BlendShape
+</span></span></code></pre></div><p>头：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-csharp" data-lang="csharp"><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">目标位置</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#960050;background-color:#1e0010">↓</span>
+</span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">转换到</span> headReference <span style="color:#960050;background-color:#1e0010">的局部坐标</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#960050;background-color:#1e0010">↓</span>
+</span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">用</span> atan2(localOffset.x, localOffset.z) <span style="color:#960050;background-color:#1e0010">算水平角度</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#960050;background-color:#1e0010">↓</span>
+</span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">限制在</span> headHorizontalLimit <span style="color:#960050;background-color:#1e0010">范围内</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#960050;background-color:#1e0010">↓</span>
+</span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">根据距离计算响应强度</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#960050;background-color:#1e0010">↓</span>
+</span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">归一化成</span> -<span style="color:#ae81ff">1</span> ~ <span style="color:#ae81ff">1</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#960050;background-color:#1e0010">↓</span>
+</span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">判断是否超过</span> deadZone
+</span></span><span style="display:flex;"><span>  <span style="color:#960050;background-color:#1e0010">↓</span>
+</span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">等待眼睛先转到一定程度</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#960050;background-color:#1e0010">↓</span>
+</span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">头部开始跟随</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#960050;background-color:#1e0010">↓</span>
+</span></span><span style="display:flex;"><span>MoveTowards <span style="color:#960050;background-color:#1e0010">平滑转头</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#960050;background-color:#1e0010">↓</span>
+</span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">写入</span> Animator <span style="color:#960050;background-color:#1e0010">参数</span>
+</span></span></code></pre></div><ul>
+<li>update 部分逻辑</li>
+</ul>
+<p>眼睛部分：set blend shape：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-csharp" data-lang="csharp"><span style="display:flex;"><span>faceController.SetBlendShape(<span style="color:#e6db74">&#34;eyeLookUpLeft&#34;</span>, eyeLookUpLeft);
+</span></span><span style="display:flex;"><span>faceController.SetBlendShape(<span style="color:#e6db74">&#34;eyeLookUpRight&#34;</span>, eyeLookUpRight);
+</span></span><span style="display:flex;"><span>faceController.SetBlendShape(<span style="color:#e6db74">&#34;eyeLookDownLeft&#34;</span>, eyeLookDownLeft);
+</span></span><span style="display:flex;"><span>faceController.SetBlendShape(<span style="color:#e6db74">&#34;eyeLookDownRight&#34;</span>, eyeLookDownRight);
+</span></span></code></pre></div><p>动画部分逻辑：</p>
+<img src="image 8.png" width="400">  
+<h2 id="其它">其它</h2>
+<h3 id="tts-解决方案">TTS 解决方案</h3>
+<p>与 tts 的连接逻辑：</p>
+<p>使用的是微软的 Azure 服务，使用了 unity 外的 python 脚本</p>
+<p>传过去：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-csharp" data-lang="csharp"><span style="display:flex;"><span><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">TtsRequest</span>(BaseModel):
+</span></span><span style="display:flex;"><span>    text: str
+</span></span><span style="display:flex;"><span>    voice: str = <span style="color:#e6db74">&#34;zh-CN-XiaoxiaoNeural&#34;</span>
+</span></span><span style="display:flex;"><span>    style: Optional[str] = None
+</span></span><span style="display:flex;"><span>    rate: str = <span style="color:#e6db74">&#34;0%&#34;</span>
+</span></span><span style="display:flex;"><span>    pitch: str = <span style="color:#e6db74">&#34;0%&#34;</span>
+</span></span><span style="display:flex;"><span>    volume: str = <span style="color:#e6db74">&#34;0%&#34;</span>
+</span></span><span style="display:flex;"><span>    request_viseme: <span style="color:#66d9ef">bool</span> = True
+</span></span><span style="display:flex;"><span>    emotion: Optional[str] = <span style="color:#e6db74">&#34;neutral&#34;</span>
+</span></span></code></pre></div><p>传回来：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-json" data-lang="json"><span style="display:flex;"><span>{
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&#34;ok&#34;</span>: <span style="color:#66d9ef">true</span>,
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&#34;audio_base64&#34;</span>: <span style="color:#e6db74">&#34;UklGRiQAAABXQVZF...&#34;</span>,
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&#34;audio_format&#34;</span>: <span style="color:#e6db74">&#34;wav&#34;</span>,
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&#34;sample_rate&#34;</span>: <span style="color:#ae81ff">24000</span>,
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&#34;channels&#34;</span>: <span style="color:#ae81ff">1</span>,
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&#34;duration_ms&#34;</span>: <span style="color:#ae81ff">1234.5</span>,
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&#34;visemes&#34;</span>: [
+</span></span><span style="display:flex;"><span>    {
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">&#34;audio_offset_ticks&#34;</span>: <span style="color:#ae81ff">500000</span>,
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">&#34;audio_offset_ms&#34;</span>: <span style="color:#ae81ff">50.0</span>,
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">&#34;viseme_id&#34;</span>: <span style="color:#ae81ff">3</span>,
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">&#34;animation&#34;</span>: <span style="color:#e6db74">&#34;...&#34;</span>
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>  ],
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&#34;expression&#34;</span>: {
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&#34;primary&#34;</span>: <span style="color:#e6db74">&#34;neutral&#34;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&#34;intensity&#34;</span>: <span style="color:#ae81ff">0.35</span>
+</span></span><span style="display:flex;"><span>  },
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&#34;words&#34;</span>: []
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><ul>
+<li>接收逻辑</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-csharp" data-lang="csharp"><span style="display:flex;"><span>SpeakCoroutine(text)
+</span></span><span style="display:flex;"><span>        <span style="color:#960050;background-color:#1e0010">↓</span>
+</span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">初始化状态</span>
+</span></span><span style="display:flex;"><span>_isPreparing = <span style="color:#66d9ef">true</span>
+</span></span><span style="display:flex;"><span>_isReadyToTalk = <span style="color:#66d9ef">false</span>
+</span></span><span style="display:flex;"><span>_hasPlaybackStarted = <span style="color:#66d9ef">false</span>
+</span></span><span style="display:flex;"><span>_hasPlaybackCompleted = <span style="color:#66d9ef">false</span>
+</span></span><span style="display:flex;"><span>talking = <span style="color:#66d9ef">false</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#960050;background-color:#1e0010">↓</span>
+</span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">处理旧的音频</span> / update audisource <span style="color:#960050;background-color:#1e0010">和</span> visemeSyncPlayer
+</span></span><span style="display:flex;"><span>        <span style="color:#960050;background-color:#1e0010">↓</span>
+</span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">构造</span> AzureTtsRequest<span style="color:#960050;background-color:#1e0010">，想服务器请求</span> UnityWebRequest POST serverUrl
+</span></span><span style="display:flex;"><span>        <span style="color:#960050;background-color:#1e0010">↓</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">yield</span> <span style="color:#66d9ef">return</span> request.SendWebRequest()<span style="color:#960050;background-color:#1e0010">等待服务器返回</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#960050;background-color:#1e0010">↓</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#960050;background-color:#1e0010">↓</span> <span style="color:#960050;background-color:#1e0010">如果请求成功</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#960050;background-color:#1e0010">↓</span>
+</span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">读取</span> responseJson
+</span></span><span style="display:flex;"><span>JsonUtility.FromJson&lt;AzureTtsResponse&gt;()<span style="color:#960050;background-color:#1e0010">，设置检验逻辑</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#960050;background-color:#1e0010">↓</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#960050;background-color:#1e0010">↓</span>
+</span></span><span style="display:flex;"><span>audio_base64<span style="color:#960050;background-color:#1e0010">：需要转换成</span> AudioClip
+</span></span><span style="display:flex;"><span>        <span style="color:#960050;background-color:#1e0010">↓</span>
+</span></span><span style="display:flex;"><span>Convert.FromBase64String(...) <span style="color:#960050;background-color:#1e0010">返回：</span>wavBytes
+</span></span><span style="display:flex;"><span>WavUtility.ToAudioClip(...) <span style="color:#960050;background-color:#1e0010">返回：</span>AudioClip clip
+</span></span><span style="display:flex;"><span>        <span style="color:#960050;background-color:#1e0010">↓</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#960050;background-color:#1e0010">↓</span> 
+</span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">同时启动音画逻辑：</span>
+</span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">把</span> AudioClip <span style="color:#960050;background-color:#1e0010">交给</span> AudioSource<span style="color:#960050;background-color:#1e0010">：</span>audioSource.clip = clip;
+</span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">把</span> Visemes <span style="color:#960050;background-color:#1e0010">交给</span> visemeSyncPlayer visemeSyncPlayer.LoadTimeline(response.visemes)
+</span></span><span style="display:flex;"><span>        <span style="color:#960050;background-color:#1e0010">↓</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#960050;background-color:#1e0010">↓</span>
+</span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">音频</span> + <span style="color:#960050;background-color:#1e0010">口型时间线准备完成</span>
+</span></span><span style="display:flex;"><span>_isPreparing = <span style="color:#66d9ef">false</span>
+</span></span><span style="display:flex;"><span>_isReadyToTalk = <span style="color:#66d9ef">true</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#960050;background-color:#1e0010">↓</span>
+</span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">等待</span> talking == <span style="color:#66d9ef">true</span>  <span style="color:#66d9ef">yield</span> <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">new</span> WaitUntil(() =&gt; talking)
+</span></span><span style="display:flex;"><span>        <span style="color:#960050;background-color:#1e0010">↓</span>
+</span></span><span style="display:flex;"><span>AudioSource.Play()
+</span></span><span style="display:flex;"><span>        <span style="color:#960050;background-color:#1e0010">↓</span>
+</span></span><span style="display:flex;"><span>_hasPlaybackStarted = <span style="color:#66d9ef">true</span>
+</span></span><span style="display:flex;"><span>_hasPlaybackCompleted = <span style="color:#66d9ef">false</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#960050;background-color:#1e0010">↓</span>
+</span></span><span style="display:flex;"><span>visemeSyncPlayer.Play()
+</span></span><span style="display:flex;"><span>        <span style="color:#960050;background-color:#1e0010">↓</span>
+</span></span><span style="display:flex;"><span>_isReadyToTalk = <span style="color:#66d9ef">false</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#960050;background-color:#1e0010">↓</span>
+</span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">如果</span> resetTalkingAfterPlaybackStarts == <span style="color:#66d9ef">true</span>
+</span></span><span style="display:flex;"><span>talking = <span style="color:#66d9ef">false</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#960050;background-color:#1e0010">↓</span>
+</span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">等待音频播放结束</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">yield</span> <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">new</span> WaitWhile(() =&gt; audioSource.isPlaying)
+</span></span><span style="display:flex;"><span>        <span style="color:#960050;background-color:#1e0010">↓</span>
+</span></span><span style="display:flex;"><span>_hasPlaybackCompleted = <span style="color:#66d9ef">true</span>
+</span></span><span style="display:flex;"><span>_speakCoroutine = <span style="color:#66d9ef">null</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#960050;background-color:#1e0010">↓</span>
+</span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">协程结束</span>
+</span></span></code></pre></div><ul>
+<li>播放逻辑</li>
+</ul>
+<ol>
+<li>用代码让 tts 返回类似这样的结构体：</li>
+</ol>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-csharp" data-lang="csharp"><span style="display:flex;"><span><span style="color:#66d9ef">public</span> LipSyncFrame(<span style="color:#66d9ef">float</span> timeMs, VisemeType visemeType)
+</span></span><span style="display:flex;"><span>{
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">this</span>.timeMs = timeMs;
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">this</span>.visemeType = visemeType;
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>核心代码逻辑：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-csharp" data-lang="csharp"><span style="display:flex;"><span>Update()
+</span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">↓</span>
+</span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">检查是否正在播放</span>
+</span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">↓</span>
+</span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">检查</span> audioSource / visemeController <span style="color:#960050;background-color:#1e0010">是否有效</span>
+</span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">↓</span>
+</span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">检查音频是否结束</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#960050;background-color:#1e0010">↓</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#960050;background-color:#1e0010">如果结束：</span>Stop()
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">↓</span>
+</span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">检查时间轴是否为空</span>
+</span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">↓</span>
+</span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">读取当前音频播放时间</span>
+</span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">↓</span>
+</span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">根据时间推进到对应的口型节点</span>
+</span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">↓</span>
+</span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">取得目标口型</span> target
+</span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">↓</span>
+</span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">如果目标口型</span> != <span style="color:#960050;background-color:#1e0010">当前口型</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#960050;background-color:#1e0010">↓</span>
+</span></span><span style="display:flex;"><span>    SetCurrentViseme(target)
+</span></span><span style="display:flex;"><span>    <span style="color:#960050;background-color:#1e0010">↓</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#960050;background-color:#1e0010">更新当前口型</span>
+</span></span></code></pre></div><ul>
+<li>核心同步原理：</li>
+</ul>
+<ol>
+<li>AzureTtsClients 处同时申请 AudioSource 和 VisemeSyncPlayer</li>
+<li>VisemeSyncPlayer 按照 AudioSource 的时间播放</li>
+</ol>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-csharp" data-lang="csharp"><span style="display:flex;"><span><span style="color:#66d9ef">float</span> currentTimeMs = audioSource.time * <span style="color:#ae81ff">1000f</span>;
+</span></span><span style="display:flex;"><span>VisemeType target = _timeline[_currentIndex].visemeType;
+</span></span></code></pre></div><h3 id="双人调度逻辑">双人调度逻辑</h3>
+<ul>
+<li>ConversationStreamReceiver：负责接收输入</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-csharp" data-lang="csharp"><span style="display:flex;"><span>StartReading()
+</span></span><span style="display:flex;"><span>  <span style="color:#960050;background-color:#1e0010">↓</span>
+</span></span><span style="display:flex;"><span>StartStreamConversation()
+</span></span><span style="display:flex;"><span>  <span style="color:#960050;background-color:#1e0010">↓</span>
+</span></span><span style="display:flex;"><span>ReadTalkPiece()
+</span></span><span style="display:flex;"><span>  <span style="color:#960050;background-color:#1e0010">↓</span>
+</span></span><span style="display:flex;"><span>EnqueueTalkPiece() <span style="color:#75715e">// 用Queue 来存储流式输入</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#960050;background-color:#1e0010">↓</span>
+</span></span><span style="display:flex;"><span>.....
+</span></span><span style="display:flex;"><span>  <span style="color:#960050;background-color:#1e0010">↓</span>
+</span></span><span style="display:flex;"><span>CompleteReading()
+</span></span><span style="display:flex;"><span>  <span style="color:#960050;background-color:#1e0010">↓</span>
+</span></span><span style="display:flex;"><span>MarkStreamCompleted()
+</span></span></code></pre></div><ul>
+<li>ConversationDirector：负责调度 NPC 怎么说、什么时候说、谁听谁</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-csharp" data-lang="csharp"><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">确定说话人</span> speaker
+</span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">确定听话人</span> listener
+</span></span><span style="display:flex;"><span>  <span style="color:#960050;background-color:#1e0010">↓</span>
+</span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">准备当前句</span> TTS
+</span></span><span style="display:flex;"><span>  <span style="color:#960050;background-color:#1e0010">↓</span>
+</span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">等待</span> TTS ready
+</span></span><span style="display:flex;"><span>  <span style="color:#960050;background-color:#1e0010">↓</span>
+</span></span><span style="display:flex;"><span>listener <span style="color:#960050;background-color:#1e0010">进入听状态，看向</span> speaker
+</span></span><span style="display:flex;"><span>  <span style="color:#960050;background-color:#1e0010">↓</span>
+</span></span><span style="display:flex;"><span>speaker <span style="color:#960050;background-color:#1e0010">开始说话</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#960050;background-color:#1e0010">↓</span>
+</span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">说到</span> preTriggerPercent <span style="color:#960050;background-color:#1e0010">时，提前准备下一句</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#960050;background-color:#1e0010">↓</span>
+</span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">当前句说完</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#960050;background-color:#1e0010">↓</span>
+</span></span><span style="display:flex;"><span>speaker <span style="color:#960050;background-color:#1e0010">结束说话</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#960050;background-color:#1e0010">↓</span>
+</span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">如果下一句还没来，就进入</span> Thinking <span style="color:#960050;background-color:#1e0010">等待</span>
+</span></span></code></pre></div>
+      </div>
+    </article>
+
+    <aside class="single-toc">
+      <h2 class="single-toc-title">On This Page</h2>
+      <div class="single-toc-body">
+        <nav id="TableOfContents">
+  <ul>
+    <li><a href="#ai-虚拟人动画">AI 虚拟人动画</a></li>
+    <li><a href="#动画系统">动画系统</a>
+      <ul>
+        <li><a href="#总框架">总框架：</a></li>
+        <li><a href="#说话动作逻辑">说话动作逻辑</a></li>
+        <li><a href="#expression-逻辑">Expression 逻辑</a></li>
+        <li><a href="#口型逻辑">口型逻辑</a></li>
+        <li><a href="#blink-逻辑">Blink 逻辑</a></li>
+        <li><a href="#lookat-逻辑">LookAt 逻辑</a></li>
+      </ul>
+    </li>
+    <li><a href="#其它">其它</a>
+      <ul>
+        <li><a href="#tts-解决方案">TTS 解决方案</a></li>
+        <li><a href="#双人调度逻辑">双人调度逻辑</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+      </div>
+    </aside>
+  </div>
+
+  </main>
+  <footer class="site-footer">
+  <div class="site-footer__inner">
+    <p style="margin:0;">&copy; 2026 Sera&#39;s Portfolio. Built with Hugo.</p>
+  </div>
+</footer>
+
+</body>
+</html>
