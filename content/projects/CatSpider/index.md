@@ -3,6 +3,7 @@ title: "CatSpider"
 date: 2026-08-17T14:14:00+08:00
 draft: false
 summary: "基于 UE Control Rig 实现的小猫蜘蛛"
+cover: "CatSpider.gif"
 ---
 
 
