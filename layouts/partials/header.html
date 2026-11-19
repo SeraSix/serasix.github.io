@@ -9,19 +9,22 @@
       {{ end }}
 
       {{/* 优先切换到当前页的译文，其次是对应栏目，最后是目标语言首页。 */}}
-      {{ range .Site.Home.Translations }}
-        {{ $target := . }}
-        {{ with where $.Translations "Lang" .Lang }}
-          {{ $target = index . 0 }}
-        {{ else }}
-          {{ with $.CurrentSection }}
-            {{ with where .Translations "Lang" $target.Lang }}
-              {{ $target = index . 0 }}
+      <span class="site-header__languages">
+        {{ range $index, $home := .Site.Home.AllTranslations }}
+          {{ $target := $home }}
+          {{ with where $.AllTranslations "Lang" $home.Lang }}
+            {{ $target = index . 0 }}
+          {{ else }}
+            {{ with $.CurrentSection }}
+              {{ with where .Translations "Lang" $home.Lang }}
+                {{ $target = index . 0 }}
+              {{ end }}
             {{ end }}
           {{ end }}
+          {{ if $index }}<span aria-hidden="true">|</span>{{ end }}
+          <a href="{{ $target.RelPermalink }}" lang="{{ $home.Lang }}" hreflang="{{ $home.Lang }}" class="site-header__link"{{ if eq $.Lang $home.Lang }} aria-current="page"{{ end }}>{{ $home.Language.LanguageName }}</a>
         {{ end }}
-        <a href="{{ $target.RelPermalink }}" lang="{{ .Lang }}" hreflang="{{ .Lang }}" class="site-header__link">{{ .Language.LanguageName }}</a>
-      {{ end }}
+      </span>
     </nav>
   </div>
 </header>

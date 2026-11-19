@@ -7,5 +7,54 @@
     <generator>Hugo</generator>
     <language>en-US</language>
     <atom:link href="http://localhost:1313/en/projects/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>CatSpider</title>
+      <link>http://localhost:1313/en/projects/catspider/</link>
+      <pubDate>Mon, 17 Aug 2026 14:14:00 +0800</pubDate>
+      <guid>http://localhost:1313/en/projects/catspider/</guid>
+      <description>A spider-legged cat with a procedural gait built in Unreal Engine’s Control Rig.</description>
+    </item>
+    <item>
+      <title>OpenWorld</title>
+      <link>http://localhost:1313/en/projects/openworld/</link>
+      <pubDate>Sat, 15 Aug 2026 14:14:00 +0800</pubDate>
+      <guid>http://localhost:1313/en/projects/openworld/</guid>
+      <description>A stylized open world with volumetric clouds and grass that bends as the player moves through it.</description>
+    </item>
+    <item>
+      <title>AI NPC Dual-Character System</title>
+      <link>http://localhost:1313/en/projects/ai_npc/</link>
+      <pubDate>Tue, 12 May 2026 14:14:00 +0800</pubDate>
+      <guid>http://localhost:1313/en/projects/ai_npc/</guid>
+      <description>A two-character conversation system in Unity that synchronizes speech, lip movements, facial expressions, gaze, and gestures.</description>
+    </item>
+    <item>
+      <title>Facial Motion Capture in Unreal Engine</title>
+      <link>http://localhost:1313/en/projects/facemocap/</link>
+      <pubDate>Wed, 18 Mar 2026 03:07:00 +0800</pubDate>
+      <guid>http://localhost:1313/en/projects/facemocap/</guid>
+      <description>A facial capture workflow using Live Link and ARKit to drive a custom character in Unreal Engine.</description>
+    </item>
+    <item>
+      <title>11th World Render Challenge</title>
+      <link>http://localhost:1313/en/projects/wrc11/</link>
+      <pubDate>Sun, 15 Mar 2026 00:15:00 +0800</pubDate>
+      <guid>http://localhost:1313/en/projects/wrc11/</guid>
+      <description>My first animation project from start to finish, from modeling and rigging to the final render.</description>
+    </item>
+    <item>
+      <title>LD58: HeartKeys</title>
+      <link>http://localhost:1313/en/projects/ld58/</link>
+      <pubDate>Sat, 14 Mar 2026 20:39:00 +0800</pubDate>
+      <guid>http://localhost:1313/en/projects/ld58/</guid>
+      <description>I led the art team and handled technical art for HeartKeys, our Ludum Dare 58 entry.</description>
+    </item>
+    <item>
+      <title>LD56: Night at the 8th Warehouse</title>
+      <link>http://localhost:1313/en/projects/ld56/</link>
+      <pubDate>Sat, 14 Mar 2026 14:14:00 +0800</pubDate>
+      <guid>http://localhost:1313/en/projects/ld56/</guid>
+      <description>My first game jam, and my first steps in game development and computer graphics.</description>
+    </item>
   </channel>
 </rss>

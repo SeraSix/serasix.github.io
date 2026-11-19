@@ -7,5 +7,19 @@
     <generator>Hugo</generator>
     <language>en-US</language>
     <atom:link href="http://localhost:1313/en/posts/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Bubble Shader</title>
+      <link>http://localhost:1313/en/posts/bubble/</link>
+      <pubDate>Sun, 15 Mar 2026 10:00:00 +0800</pubDate>
+      <guid>http://localhost:1313/en/posts/bubble/</guid>
+      <description>An iridescent bubble shader animated with two Gerstner waves.</description>
+    </item>
+    <item>
+      <title>Post-Processing Basics in Unity</title>
+      <link>http://localhost:1313/en/posts/posteffect/</link>
+      <pubDate>Thu, 12 Mar 2026 10:00:00 +0800</pubDate>
+      <guid>http://localhost:1313/en/posts/posteffect/</guid>
+      <description>How to implement a vignette, Sobel outlines, and bloom in Unity’s Built-in Render Pipeline.</description>
+    </item>
   </channel>
 </rss>

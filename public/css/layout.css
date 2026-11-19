@@ -76,6 +76,21 @@
   opacity: 1;
 }
 
+/* 两种语言保持在同一行，用下划线标出当前语言。 */
+.site-header__languages {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 0.4em;
+  white-space: nowrap;
+}
+
+.site-header__languages a[aria-current],
+.site-header__languages a:hover,
+.site-header__languages a:focus-visible {
+  text-decoration: underline;
+  text-underline-offset: 0.2em;
+}
+
 /* ---------------- Home Hero ---------------- */
 .home-hero {
   margin-bottom: 24px;
