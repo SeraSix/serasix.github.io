@@ -4,30 +4,120 @@
   <url>
     <loc>http://localhost:1313/projects/catspider/</loc>
     <lastmod>2026-08-17T14:14:00+08:00</lastmod>
+    <xhtml:link
+                rel="alternate"
+                hreflang="en-US"
+                href="http://localhost:1313/en/projects/catspider/"
+                />
+    <xhtml:link
+                rel="alternate"
+                hreflang="zh-CN"
+                href="http://localhost:1313/projects/catspider/"
+                />
   </url><url>
     <loc>http://localhost:1313/projects/openworld/</loc>
     <lastmod>2026-08-15T14:14:00+08:00</lastmod>
+    <xhtml:link
+                rel="alternate"
+                hreflang="en-US"
+                href="http://localhost:1313/en/projects/openworld/"
+                />
+    <xhtml:link
+                rel="alternate"
+                hreflang="zh-CN"
+                href="http://localhost:1313/projects/openworld/"
+                />
   </url><url>
     <loc>http://localhost:1313/projects/ai_npc/</loc>
     <lastmod>2026-05-12T14:14:00+08:00</lastmod>
+    <xhtml:link
+                rel="alternate"
+                hreflang="en-US"
+                href="http://localhost:1313/en/projects/ai_npc/"
+                />
+    <xhtml:link
+                rel="alternate"
+                hreflang="zh-CN"
+                href="http://localhost:1313/projects/ai_npc/"
+                />
   </url><url>
     <loc>http://localhost:1313/projects/facemocap/</loc>
     <lastmod>2026-03-18T03:07:00+08:00</lastmod>
+    <xhtml:link
+                rel="alternate"
+                hreflang="en-US"
+                href="http://localhost:1313/en/projects/facemocap/"
+                />
+    <xhtml:link
+                rel="alternate"
+                hreflang="zh-CN"
+                href="http://localhost:1313/projects/facemocap/"
+                />
   </url><url>
     <loc>http://localhost:1313/posts/bubble/</loc>
     <lastmod>2026-03-15T10:00:00+08:00</lastmod>
+    <xhtml:link
+                rel="alternate"
+                hreflang="en-US"
+                href="http://localhost:1313/en/posts/bubble/"
+                />
+    <xhtml:link
+                rel="alternate"
+                hreflang="zh-CN"
+                href="http://localhost:1313/posts/bubble/"
+                />
   </url><url>
     <loc>http://localhost:1313/about/me/</loc>
     <lastmod>2026-03-15T01:33:00+08:00</lastmod>
+    <xhtml:link
+                rel="alternate"
+                hreflang="en-US"
+                href="http://localhost:1313/en/about/me/"
+                />
+    <xhtml:link
+                rel="alternate"
+                hreflang="zh-CN"
+                href="http://localhost:1313/about/me/"
+                />
   </url><url>
     <loc>http://localhost:1313/projects/wrc11/</loc>
     <lastmod>2026-03-15T00:15:00+08:00</lastmod>
+    <xhtml:link
+                rel="alternate"
+                hreflang="en-US"
+                href="http://localhost:1313/en/projects/wrc11/"
+                />
+    <xhtml:link
+                rel="alternate"
+                hreflang="zh-CN"
+                href="http://localhost:1313/projects/wrc11/"
+                />
   </url><url>
     <loc>http://localhost:1313/projects/ld58/</loc>
     <lastmod>2026-03-14T20:39:00+08:00</lastmod>
+    <xhtml:link
+                rel="alternate"
+                hreflang="en-US"
+                href="http://localhost:1313/en/projects/ld58/"
+                />
+    <xhtml:link
+                rel="alternate"
+                hreflang="zh-CN"
+                href="http://localhost:1313/projects/ld58/"
+                />
   </url><url>
     <loc>http://localhost:1313/projects/ld56/</loc>
     <lastmod>2026-03-14T14:14:00+08:00</lastmod>
+    <xhtml:link
+                rel="alternate"
+                hreflang="en-US"
+                href="http://localhost:1313/en/projects/ld56/"
+                />
+    <xhtml:link
+                rel="alternate"
+                hreflang="zh-CN"
+                href="http://localhost:1313/projects/ld56/"
+                />
   </url><url>
     <loc>http://localhost:1313/about/</loc>
     <lastmod>2026-03-14T00:00:00+08:00</lastmod>
@@ -44,6 +134,16 @@
   </url><url>
     <loc>http://localhost:1313/posts/posteffect/</loc>
     <lastmod>2026-03-12T10:00:00+08:00</lastmod>
+    <xhtml:link
+                rel="alternate"
+                hreflang="en-US"
+                href="http://localhost:1313/en/posts/posteffect/"
+                />
+    <xhtml:link
+                rel="alternate"
+                hreflang="zh-CN"
+                href="http://localhost:1313/posts/posteffect/"
+                />
   </url><url>
     <loc>http://localhost:1313/posts/</loc>
     <lastmod>2026-03-12T00:00:00+08:00</lastmod>
