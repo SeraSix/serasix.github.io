@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en-US">
+<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+<title>Bubble Shader | Sera&#39;s Portfolio</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/css/layout.css">
+<link rel="stylesheet" href="/css/markdown.css">
+
+</head>
+<body class="site-body">
+  <header class="site-header">
+  <div class="site-header__inner">
+    <a href="/en/" class="site-header__brand">
+      <span>SERASIX</span>
+    </a>
+    <nav class="site-header__nav">
+      
+        <a href="/en/about/" class="site-header__link">About</a>
+      
+        <a href="/en/posts/" class="site-header__link">Blog</a>
+      
+        <a href="/en/projects/" class="site-header__link">Project</a>
+      
+
+      
+      
+        
+        
+          
+        
+        <a href="/posts/bubble/" lang="zh" hreflang="zh" class="site-header__link">中文</a>
+      
+    </nav>
+  </div>
+</header>
+
+  <main class="site-main">
+    
+  <div class="single-layout">
+    <article class="single-article">
+      <div class="single-section-wrap">
+        <span class="single-section-badge">posts</span>
+      </div>
+
+      <h1 class="single-title">Bubble Shader</h1>
+
+      <div class="single-meta">
+        <span>March 15, 2026</span>
+        <span> | Author: Sera</span>
+      </div>
+
+      <div class="markdown-body">
+        <p>This bubble gets its shifting colors from a thin-film material and its ripples from Gerstner waves.</p>
+<img src="/posts/bubble/cover.gif" alt="Animated bubble shader" loading="lazy"><p>The Blueprint node graph below shows how the material is put together.</p>
+<img src="/posts/bubble/image%201.png" alt="Bubble node graph" loading="lazy"><h2 id="the-iridescent-material">The iridescent material</h2>
+<h3 id="unreal-engine-material-settings">Unreal Engine material settings</h3>
+<p>Start with the same settings you would use for glass.</p>
+<ul>
+<li><strong>Blend Mode</strong> — Translucent</li>
+<li><strong>Lighting Mode</strong> — Surface Translucency Volume</li>
+</ul>
+<h3 id="what-gives-a-bubble-its-colors">What gives a bubble its colors?</h3>
+<p>Thin-film interference produces the rainbow colors on the surface of a soap bubble.</p>
+<img src="/posts/bubble/image%202.png" alt="Thin-film interference" loading="lazy"><p>Two properties drive the color in this shader.</p>
+<ul>
+<li>
+<p><strong>Angle of incidence.</strong> Use the angle of the incoming light to choose a color from this gradient texture.</p>
+<img src="/posts/bubble/Bubble_Gradient_Color2.png" alt="Iridescent color gradient" loading="lazy"></li>
+<li>
+<p><strong>Film thickness.</strong> Sample a noise texture made by converting a microscope photograph of a bubble to grayscale.</p>
+</li>
+</ul>
+<img src="/posts/bubble/Bubble_Noise.jpg" alt="Grayscale film-thickness texture" loading="lazy" style="ZgotmplZ"><h3 id="1-angle-of-incidence">1. Angle of incidence</h3>
+<img src="/posts/bubble/image%203.png" alt="Computing the light angle" loading="lazy"><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-glsl" data-lang="glsl"><span class="line"><span class="cl"><span class="n">u</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">-</span> <span class="p">(</span><span class="mf">0.5</span> <span class="n">N</span><span class="err">·</span><span class="n">L</span> <span class="o">+</span> <span class="mf">0.5</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="n">float2</span> <span class="n">uv</span> <span class="o">=</span> <span class="n">append</span><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">);</span>
+</span></span></code></pre></div><img src="/posts/bubble/image%204.png" alt="Sampling the gradient texture" loading="lazy"><h3 id="2-film-thickness">2. Film thickness</h3>
+<img src="/posts/bubble/image%205.png" alt="Bubble material settings" loading="lazy"><ul>
+<li>Set <strong>Metallic</strong> to 1 for a fully specular surface response.</li>
+<li>Set <strong>Roughness</strong> to 0.</li>
+<li>Drive <strong>Opacity</strong> with a Fresnel node to make the film look thinner at the edges.</li>
+</ul>
+<h2 id="animating-the-ripples">Animating the ripples</h2>
+<p>Combine two Gerstner waves to make the surface ripple.</p>
+<p>The time-dependent term for a Gerstner wave is <code>float speed = Time * SquareRoot(9.8 * 2PI / WaveLength);</code></p>
+<h3 id="custom-gerstner-wave-node">Custom Gerstner wave node</h3>
+<p><strong>Inputs</strong></p>
+<ul>
+<li><code>WorldPos</code> ← <strong>AbsoluteWorldPosition</strong></li>
+<li><code>Time</code> ← <strong>Time</strong></li>
+<li><code>WaveDirection</code> — direction of travel, such as <code>(1,0,0)</code> or <code>(0.7,0,0.7)</code></li>
+<li><code>WaveLength</code> — wavelength, supplied as a scalar parameter such as 200</li>
+<li><code>WaveHeight</code> — wave height, supplied as a scalar parameter such as 5</li>
+<li><code>PeakSharpness</code> — scalar from 0 to 1, such as 0.5</li>
+</ul>
+<p><strong>Outputs</strong></p>
+<ul>
+<li><code>Offset</code> (3 components) — displacement at the sample point</li>
+<li><code>Normal</code> (3 components) — surface normal at that point</li>
+</ul>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-csharp" data-lang="csharp"><span class="line"><span class="cl"><span class="c1">// 1) Normalize the direction of travel in the XY plane.</span>
+</span></span><span class="line"><span class="cl"><span class="n">float2</span> <span class="n">D</span> <span class="p">=</span> <span class="n">normalize</span><span class="p">(</span><span class="n">WaveDirection</span><span class="p">.</span><span class="n">xy</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">// 2) Compute the wave number k.</span>
+</span></span><span class="line"><span class="cl"><span class="c1">// k = 2π / wavelength</span>
+</span></span><span class="line"><span class="cl"><span class="kt">float</span> <span class="n">k</span> <span class="p">=</span> <span class="m">6.2831853</span> <span class="p">/</span> <span class="n">max</span><span class="p">(</span><span class="n">WaveLength</span><span class="p">,</span> <span class="m">1e-4</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">// Angular frequency from the deep-water dispersion relation: w = sqrt(g * k).</span>
+</span></span><span class="line"><span class="cl"><span class="kt">float</span> <span class="n">w</span> <span class="p">=</span> <span class="n">sqrt</span><span class="p">(</span><span class="m">9.81</span> <span class="p">*</span> <span class="n">k</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">// Wave amplitude.</span>
+</span></span><span class="line"><span class="cl"><span class="kt">float</span> <span class="n">A</span> <span class="p">=</span> <span class="n">WaveHeight</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">// Crest sharpness controls the strength of the horizontal displacement.</span>
+</span></span><span class="line"><span class="cl"><span class="c1">// Clamp it to [0, 1] to help prevent the wave from intersecting itself.</span>
+</span></span><span class="line"><span class="cl"><span class="kt">float</span> <span class="n">Q</span> <span class="p">=</span> <span class="n">saturate</span><span class="p">(</span><span class="n">PeakSharpness</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">// 3) Compute the phase as the wave travels through space and time.</span>
+</span></span><span class="line"><span class="cl"><span class="c1">// phase = k * (direction · position) - w * t</span>
+</span></span><span class="line"><span class="cl"><span class="c1">// dot(D, WorldPos.xy) gives the distance along the direction of travel.</span>
+</span></span><span class="line"><span class="cl"><span class="c1">// Subtracting w * Time advances the wave.</span>
+</span></span><span class="line"><span class="cl"><span class="kt">float</span> <span class="n">phase</span> <span class="p">=</span> <span class="n">k</span> <span class="p">*</span> <span class="n">dot</span><span class="p">(</span><span class="n">D</span><span class="p">,</span> <span class="n">WorldPos</span><span class="p">.</span><span class="n">xy</span><span class="p">)</span> <span class="p">-</span> <span class="n">w</span> <span class="p">*</span> <span class="n">Time</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">// Compute sine and cosine once for reuse below.</span>
+</span></span><span class="line"><span class="cl"><span class="kt">float</span> <span class="n">s</span> <span class="p">=</span> <span class="n">sin</span><span class="p">(</span><span class="n">phase</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="kt">float</span> <span class="n">c</span> <span class="p">=</span> <span class="n">cos</span><span class="p">(</span><span class="n">phase</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">// 4) Compute the vertical displacement</span>
+</span></span><span class="line"><span class="cl"><span class="c1">// of the Gerstner wave.</span>
+</span></span><span class="line"><span class="cl"><span class="kt">float</span> <span class="n">offsetZ</span> <span class="p">=</span> <span class="n">A</span> <span class="p">*</span> <span class="n">s</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">// 5) Extract the components of the wave direction.</span>
+</span></span><span class="line"><span class="cl"><span class="kt">float</span> <span class="n">dX</span> <span class="p">=</span> <span class="n">D</span><span class="p">.</span><span class="n">x</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="kt">float</span> <span class="n">dY</span> <span class="p">=</span> <span class="n">D</span><span class="p">.</span><span class="n">y</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">// 6) Take the partial derivatives of the height function.</span>
+</span></span><span class="line"><span class="cl"><span class="c1">// These are used to compute the normal.</span>
+</span></span><span class="line"><span class="cl"><span class="kt">float</span> <span class="n">dZdx</span> <span class="p">=</span> <span class="n">A</span> <span class="p">*</span> <span class="n">k</span> <span class="p">*</span> <span class="n">c</span> <span class="p">*</span> <span class="n">dX</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="kt">float</span> <span class="n">dZdy</span> <span class="p">=</span> <span class="n">A</span> <span class="p">*</span> <span class="n">k</span> <span class="p">*</span> <span class="n">c</span> <span class="p">*</span> <span class="n">dY</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">// 7) Compute the Jacobian of the horizontal mapping.</span>
+</span></span><span class="line"><span class="cl"><span class="c1">// In addition to moving vertically, points on a Gerstner wave</span>
+</span></span><span class="line"><span class="cl"><span class="c1">// move in the horizontal plane.</span>
+</span></span><span class="line"><span class="cl"><span class="kt">float</span> <span class="n">dXdx</span> <span class="p">=</span> <span class="m">1.0</span> <span class="p">-</span> <span class="n">Q</span> <span class="p">*</span> <span class="n">A</span> <span class="p">*</span> <span class="n">k</span> <span class="p">*</span> <span class="n">s</span> <span class="p">*</span> <span class="n">dX</span> <span class="p">*</span> <span class="n">dX</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="kt">float</span> <span class="n">dXdy</span> <span class="p">=</span> <span class="p">-</span> <span class="n">Q</span> <span class="p">*</span> <span class="n">A</span> <span class="p">*</span> <span class="n">k</span> <span class="p">*</span> <span class="n">s</span> <span class="p">*</span> <span class="n">dX</span> <span class="p">*</span> <span class="n">dY</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="kt">float</span> <span class="n">dYdx</span> <span class="p">=</span> <span class="p">-</span> <span class="n">Q</span> <span class="p">*</span> <span class="n">A</span> <span class="p">*</span> <span class="n">k</span> <span class="p">*</span> <span class="n">s</span> <span class="p">*</span> <span class="n">dY</span> <span class="p">*</span> <span class="n">dX</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="kt">float</span> <span class="n">dYdy</span> <span class="p">=</span> <span class="m">1.0</span> <span class="p">-</span> <span class="n">Q</span> <span class="p">*</span> <span class="n">A</span> <span class="p">*</span> <span class="n">k</span> <span class="p">*</span> <span class="n">s</span> <span class="p">*</span> <span class="n">dY</span> <span class="p">*</span> <span class="n">dY</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">// 8) Construct tangent vectors for the surface</span>
+</span></span><span class="line"><span class="cl"><span class="c1">// along the X and Y directions.</span>
+</span></span><span class="line"><span class="cl"><span class="n">float3</span> <span class="n">Tx</span> <span class="p">=</span> <span class="n">float3</span><span class="p">(</span><span class="n">dXdx</span><span class="p">,</span> <span class="n">dYdx</span><span class="p">,</span> <span class="n">dZdx</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="n">float3</span> <span class="n">Ty</span> <span class="p">=</span> <span class="n">float3</span><span class="p">(</span><span class="n">dXdy</span><span class="p">,</span> <span class="n">dYdy</span><span class="p">,</span> <span class="n">dZdy</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">// 9) Take the cross product of the tangents to find the normal.</span>
+</span></span><span class="line"><span class="cl"><span class="c1">// normal = normalize(Tx × Ty)</span>
+</span></span><span class="line"><span class="cl"><span class="n">float3</span> <span class="n">N</span> <span class="p">=</span> <span class="n">normalize</span><span class="p">(</span><span class="n">cross</span><span class="p">(</span><span class="n">Tx</span><span class="p">,</span> <span class="n">Ty</span><span class="p">));</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">// 10) Write the outputs.</span>
+</span></span><span class="line"><span class="cl"><span class="c1">// Vertical displacement.</span>
+</span></span><span class="line"><span class="cl"><span class="n">out_offsetZ</span> <span class="p">=</span> <span class="n">offsetZ</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="c1">// Surface normal.</span>
+</span></span><span class="line"><span class="cl"><span class="n">out_normal</span> <span class="p">=</span> <span class="n">N</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="k">return</span> <span class="m">0</span><span class="p">;</span>
+</span></span></code></pre></div>
+      </div>
+    </article>
+
+    <aside class="single-toc">
+      <h2 class="single-toc-title">On This Page</h2>
+      <div class="single-toc-body">
+        <nav id="TableOfContents">
+  <ul>
+    <li><a href="#the-iridescent-material">The iridescent material</a>
+      <ul>
+        <li><a href="#unreal-engine-material-settings">Unreal Engine material settings</a></li>
+        <li><a href="#what-gives-a-bubble-its-colors">What gives a bubble its colors?</a></li>
+        <li><a href="#1-angle-of-incidence">1. Angle of incidence</a></li>
+        <li><a href="#2-film-thickness">2. Film thickness</a></li>
+      </ul>
+    </li>
+    <li><a href="#animating-the-ripples">Animating the ripples</a>
+      <ul>
+        <li><a href="#custom-gerstner-wave-node">Custom Gerstner wave node</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+      </div>
+    </aside>
+  </div>
+
+  </main>
+  <footer class="site-footer">
+  <div class="site-footer__inner">
+    <p style="margin:0;">&copy; 2026 Sera&#39;s Portfolio. Built with Hugo.</p>
+  </div>
+</footer>
+
+</body>
+</html>

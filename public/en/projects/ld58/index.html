@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en-US">
+<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+<title>LD58: HeartKeys | Sera&#39;s Portfolio</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/css/layout.css">
+<link rel="stylesheet" href="/css/markdown.css">
+
+</head>
+<body class="site-body">
+  <header class="site-header">
+  <div class="site-header__inner">
+    <a href="/en/" class="site-header__brand">
+      <span>SERASIX</span>
+    </a>
+    <nav class="site-header__nav">
+      
+        <a href="/en/about/" class="site-header__link">About</a>
+      
+        <a href="/en/posts/" class="site-header__link">Blog</a>
+      
+        <a href="/en/projects/" class="site-header__link">Project</a>
+      
+
+      
+      
+        
+        
+          
+        
+        <a href="/projects/ld58/" lang="zh" hreflang="zh" class="site-header__link">中文</a>
+      
+    </nav>
+  </div>
+</header>
+
+  <main class="site-main">
+    
+  <div class="single-layout">
+    <article class="single-article">
+      <div class="single-section-wrap">
+        <span class="single-section-badge">projects</span>
+      </div>
+
+      <h1 class="single-title">LD58: HeartKeys</h1>
+
+      <div class="single-meta">
+        <span>March 14, 2026</span>
+        
+      </div>
+
+      <div class="markdown-body">
+        <h2 id="overview">Overview</h2>
+<p>I was the lead artist and technical artist on our team for Ludum Dare 58. We finished in 19th place.</p>
+<p><a href="https://ldjam.com/events/ludum-dare/58/heart-keys">Play HeartKeys in your browser</a></p>
+<img src="/projects/ld58/image.png" alt="image.png" loading="lazy"><p>Credits and final results (my name is highlighted below)</p>
+<img src="../../../projects/ld58/image%201.png" width="400">
+<img src="../../../projects/ld58/image%202.png" width="400">
+<h2 id="technical-breakdown">Technical breakdown</h2>
+<p><strong>My roles:</strong> lead artist and technical artist.</p>
+<p>I coordinated the art team’s work and handled the technical side of the 3D assets.</p>
+<h3 id="third-person-character-animation">Third-person character animation</h3>
+<p>A fixed camera frames the player, and an animation state machine controls the character’s movement.</p>
+<img src="/projects/ld58/image%203.png" alt="image.png" loading="lazy"><p><a href="https://github.com/SeraSix/Unity_Reusable/blob/main/3rdPerson/Move_Controller.cs">Character movement controller source code</a></p>
+<h3 id="character-modeling-rigging-and-animation">Character modeling, rigging, and animation</h3>
+<div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px;">
+  <img src="../../../projects/ld58/Pasted_image_20251005162424.png">
+  <img src="../../../projects/ld58/Pasted_image_20251005162549.png">
+  <img src="../../../projects/ld58/Pasted_image_20251005163547.png" >
+</div>
+<img src="/projects/ld58/Pasted_image_20251001112707.png" alt="Pasted image 20251001112707.png" loading="lazy"><p>Unity Avatar setup</p>
+<div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 0px;">
+  <img src="../../../projects/ld58/animation.gif">
+  <img src="../../../projects/ld58/animation-.gif">
+</div>
+<h3 id="input-system">Input System</h3>
+<p>I configured the input actions and wrote the <a href="https://github.com/SeraSix/Unity_Reusable/blob/main/3rdPerson/Move_Controller.cs">character controller</a>.</p>
+<img src="/projects/ld58/image%204.png" alt="image.png" loading="lazy"><h2 id="modeling-the-environment-and-props">Modeling the environment and props</h2>
+<p>A wide shot of the scene and some close-ups follow.</p>
+<img src="/projects/ld58/overview.png" alt="overview.png" loading="lazy"><p align="center">
+  <img src="../../../projects/ld58/details2.png" width="500">
+</p>
+<p align="center">
+  <img src="../../../projects/ld58/details1.png" width="500">
+</p>
+<p align="center">
+  <img src="../../../projects/ld58/details3.png" width="500">
+</p>
+<h2 id="looking-back">Looking back</h2>
+<p>This was the game I made after a year of practice following LD56. We went for a bright, low-poly look that felt comforting. We placed much higher than I expected, and it was lovely to hear how much people enjoyed it.</p>
+<img src="/projects/ld58/image%205.png" alt="image.png" loading="lazy"><p>The biggest challenge was coordinating a large art team entirely online. After spending the first day arguing, we gradually figured out a division of work that suited everyone. For the next jam, I’d like to get better at talking things through with the game designers…</p>
+<p align="center">
+  <img src="../../../projects/ld58/367732ab309641df356fab5575299b89.jpg" width="200">
+</p>
+<p>A few details from the level design are worth sharing.</p>
+<p>In HeartKeys, each key stands for finding your way through a moment of uncertainty as you grow up. That idea also runs through the main loop: collect new abilities and use them to solve puzzles. We built three levels around school, family, and love. Completing them opens the final level, the future.</p>
+<p>We half-buried enormous objects in sand to suggest the character’s inner turmoil. The idea came from a still in <a href="https://www.bilibili.com/video/BV1Wju1zrE2q/?spm_id_from=333.1387.upload.video_card.click">a video by Koala on Bilibili</a>.</p>
+<img src="/projects/ld58/image%206.png" alt="image.png" loading="lazy"><p>The family level took a different direction. The designers felt strongly that the buried objects made it too hard to see where to go. We ended up with a tidy, empty two-bedroom apartment. I think its emptiness captured something about being a teenager and feeling misunderstood at home.</p>
+<img src="/projects/ld58/eacd795f-28b2-498c-b8ea-8d9e1d32340f.png" alt="image.png" loading="lazy"><p>My favorite part of the love level is the gathering of roses and swords. The inspiration was a Georgian hillside covered in swords, pictured on the right. The story goes that a small army won a battle there against a much larger force a thousand years ago. The swords became a tribute to their courage.</p>
+<p>That’s roughly how teenage love feels to me: the impulse to risk absolutely everything. My teammates took one look at the roses and swords and decided I must have had a very dramatic emo phase.</p>
+<div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px;">
+  <img src="../../../projects/ld58/f45b54e4-d989-4aaf-beaf-e9c7a68246b7.png">
+  <img src="../../../projects/ld58/image%207.png">
+</div>
+<p>We chose low poly partly because time was short and I still had plenty to learn. It also helped that I love <em>Dancing Line</em>. (Thank you, <em>Dancing Line</em>!)</p>
+<p>That’s about it. Here’s the team who made the game!</p>
+<img src="/projects/ld58/image%208.png" alt="image.png" loading="lazy">
+      </div>
+    </article>
+
+    <aside class="single-toc">
+      <h2 class="single-toc-title">On This Page</h2>
+      <div class="single-toc-body">
+        <nav id="TableOfContents">
+  <ul>
+    <li><a href="#overview">Overview</a></li>
+    <li><a href="#technical-breakdown">Technical breakdown</a>
+      <ul>
+        <li><a href="#third-person-character-animation">Third-person character animation</a></li>
+        <li><a href="#character-modeling-rigging-and-animation">Character modeling, rigging, and animation</a></li>
+        <li><a href="#input-system">Input System</a></li>
+      </ul>
+    </li>
+    <li><a href="#modeling-the-environment-and-props">Modeling the environment and props</a></li>
+    <li><a href="#looking-back">Looking back</a></li>
+  </ul>
+</nav>
+      </div>
+    </aside>
+  </div>
+
+  </main>
+  <footer class="site-footer">
+  <div class="site-footer__inner">
+    <p style="margin:0;">&copy; 2026 Sera&#39;s Portfolio. Built with Hugo.</p>
+  </div>
+</footer>
+
+</body>
+</html>

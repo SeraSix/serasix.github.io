@@ -1,13 +1,26 @@
 <header class="site-header">
   <div class="site-header__inner">
-    <a href="{{ `/` | relURL }}" class="site-header__brand">
+    <a href="{{ .Site.Home.RelPermalink }}" class="site-header__brand">
       <span>SERASIX</span>
     </a>
     <nav class="site-header__nav">
       {{ range .Site.Menus.main }}
-        {{ if ne .Name "Home" }}
-          <a href="{{ .URL | relURL }}" class="site-header__link">{{ .Name }}</a>
+        <a href="{{ .URL }}" class="site-header__link">{{ .Name }}</a>
+      {{ end }}
+
+      {{/* 优先切换到当前页的译文，其次是对应栏目，最后是目标语言首页。 */}}
+      {{ range .Site.Home.Translations }}
+        {{ $target := . }}
+        {{ with where $.Translations "Lang" .Lang }}
+          {{ $target = index . 0 }}
+        {{ else }}
+          {{ with $.CurrentSection }}
+            {{ with where .Translations "Lang" $target.Lang }}
+              {{ $target = index . 0 }}
+            {{ end }}
+          {{ end }}
         {{ end }}
+        <a href="{{ $target.RelPermalink }}" lang="{{ .Lang }}" hreflang="{{ .Lang }}" class="site-header__link">{{ .Language.LanguageName }}</a>
       {{ end }}
     </nav>
   </div>

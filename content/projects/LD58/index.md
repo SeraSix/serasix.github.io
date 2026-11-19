@@ -53,7 +53,7 @@ Unity Avatar 设置：
 
 ### Input System
 
-设置 + 控制代码编写[（代码在这里）]([image%204.png](https://github.com/SeraSix/Unity_Reusable/blob/main/3rdPerson/Move_Controller.cs))
+设置 + 控制代码编写[（代码在这里）](https://github.com/SeraSix/Unity_Reusable/blob/main/3rdPerson/Move_Controller.cs)
 
 
 ![image.png](image%204.png)

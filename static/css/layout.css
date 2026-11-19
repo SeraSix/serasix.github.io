@@ -419,6 +419,13 @@
 @media (max-width: 720px) {
   .site-header__inner {
     padding: 16px 20px;
+    flex-wrap: wrap;
+  }
+
+  /* 窄屏下缩小菜单间距，必要时导航整行换行。 */
+  .site-header__nav {
+    flex-wrap: wrap;
+    gap: 8px 16px;
   }
 
   .site-main {

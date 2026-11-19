@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="en-US">
+<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+<title>Facial Motion Capture in Unreal Engine | Sera&#39;s Portfolio</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/css/layout.css">
+<link rel="stylesheet" href="/css/markdown.css">
+
+</head>
+<body class="site-body">
+  <header class="site-header">
+  <div class="site-header__inner">
+    <a href="/en/" class="site-header__brand">
+      <span>SERASIX</span>
+    </a>
+    <nav class="site-header__nav">
+      
+        <a href="/en/about/" class="site-header__link">About</a>
+      
+        <a href="/en/posts/" class="site-header__link">Blog</a>
+      
+        <a href="/en/projects/" class="site-header__link">Project</a>
+      
+
+      
+      
+        
+        
+          
+        
+        <a href="/projects/facemocap/" lang="zh" hreflang="zh" class="site-header__link">中文</a>
+      
+    </nav>
+  </div>
+</header>
+
+  <main class="site-main">
+    
+  <div class="single-layout">
+    <article class="single-article">
+      <div class="single-section-wrap">
+        <span class="single-section-badge">projects</span>
+      </div>
+
+      <h1 class="single-title">Facial Motion Capture in Unreal Engine</h1>
+
+      <div class="single-meta">
+        <span>March 18, 2026</span>
+        <span> | Author: Sera</span>
+      </div>
+
+      <div class="markdown-body">
+        <h2 id="overview">Overview</h2>
+<p>The final performance</p>
+<img src="../../../projects/facemocap/FinalEffect.gif">
+<p>The capture pipeline</p>
+<img src="/projects/facemocap/image.png" alt="image.png" loading="lazy"><h2 id="modeling-and-rigging-the-face">Modeling and rigging the face</h2>
+<!-- ![ModelingFront.png](ModelingFront.png)
+![ModelingSide.png](ModelingSide.png) -->
+<div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px;">
+  <img src="../../../projects/facemocap/ModelingFront.png">
+  <img src="../../../projects/facemocap/ModelingSide.png">
+</div>
+<p>I rigged the face with the Faceit facial armature.</p>
+<!-- ![FaceRig1.png](FaceRig1.png)
+![FaceRig2.png](FaceRig2.png) -->
+<div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px;">
+  <img src="../../../projects/facemocap/FaceRig1.png">
+  <img src="../../../projects/facemocap/FaceRig2.png">
+</div>
+<h2 id="painting-skin-weights">Painting skin weights</h2>
+<p>I refined the weights while testing individual poses, including an open mouth, a smile, and a downward gaze.</p>
+<div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px;">
+  <img src="../../../projects/facemocap/MouthOpen2.png">
+  <img src="../../../projects/facemocap/Smile.png">
+  <img src="../../../projects/facemocap/EyeDown.png">
+  <img src="../../../projects/facemocap/MouthOpen.png">
+</div>
+<h2 id="creating-shape-keys">Creating shape keys</h2>
+<p>I created the 52 ARKit facial shape keys.</p>
+<p align="center">
+  <img src="../../../projects/facemocap/ShapeKeys.png" width="400">
+</p>
+<p>Here are some of the shapes in motion.</p>
+<p>The six clips show the eyes, nose, cheeks, and mouth.</p>
+<div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px;">
+  <img src="../../../projects/facemocap/EyeRoll.gif">
+  <img src="../../../projects/facemocap/EyeBlink.gif">
+  <img src="../../../projects/facemocap/Nose.gif" >
+  <img src="../../../projects/facemocap/Blow.gif">
+  <img src="../../../projects/facemocap/MouthMove1.gif">
+  <img src="../../../projects/facemocap/MouthMove2.gif" >
+</div>
+<h2 id="reading-and-applying-live-link-data">Reading and applying Live Link data</h2>
+<p>Once the model was ready, I imported it into Unreal Engine. The animation data takes the following path.</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-text" data-lang="text"><span class="line"><span class="cl">Live Link Source
+</span></span><span class="line"><span class="cl">↓
+</span></span><span class="line"><span class="cl">LiveLinkRemapAsset
+</span></span><span class="line"><span class="cl">(remap curve names and values)
+</span></span><span class="line"><span class="cl">↓
+</span></span><span class="line"><span class="cl">Animation Blueprint
+</span></span><span class="line"><span class="cl">(read animation curves)
+</span></span><span class="line"><span class="cl">↓
+</span></span><span class="line"><span class="cl">Set Morph Target
+</span></span><span class="line"><span class="cl">↓
+</span></span><span class="line"><span class="cl">Character expression
+</span></span></code></pre></div><h3 id="reading-the-live-data">Reading the live data</h3>
+<p>I used Unreal Engine’s MetaHuman capture input to read 260 curve values in real time.</p>
+<p align="center">
+  <img src="../../../projects/facemocap/image%201.png" width="400">
+</p>
+<h3 id="driving-the-shape-keys-in-real-time">Driving the shape keys in real time</h3>
+<ul>
+<li>From the 260 input values, I chose the closest match for each of the 52 ARKit shapes. Here’s a test of the mapping.</li>
+</ul>
+<p align="center">
+  <img src="../../../projects/facemocap/image%202.png">
+</p>
+<ul>
+<li>I used a list of objects to simplify the setup for the 52 shapes.</li>
+<li>For debugging, I grouped the shapes by the part of the face they affect: left, center, or right.</li>
+</ul>
+<img src="/projects/facemocap/AnimBP1.png" alt="AnimBP1.png" loading="lazy"><p>The table shows the mapping for paired shapes, using the left side as the example.</p>
+<table>
+  <thead>
+      <tr>
+          <th>ARKit / Faceit</th>
+          <th>MetaHuman Curve</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td>browDownLeft</td>
+          <td>CTRL_expressions_browDownL</td>
+      </tr>
+      <tr>
+          <td>browOuterUpLeft</td>
+          <td>CTRL_expressions_browRaiseOuterL</td>
+      </tr>
+      <tr>
+          <td>cheekSquintLeft</td>
+          <td>CTRL_expressions_eyeCheekRaiseL</td>
+      </tr>
+      <tr>
+          <td>eyeBlinkLeft</td>
+          <td>CTRL_expressions_eyeBlinkL</td>
+      </tr>
+      <tr>
+          <td>eyeLookDownLeft</td>
+          <td>CTRL_expressions_eyeLookDownL</td>
+      </tr>
+      <tr>
+          <td>eyeLookInLeft</td>
+          <td>CTRL_expressions_eyeLookRightL</td>
+      </tr>
+      <tr>
+          <td>eyeLookOutLeft</td>
+          <td>CTRL_expressions_eyeLookLeftL</td>
+      </tr>
+      <tr>
+          <td>eyeLookUpLeft</td>
+          <td>CTRL_expressions_eyeLookUpL</td>
+      </tr>
+      <tr>
+          <td>eyeSquintLeft</td>
+          <td>CTRL_expressions_eyeSquintInnerL</td>
+      </tr>
+      <tr>
+          <td>eyeWideLeft</td>
+          <td>CTRL_expressions_eyeWidenL</td>
+      </tr>
+      <tr>
+          <td>mouthDimpleLeft</td>
+          <td>CTRL_expressions_mouthDimpleL</td>
+      </tr>
+      <tr>
+          <td>mouthFrownLeft</td>
+          <td>CTRL_expressions_mouthCornerDepressL</td>
+      </tr>
+      <tr>
+          <td>mouthLowerDownLeft</td>
+          <td>CTRL_expressions_mouthLowerLipDepressL</td>
+      </tr>
+      <tr>
+          <td>mouthPressLeft</td>
+          <td>CTRL_expressions_mouthPressDL</td>
+      </tr>
+      <tr>
+          <td>mouthSmileLeft</td>
+          <td>CTRL_expressions_mouthCornerPullL</td>
+      </tr>
+      <tr>
+          <td>mouthStretchLeft</td>
+          <td>CTRL_expressions_mouthStretchL</td>
+      </tr>
+      <tr>
+          <td>mouthUpperUpLeft</td>
+          <td>CTRL_expressions_mouthUpperLipRaiseL</td>
+      </tr>
+      <tr>
+          <td>noseSneerLeft</td>
+          <td>CTRL_expressions_noseWrinkleL</td>
+      </tr>
+  </tbody>
+</table>
+<p>These shapes have no separate left and right versions.</p>
+<table>
+  <thead>
+      <tr>
+          <th>ARKit / Faceit</th>
+          <th>MetaHuman Curve</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td>browInnerUp</td>
+          <td>CTRL_expressions_browLateralL</td>
+      </tr>
+      <tr>
+          <td>cheekPuff</td>
+          <td>CTRL_expressions_mouthCheekBlowL</td>
+      </tr>
+      <tr>
+          <td>jawForward</td>
+          <td>CTRL_expressions_jawFwd</td>
+      </tr>
+      <tr>
+          <td>jawLeft</td>
+          <td>CTRL_expressions_jawLeft</td>
+      </tr>
+      <tr>
+          <td>jawOpen</td>
+          <td>CTRL_expressions_jawOpen</td>
+      </tr>
+      <tr>
+          <td>jawRight</td>
+          <td>CTRL_expressions_jawRight</td>
+      </tr>
+      <tr>
+          <td>mouthClose</td>
+          <td>CTRL_expressions_mouthLipsPurseUL</td>
+      </tr>
+      <tr>
+          <td>mouthFunnel</td>
+          <td>CTRL_expressions_mouthFunnelUL</td>
+      </tr>
+      <tr>
+          <td>mouthLeft</td>
+          <td>CTRL_expressions_mouthLeft</td>
+      </tr>
+      <tr>
+          <td>mouthRight</td>
+          <td>CTRL_expressions_mouthRight</td>
+      </tr>
+      <tr>
+          <td>mouthPucker</td>
+          <td>CTRL_expressions_mouthLipsPurseUR</td>
+      </tr>
+      <tr>
+          <td><strong>mouthRollLower</strong></td>
+          <td>CTRL_expressions_mouthLowerLipRollInL</td>
+      </tr>
+      <tr>
+          <td><strong>mouthRollUpper</strong></td>
+          <td>CTRL_expressions_mouthUpperLipRollInL</td>
+      </tr>
+      <tr>
+          <td>mouthShrugLower</td>
+          <td>CTRL_expressions_jawChinRaiseDL</td>
+      </tr>
+      <tr>
+          <td>mouthShrugUpper</td>
+          <td>CTRL_expressions_jawChinRaiseUL</td>
+      </tr>
+      <tr>
+          <td>tongueOut</td>
+          <td>CTRL_expressions_tongueOut</td>
+      </tr>
+  </tbody>
+</table>
+<h3 id="driving-head-rotation">Driving head rotation</h3>
+<p>I read <code>HeadRoll</code>, <code>HeadPitch</code>, and <code>HeadYaw</code> to drive the skeletal animation.</p>
+<img src="/projects/facemocap/AnimBP2.png" alt="AnimBP2.png" loading="lazy">
+      </div>
+    </article>
+
+    <aside class="single-toc">
+      <h2 class="single-toc-title">On This Page</h2>
+      <div class="single-toc-body">
+        <nav id="TableOfContents">
+  <ul>
+    <li><a href="#overview">Overview</a></li>
+    <li><a href="#modeling-and-rigging-the-face">Modeling and rigging the face</a></li>
+    <li><a href="#painting-skin-weights">Painting skin weights</a></li>
+    <li><a href="#creating-shape-keys">Creating shape keys</a></li>
+    <li><a href="#reading-and-applying-live-link-data">Reading and applying Live Link data</a>
+      <ul>
+        <li><a href="#reading-the-live-data">Reading the live data</a></li>
+        <li><a href="#driving-the-shape-keys-in-real-time">Driving the shape keys in real time</a></li>
+        <li><a href="#driving-head-rotation">Driving head rotation</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+      </div>
+    </aside>
+  </div>
+
+  </main>
+  <footer class="site-footer">
+  <div class="site-footer__inner">
+    <p style="margin:0;">&copy; 2026 Sera&#39;s Portfolio. Built with Hugo.</p>
+  </div>
+</footer>
+
+</body>
+</html>

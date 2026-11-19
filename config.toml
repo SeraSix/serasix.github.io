@@ -1,24 +1,42 @@
 baseURL = "http://localhost:1313/"
-languageCode = "en-us"
+defaultContentLanguage = "zh"
+defaultContentLanguageInSubdir = false
 title = "Sera's Portfolio"
 
-[menu]
-  [[menu.main]]
-    name = "Home"
-    url = "/"
+# 中英文菜单指向各自语言的栏目页。
+[languages.zh]
+  languageCode = "zh-CN"
+  languageName = "中文"
+  weight = 1
+  [[languages.zh.menus.main]]
+    name = "关于"
+    pageRef = "/about"
     weight = 1
-  [[menu.main]]
-    name = "About"
-    url = "/about/"
+  [[languages.zh.menus.main]]
+    name = "博客"
+    pageRef = "/posts"
     weight = 2
-  [[menu.main]]
-    name = "Blog"
-    url = "/posts/"
+  [[languages.zh.menus.main]]
+    name = "项目"
+    pageRef = "/projects"
     weight = 3
-  [[menu.main]]
+
+[languages.en]
+  languageCode = "en-US"
+  languageName = "English"
+  weight = 2
+  [[languages.en.menus.main]]
+    name = "About"
+    pageRef = "/about"
+    weight = 1
+  [[languages.en.menus.main]]
+    name = "Blog"
+    pageRef = "/posts"
+    weight = 2
+  [[languages.en.menus.main]]
     name = "Project"
-    url = "/projects/"
-    weight = 4
+    pageRef = "/projects"
+    weight = 3
 
 [markup]
   [markup.highlight]

@@ -1,51 +1,16 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
-  xmlns:xhtml="http://www.w3.org/1999/xhtml">
-  <url>
-    <loc>http://localhost:1313/projects/catspider/</loc>
-    <lastmod>2026-08-17T14:14:00+08:00</lastmod>
-  </url><url>
-    <loc>http://localhost:1313/projects/openworld/</loc>
-    <lastmod>2026-08-15T14:14:00+08:00</lastmod>
-  </url><url>
-    <loc>http://localhost:1313/projects/ai_npc/</loc>
-    <lastmod>2026-05-12T14:14:00+08:00</lastmod>
-  </url><url>
-    <loc>http://localhost:1313/projects/facemocap/</loc>
-    <lastmod>2026-03-18T03:07:00+08:00</lastmod>
-  </url><url>
-    <loc>http://localhost:1313/posts/bubble/</loc>
-    <lastmod>2026-03-15T10:00:00+08:00</lastmod>
-  </url><url>
-    <loc>http://localhost:1313/about/me/</loc>
-    <lastmod>2026-03-15T01:33:00+08:00</lastmod>
-  </url><url>
-    <loc>http://localhost:1313/projects/wrc11/</loc>
-    <lastmod>2026-03-15T00:15:00+08:00</lastmod>
-  </url><url>
-    <loc>http://localhost:1313/projects/ld58/</loc>
-    <lastmod>2026-03-14T20:39:00+08:00</lastmod>
-  </url><url>
-    <loc>http://localhost:1313/projects/ld56/</loc>
-    <lastmod>2026-03-14T14:14:00+08:00</lastmod>
-  </url><url>
-    <loc>http://localhost:1313/about/</loc>
-    <lastmod>2026-03-14T00:00:00+08:00</lastmod>
-  </url><url>
-    <loc>http://localhost:1313/posts/posteffect/</loc>
-    <lastmod>2026-03-12T10:00:00+08:00</lastmod>
-  </url><url>
-    <loc>http://localhost:1313/posts/</loc>
-    <lastmod>2026-03-12T00:00:00+08:00</lastmod>
-  </url><url>
-    <loc>http://localhost:1313/projects/</loc>
-    <lastmod>2026-03-12T00:00:00+08:00</lastmod>
-  </url><url>
-    <loc>http://localhost:1313/</loc>
-    <lastmod>2026-03-12T00:00:00+08:00</lastmod>
-  </url><url>
-    <loc>http://localhost:1313/categories/</loc>
-  </url><url>
-    <loc>http://localhost:1313/tags/</loc>
-  </url>
-</urlset>
+<sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  
+  <sitemap>
+    <loc>http://localhost:1313/zh/sitemap.xml</loc>
+    
+      <lastmod>2026-08-17T14:14:00+08:00</lastmod>
+    
+  </sitemap>
+  
+  <sitemap>
+    <loc>http://localhost:1313/en/sitemap.xml</loc>
+    
+  </sitemap>
+  
+</sitemapindex>
