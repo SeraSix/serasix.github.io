@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en-us">
+<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+<title>OpenWorld | Sera&#39;s Portfolio</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/css/layout.css">
+<link rel="stylesheet" href="/css/markdown.css">
+
+</head>
+<body class="site-body">
+  <header class="site-header">
+  <div class="site-header__inner">
+    <a href="/" class="site-header__brand">
+      <span>SERASIX</span>
+    </a>
+    <nav class="site-header__nav">
+      
+        
+      
+        
+          <a href="/about/" class="site-header__link">About</a>
+        
+      
+        
+          <a href="/posts/" class="site-header__link">Blog</a>
+        
+      
+        
+          <a href="/projects/" class="site-header__link">Project</a>
+        
+      
+    </nav>
+  </div>
+</header>
+
+  <main class="site-main">
+    
+  <div class="single-layout">
+    <article class="single-article">
+      <div class="single-section-wrap">
+        <span class="single-section-badge">projects</span>
+      </div>
+
+      <h1 class="single-title">OpenWorld</h1>
+
+      <div class="single-meta">
+        <span>August 15, 2026</span>
+        
+      </div>
+
+      <div class="markdown-body">
+        <h1 id="风格化世界--体积云">风格化世界 + 体积云</h1>
+<img src="image.png" width="800">  
+<h1 id="体积云逻辑">体积云逻辑</h1>
+<img src="自定义体积云.gif" width="800">  
+<img src="image%201.png" width="800">  
+<h3 id="根据速度采样-3d-volume-texture">根据速度采样 3D Volume Texture</h3>
+<img src="image%202.png" width="800"> 
+<div class="math-block"><span class="katex"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><mrow><mi mathvariant="bold">u</mi><mi mathvariant="bold">v</mi><mi mathvariant="bold">w</mi></mrow><mo>=</mo><mfrac><msub><mi mathvariant="bold">P</mi><mrow><mi mathvariant="normal">w</mi><mi mathvariant="normal">o</mi><mi mathvariant="normal">r</mi><mi mathvariant="normal">l</mi><mi mathvariant="normal">d</mi></mrow></msub><mi>S</mi></mfrac><mo>+</mo><msub><mi mathvariant="bold">D</mi><mrow><mi mathvariant="normal">w</mi><mi mathvariant="normal">i</mi><mi mathvariant="normal">n</mi><mi mathvariant="normal">d</mi></mrow></msub><msub><mi>V</mi><mrow><mi mathvariant="normal">w</mi><mi mathvariant="normal">i</mi><mi mathvariant="normal">n</mi><mi mathvariant="normal">d</mi></mrow></msub><mi>t</mi></mrow><annotation encoding="application/x-tex">
+\mathbf{uvw} =
+\frac{\mathbf{P}_{\mathrm{world}}}{S}
++
+\mathbf{D}_{\mathrm{wind}}V_{\mathrm{wind}}t
+</annotation></semantics></math></span></div><ul>
+<li><span class="katex"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>P</mi><mrow><mi>w</mi><mi>o</mi><mi>r</mi><mi>l</mi><mi>d</mi></mrow></msub></mrow><annotation encoding="application/x-tex">P_{world}</annotation></semantics></math></span>：当前 Ray March 采样点的世界坐标；</li>
+<li><span class="katex"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>S</mi></mrow><annotation encoding="application/x-tex">S</annotation></semantics></math></span>：云噪声的空间尺度；</li>
+<li><span class="katex"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>D</mi><mrow><mi>w</mi><mi>i</mi><mi>n</mi><mi>d</mi></mrow></msub></mrow><annotation encoding="application/x-tex">D_{wind}</annotation></semantics></math></span>：风向；</li>
+<li><span class="katex"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>V</mi><mrow><mi>w</mi><mi>i</mi><mi>n</mi><mi>d</mi></mrow></msub></mrow><annotation encoding="application/x-tex">V_{wind}</annotation></semantics></math></span>：风速；</li>
+<li><span class="katex"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>t</mi></mrow><annotation encoding="application/x-tex">t</annotation></semantics></math></span>：时间；</li>
+<li><span class="katex"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>u</mi><mi>v</mi><mi>w</mi></mrow><annotation encoding="application/x-tex">uvw</annotation></semantics></math></span>：用于采样 Volume Texture 的三维坐标。</li>
+</ul>
+<h3 id="根据高度做剔除">根据高度做剔除</h3>
+<img src="image%203.png" width="800"> 
+<p>高度函数</p>
+<div class="math-block"><span class="katex"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><mi>H</mi><mo stretchy="false">(</mo><mi>x</mi><mo stretchy="false">)</mo><mo>=</mo><mo stretchy="false">(</mo><mn>1</mn><mo>−</mo><msup><mi>e</mi><mi>x</mi></msup><mo stretchy="false">)</mo><mo stretchy="false">(</mo><mn>1</mn><mo>−</mo><msup><mi>e</mi><mrow><mn>1</mn><mo>−</mo><mi>x</mi></mrow></msup><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">
+H(x)=(1−e^x)(1−e^{1−x})
+</annotation></semantics></math></span></div><p>自定义节点代码：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="line"><span class="cl"><span class="kt">float</span> <span class="n">x</span> <span class="o">=</span> <span class="nf">saturate</span><span class="p">(</span><span class="n">NormAltitudeInLayer</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kt">float</span> <span class="n">a</span> <span class="o">=</span> <span class="mf">1.0</span> <span class="o">-</span> <span class="nf">exp</span><span class="p">(</span><span class="n">x</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="kt">float</span> <span class="n">b</span> <span class="o">=</span> <span class="mf">1.0</span> <span class="o">-</span> <span class="nf">exp</span><span class="p">(</span><span class="mf">1.0</span> <span class="o">-</span> <span class="n">x</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">return</span> <span class="n">a</span> <span class="o">*</span> <span class="n">b</span><span class="p">;</span>
+</span></span></code></pre></div><p>这一步的主要计算：</p>
+<div class="math-block"><span class="katex"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><mi>ρ</mi><mo>=</mo><mi mathvariant="normal">saturate</mi><mo>⁡</mo><mrow><mo fence="true">[</mo><mi>N</mi><mo>−</mo><mrow><mo fence="true">(</mo><mn>1</mn><mo>−</mo><mi>H</mi><mo stretchy="false">(</mo><mi>h</mi><mo stretchy="false">)</mo><mo fence="true">)</mo></mrow><mi>B</mi><mo fence="true">]</mo></mrow></mrow><annotation encoding="application/x-tex">
+\rho =
+\operatorname{saturate}
+\left[
+N-\left(1-H(h)\right)B
+\right]
+</annotation></semantics></math></span></div><ul>
+<li><span class="katex"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>N</mi></mrow><annotation encoding="application/x-tex">N</annotation></semantics></math></span>：基础三维噪声；</li>
+<li><span class="katex"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>H</mi><mo stretchy="false">(</mo><mi>h</mi><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">H(h)</annotation></semantics></math></span>：高度密度函数；</li>
+<li><span class="katex"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>B</mi></mrow><annotation encoding="application/x-tex">B</annotation></semantics></math></span>：Height Bias；</li>
+<li><span class="katex"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>ρ</mi><mrow><mi>r</mi><mi>a</mi><mi>w</mi></mrow></msub></mrow><annotation encoding="application/x-tex">ρ_{raw}</annotation></semantics></math></span>：高度修正后的原始密度。</li>
+</ul>
+<h1 id="交互草逻辑">交互草逻辑</h1>
+<h2 id="颜色逻辑">颜色逻辑</h2>
+<img src="image%204.png" width="800"> 
+<ul>
+<li>底部：大地的颜色（使用 render texture）</li>
+<li>顶部：自定义颜色</li>
+</ul>
+<h2 id="交互逻辑">交互逻辑</h2>
+<p>核心：设置 RotateAboutAxis</p>
+<img src="image%205.png" width="500"> 
+<ul>
+<li>旋转轴：z 轴与Vector（玩家到草） 的叉乘</li>
+</ul>
+<img src="image%206.png" width="500"> 
+<ul>
+<li>Pivot Point：草的底部</li>
+<li>Position：Absolute Position</li>
+</ul>
+<h3 id="核心计算旋转角度">核心：计算旋转角度：</h3>
+<ol>
+<li>记录玩家位置：把玩家位置写入 RT</li>
+</ol>
+<div class="image-pair">
+  <img src="image%207.png" alt="玩家位置写入 RT 的步骤图一">
+  <img src="image%208.png" alt="玩家位置写入 RT 的步骤图二">
+</div>
+<img src="写入_RT.gif" width="800" alt="玩家位置写入 RT 的动画演示">
+<p>蓝图逻辑：</p>
+<img src="image%209.png" width="800"> 
+
+      </div>
+    </article>
+
+    <aside class="single-toc">
+      <h2 class="single-toc-title">On This Page</h2>
+      <div class="single-toc-body">
+        <nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li><a href="#根据速度采样-3d-volume-texture">根据速度采样 3D Volume Texture</a></li>
+        <li><a href="#根据高度做剔除">根据高度做剔除</a></li>
+      </ul>
+    </li>
+  </ul>
+
+  <ul>
+    <li><a href="#颜色逻辑">颜色逻辑</a></li>
+    <li><a href="#交互逻辑">交互逻辑</a>
+      <ul>
+        <li><a href="#核心计算旋转角度">核心：计算旋转角度：</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+      </div>
+    </aside>
+  </div>
+
+  </main>
+  <footer class="site-footer">
+  <div class="site-footer__inner">
+    <p style="margin:0;">&copy; 2026 Sera&#39;s Portfolio. Built with Hugo.</p>
+  </div>
+</footer>
+
+</body>
+</html>

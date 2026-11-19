@@ -22,8 +22,7 @@ cover: "image.png"
 
 
 $$
-\mathbf{uvw}
-=
+\mathbf{uvw} =
 \frac{\mathbf{P}_{\mathrm{world}}}{S}
 +
 \mathbf{D}_{\mathrm{wind}}V_{\mathrm{wind}}t
@@ -61,8 +60,7 @@ return a * b;
 这一步的主要计算：
 
 $$
-\rho
-=
+\rho =
 \operatorname{saturate}
 \left[
 N-\left(1-H(h)\right)B
@@ -88,12 +86,12 @@ $$
 
 核心：设置 RotateAboutAxis
 
-<img src="image%205.png" width="800"> 
+<img src="image%205.png" width="500"> 
 
 
 - 旋转轴：z 轴与Vector（玩家到草） 的叉乘
 
-<img src="image%206.png" width="800"> 
+<img src="image%206.png" width="500"> 
 
 
 - Pivot Point：草的底部
@@ -103,11 +101,12 @@ $$
 
 1. 记录玩家位置：把玩家位置写入 RT
 
-<img src="image%207.png" width="800"> 
+<div class="image-pair">
+  <img src="image%207.png" alt="玩家位置写入 RT 的步骤图一">
+  <img src="image%208.png" alt="玩家位置写入 RT 的步骤图二">
+</div>
 
-<img src="image%208.png" width="800"> 
-
-<img src="写入 RT.gif" width="800"> 
+<img src="写入_RT.gif" width="800" alt="玩家位置写入 RT 的动画演示">
 
 蓝图逻辑：
 

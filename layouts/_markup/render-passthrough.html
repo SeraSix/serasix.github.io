@@ -1,0 +1,7 @@
+{{- $block := eq .Type "block" -}}
+{{- $math := transform.ToMath .Inner (dict "displayMode" $block "output" "mathml") -}}
+{{- if $block -}}
+  <div class="math-block">{{ $math }}</div>
+{{- else -}}
+  {{ $math }}
+{{- end -}}

@@ -75,8 +75,7 @@ PredictedFootTransforms = WorldFinalFootTransforms + Velocity * Something
 
 
 $$
-\text{Something}
-=
+\text{Something} =
 \left[
 S-p+\frac12(1-S)
 \right]T
