@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html lang="en-US">
 <head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script>
   <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -20,11 +20,11 @@
     </a>
     <nav class="site-header__nav">
       
-        <a href="/about/" class="site-header__link">关于</a>
+        <a href="/about/" class="site-header__link">About</a>
       
-        <a href="/posts/" class="site-header__link">博客</a>
+        <a href="/posts/" class="site-header__link">Blog</a>
       
-        <a href="/projects/" class="site-header__link">项目</a>
+        <a href="/projects/" class="site-header__link">Project</a>
       
 
       
@@ -35,14 +35,14 @@
             
           
           
-          <a href="/projects/catspider/" lang="zh" hreflang="zh" class="site-header__link" aria-current="page">中文</a>
+          <a href="/zh/projects/catspider/" lang="zh" hreflang="zh" class="site-header__link">中文</a>
         
           
           
             
           
           <span aria-hidden="true">|</span>
-          <a href="/en/projects/catspider/" lang="en" hreflang="en" class="site-header__link">English</a>
+          <a href="/projects/catspider/" lang="en" hreflang="en" class="site-header__link" aria-current="page">English</a>
         
       </span>
     </nav>
@@ -60,91 +60,91 @@
       <h1 class="single-title">CatSpider</h1>
 
       <div class="single-meta">
-        <span>八月 17, 2026</span>
+        <span>August 17, 2026</span>
         
       </div>
 
       <div class="markdown-body">
         <h1 id="catspider">CatSpider</h1>
-<img src="CatSpider.gif" width="800"> 
-<h1 id="模型生成与处理">模型生成与处理</h1>
-<p>混元3D 生成模型:
-<img src="image.png" width="800"></p>
-<p>处理后：
-<img src="image%201.png" width="800"></p>
-<h1 id="绑定">绑定</h1>
-<p>自定义骨架
-<img src="image%202.png" width="800"></p>
-<h1 id="control-rig-逻辑">Control Rig 逻辑</h1>
-<img src="image%203.png" width="800"> 
-<h2 id="foot-lock-逻辑">Foot Lock 逻辑</h2>
-<h3 id="1-计算-cycle">1. 计算 Cycle</h3>
-<p>为了达到速度越大摆腿越快的效果，需要根据速度调节 cycle</p>
+<img src="../../../projects/catspider/CatSpider.gif" width="800">
+<h1 id="generating-and-preparing-the-model">Generating and preparing the model</h1>
+<p>The model generated with Hunyuan3D
+<img src="../../../projects/catspider/image.png" width="800"></p>
+<p>The model after cleanup
+<img src="../../../projects/catspider/image%201.png" width="800"></p>
+<h1 id="rigging">Rigging</h1>
+<p>I built a custom skeleton for the character.
+<img src="../../../projects/catspider/image%202.png" width="800"></p>
+<h1 id="control-rig-setup">Control Rig setup</h1>
+<img src="../../../projects/catspider/image%203.png" width="800">
+<h2 id="foot-locking">Foot locking</h2>
+<h3 id="1-set-the-gait-cycle">1. Set the gait cycle</h3>
+<p>The legs need to swing faster as the body picks up speed, so I adjust the gait cycle based on movement speed.</p>
 <ol>
-<li>算适应于相关速度的 Cycle 时间：CycleLengthInSeconds</li>
+<li>Calculate the duration of a cycle at the current speed (<code>CycleLengthInSeconds</code>).</li>
 </ol>
-<img src="image%204.png" width="800"> 
-<ol>
-<li>更改 Cycle 的增长速度</li>
+<img src="../../../projects/catspider/image%204.png" width="800">
+<ol start="2">
+<li>Adjust how quickly the cycle advances.</li>
 </ol>
-<img src="image%205.png" width="800"> 
-<h3 id="2-变化-footlockedarray-booleans">2. 变化 FootLockedArray (booleans)</h3>
+<img src="../../../projects/catspider/image%205.png" width="800">
+<h3 id="2-update-the-booleans-in-footlockedarray">2. Update the booleans in FootLockedArray</h3>
 <ul>
-<li><code>saturate(FootOffset[i] + CyclePercent)</code> 与 <code>SwingPercent</code> 相比
+<li>Compare <code>saturate(FootOffset[i] + CyclePercent)</code> with <code>SwingPercent</code>.
 <ul>
-<li>在 swing time 内移动，在剩下时间 lock</li>
+<li>Move the foot during the swing phase and lock it for the rest of the cycle.</li>
 </ul>
 </li>
-<li>更新逻辑如下
-<img src="image%206.png" width="800"></li>
+<li>The graph below updates the lock state for each foot.
+<img src="../../../projects/catspider/image%206.png" width="800"></li>
 </ul>
-<h3 id="3-解除锁定时更新位置">3. 解除锁定时更新位置</h3>
-<img src="image%207.png" width="800"> 
-<h2 id="world-position-计算逻辑">World Position 计算逻辑</h2>
-<h3 id="1-脚步长度预测">1. 脚步长度预测</h3>
-<p>核心：选择合适落点</p>
+<h3 id="3-update-the-foot-position-when-it-unlocks">3. Update the foot position when it unlocks</h3>
+<img src="../../../projects/catspider/image%207.png" width="800">
+<h2 id="computing-foot-positions-in-world-space">Computing foot positions in world space</h2>
+<h3 id="1-predict-stride-length">1. Predict stride length</h3>
+<p>First, choose where the foot should land.</p>
 <p>PredictedFootTransforms = WorldFinalFootTransforms + Velocity * Something</p>
-<img src="image%208.png" width="800"> 
+<img src="../../../projects/catspider/image%208.png" width="800">
 <div class="math-block"><span class="katex"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><mtext>Something</mtext><mo>=</mo><mrow><mo fence="true">[</mo><mi>S</mi><mo>−</mo><mi>p</mi><mo>+</mo><mfrac><mn>1</mn><mn>2</mn></mfrac><mo stretchy="false">(</mo><mn>1</mn><mo>−</mo><mi>S</mi><mo stretchy="false">)</mo><mo fence="true">]</mo></mrow><mi>T</mi></mrow><annotation encoding="application/x-tex">
 \text{Something} =
 \left[
 S-p+\frac12(1-S)
 \right]T
 </annotation></semantics></math></span></div><ul>
-<li>S=SwingPercent：摆动阶段占整个周期的比例</li>
-<li>p=PerFootCyclePercent：当前这只脚在周期中的进度</li>
-<li>T=CycleLengthInSeconds：一个完整步态周期的时长</li>
-<li>v=Velocity：身体的世界速度</li>
+<li><code>S = SwingPercent</code> is the fraction of the cycle spent in swing.</li>
+<li><code>p = PerFootCyclePercent</code> is this foot’s current progress through the cycle.</li>
+<li><code>T = CycleLengthInSeconds</code> is the duration of a complete gait cycle.</li>
+<li><code>v = Velocity</code> is the body’s world-space velocity.</li>
 </ul>
-<p>它其实可以拆成两段时间：</p>
-<div class="math-block"><span class="katex"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><munder><munder><mrow><mo stretchy="false">(</mo><mi>S</mi><mo>−</mo><mi>p</mi><mo stretchy="false">)</mo><mi>T</mi></mrow><mo stretchy="true">⏟</mo></munder><mtext>距离摆动结束还有多久</mtext></munder><mo>+</mo><munder><munder><mrow><mfrac><mn>1</mn><mn>2</mn></mfrac><mo stretchy="false">(</mo><mn>1</mn><mo>−</mo><mi>S</mi><mo stretchy="false">)</mo><mi>T</mi></mrow><mo stretchy="true">⏟</mo></munder><mtext>支撑阶段的一半</mtext></munder></mrow><annotation encoding="application/x-tex">
-\underbrace{(S-p)T}_{\text{距离摆动结束还有多久}}
+<p>The prediction looks ahead by two intervals.</p>
+<div class="math-block"><span class="katex"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><munder><munder><mrow><mo stretchy="false">(</mo><mi>S</mi><mo>−</mo><mi>p</mi><mo stretchy="false">)</mo><mi>T</mi></mrow><mo stretchy="true">⏟</mo></munder><mtext>time left in swing</mtext></munder><mo>+</mo><munder><munder><mrow><mfrac><mn>1</mn><mn>2</mn></mfrac><mo stretchy="false">(</mo><mn>1</mn><mo>−</mo><mi>S</mi><mo stretchy="false">)</mo><mi>T</mi></mrow><mo stretchy="true">⏟</mo></munder><mtext>half the stance phase</mtext></munder></mrow><annotation encoding="application/x-tex">
+\underbrace{(S-p)T}_{\text{time left in swing}}
 +
-\underbrace{\frac12(1-S)T}_{\text{支撑阶段的一半}}
-</annotation></semantics></math></span></div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-csharp" data-lang="csharp"><span class="line"><span class="cl"><span class="m">0</span>                 <span class="n">S</span>                 <span class="n">S</span> <span class="p">+</span> <span class="err">½</span><span class="p">(</span><span class="m">1</span><span class="p">-</span><span class="n">S</span><span class="p">)</span>                 <span class="m">1</span>
-</span></span><span class="line"><span class="cl"><span class="p">|------</span> <span class="n">Swing</span> <span class="p">-----|------</span> <span class="err">前半支撑</span> <span class="p">------|------</span> <span class="err">后半支撑</span> <span class="p">------|</span>
-</span></span><span class="line"><span class="cl"><span class="err">当前</span> <span class="n">p</span>             <span class="err">落地</span>                  <span class="err">支撑中点</span>
-</span></span></code></pre></div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-csharp" data-lang="csharp"><span class="line"><span class="cl"><span class="err">刚落地：脚在身体前方</span>
-</span></span><span class="line"><span class="cl">    <span class="err">↓</span>
-</span></span><span class="line"><span class="cl"><span class="err">支撑中点：脚大致位于身体正下方</span><span class="p">,**</span><span class="err">身体追上脚</span><span class="p">**</span>
-</span></span><span class="line"><span class="cl">    <span class="err">↓</span>
-</span></span><span class="line"><span class="cl"><span class="err">离地前：脚位于身体后方</span><span class="p">,</span><span class="err">身体超过脚</span>
+\underbrace{\frac12(1-S)T}_{\text{half the stance phase}}
+</annotation></semantics></math></span></div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-text" data-lang="text"><span class="line"><span class="cl">0                  S                        S + ½(1-S)            1
+</span></span><span class="line"><span class="cl">|------ swing -----|-- first half of stance --|-- second half ----|
+</span></span><span class="line"><span class="cl">  current p        touchdown                  midstance
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-text" data-lang="text"><span class="line"><span class="cl">Touchdown: the foot lands ahead of the body.
+</span></span><span class="line"><span class="cl">    ↓
+</span></span><span class="line"><span class="cl">Midstance: the body catches up and the foot is roughly underneath it.
+</span></span><span class="line"><span class="cl">    ↓
+</span></span><span class="line"><span class="cl">Just before liftoff: the body has passed the foot, leaving it behind.
 </span></span></code></pre></div><h3 id="2-foot-lift">2. Foot Lift</h3>
-<p>z 方向的 transform：</p>
+<p>The vertical (Z) offset comes from a curve.</p>
 <ul>
-<li>曲线 x 值：Swing 的进程</li>
-<li>曲线 y 值：定义的高度</li>
+<li>X is the foot’s progress through swing.</li>
+<li>Y sets the lift height.</li>
 </ul>
-<img src="image%209.png" width="800"> 
-<h3 id="3-land-track-碰撞检测">3. Land Track 碰撞检测</h3>
-<img src="image%2010.png" width="300"> 
-<p>在落脚点的垂直直线上进行碰撞检测，设置碰撞点为落脚点</p>
-<img src="image%2011.png" width="800"> 
-<p>更好的方式：</p>
-<img src="image%2012.png" width="300"> 
-<h2 id="更新逻辑">更新逻辑：</h2>
-<p>核心：Set Full Body IK</p>
-<img src="image%2013.png" width="800"> 
+<img src="../../../projects/catspider/image%209.png" width="800">
+<h3 id="3-trace-the-ground-at-the-landing-point">3. Trace the ground at the landing point</h3>
+<img src="../../../projects/catspider/image%2010.png" width="300">
+<p>Trace vertically through the predicted landing point and place the foot at the hit position.</p>
+<img src="../../../projects/catspider/image%2011.png" width="800">
+<p>An improved version of the trace setup</p>
+<img src="../../../projects/catspider/image%2012.png" width="300">
+<h2 id="updating-the-pose">Updating the pose</h2>
+<p>Apply Full Body IK to the updated foot targets.</p>
+<img src="../../../projects/catspider/image%2013.png" width="800">
 
       </div>
     </article>
@@ -154,21 +154,21 @@ S-p+\frac12(1-S)
       <div class="single-toc-body">
         <nav id="TableOfContents">
   <ul>
-    <li><a href="#foot-lock-逻辑">Foot Lock 逻辑</a>
+    <li><a href="#foot-locking">Foot locking</a>
       <ul>
-        <li><a href="#1-计算-cycle">1. 计算 Cycle</a></li>
-        <li><a href="#2-变化-footlockedarray-booleans">2. 变化 FootLockedArray (booleans)</a></li>
-        <li><a href="#3-解除锁定时更新位置">3. 解除锁定时更新位置</a></li>
+        <li><a href="#1-set-the-gait-cycle">1. Set the gait cycle</a></li>
+        <li><a href="#2-update-the-booleans-in-footlockedarray">2. Update the booleans in FootLockedArray</a></li>
+        <li><a href="#3-update-the-foot-position-when-it-unlocks">3. Update the foot position when it unlocks</a></li>
       </ul>
     </li>
-    <li><a href="#world-position-计算逻辑">World Position 计算逻辑</a>
+    <li><a href="#computing-foot-positions-in-world-space">Computing foot positions in world space</a>
       <ul>
-        <li><a href="#1-脚步长度预测">1. 脚步长度预测</a></li>
+        <li><a href="#1-predict-stride-length">1. Predict stride length</a></li>
         <li><a href="#2-foot-lift">2. Foot Lift</a></li>
-        <li><a href="#3-land-track-碰撞检测">3. Land Track 碰撞检测</a></li>
+        <li><a href="#3-trace-the-ground-at-the-landing-point">3. Trace the ground at the landing point</a></li>
       </ul>
     </li>
-    <li><a href="#更新逻辑">更新逻辑：</a></li>
+    <li><a href="#updating-the-pose">Updating the pose</a></li>
   </ul>
 </nav>
       </div>

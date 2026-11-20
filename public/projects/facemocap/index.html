@@ -1,10 +1,10 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html lang="en-US">
 <head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script>
   <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta http-equiv="X-UA-Compatible" content="ie=edge">
-<title>UE 面部捕捉实现 | Sera&#39;s Portfolio</title>
+<title>Facial Motion Capture in Unreal Engine | Sera&#39;s Portfolio</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;800&display=swap" rel="stylesheet">
@@ -20,11 +20,11 @@
     </a>
     <nav class="site-header__nav">
       
-        <a href="/about/" class="site-header__link">关于</a>
+        <a href="/about/" class="site-header__link">About</a>
       
-        <a href="/posts/" class="site-header__link">博客</a>
+        <a href="/posts/" class="site-header__link">Blog</a>
       
-        <a href="/projects/" class="site-header__link">项目</a>
+        <a href="/projects/" class="site-header__link">Project</a>
       
 
       
@@ -35,14 +35,14 @@
             
           
           
-          <a href="/projects/facemocap/" lang="zh" hreflang="zh" class="site-header__link" aria-current="page">中文</a>
+          <a href="/zh/projects/facemocap/" lang="zh" hreflang="zh" class="site-header__link">中文</a>
         
           
           
             
           
           <span aria-hidden="true">|</span>
-          <a href="/en/projects/facemocap/" lang="en" hreflang="en" class="site-header__link">English</a>
+          <a href="/projects/facemocap/" lang="en" hreflang="en" class="site-header__link" aria-current="page">English</a>
         
       </span>
     </nav>
@@ -57,85 +57,85 @@
         <span class="single-section-badge">projects</span>
       </div>
 
-      <h1 class="single-title">UE 面部捕捉实现</h1>
+      <h1 class="single-title">Facial Motion Capture in Unreal Engine</h1>
 
       <div class="single-meta">
-        <span>三月 18, 2026</span>
+        <span>March 18, 2026</span>
         <span> | Author: Sera</span>
       </div>
 
       <div class="markdown-body">
-        <h2 id="概述">概述：</h2>
-<p>效果：</p>
-<img src="FinalEffect.gif">  
-<p>核心流程：</p>
-<img src="/projects/facemocap/image.png" alt="image.png" loading="lazy"><h2 id="面部建模与绑定">面部建模与绑定</h2>
+        <h2 id="overview">Overview</h2>
+<p>The final performance</p>
+<img src="../../../projects/facemocap/FinalEffect.gif">
+<p>The capture pipeline</p>
+<img src="/projects/facemocap/image.png" alt="image.png" loading="lazy"><h2 id="modeling-and-rigging-the-face">Modeling and rigging the face</h2>
 <!-- ![ModelingFront.png](ModelingFront.png)
 ![ModelingSide.png](ModelingSide.png) -->
 <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px;">
-  <img src="ModelingFront.png">
-  <img src="ModelingSide.png">
+  <img src="../../../projects/facemocap/ModelingFront.png">
+  <img src="../../../projects/facemocap/ModelingSide.png">
 </div>
-<p>绑定工具：Faceit 脸部骨骼</p>
+<p>I rigged the face with the Faceit facial armature.</p>
 <!-- ![FaceRig1.png](FaceRig1.png)
 ![FaceRig2.png](FaceRig2.png) -->
 <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px;">
-  <img src="FaceRig1.png">
-  <img src="FaceRig2.png">
+  <img src="../../../projects/facemocap/FaceRig1.png">
+  <img src="../../../projects/facemocap/FaceRig2.png">
 </div>
-<h2 id="刷权重">刷权重</h2>
-<p>刷权重直至特殊动作形态正常</p>
+<h2 id="painting-skin-weights">Painting skin weights</h2>
+<p>I refined the weights while testing individual poses, including an open mouth, a smile, and a downward gaze.</p>
 <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px;">
-  <img src="MouthOpen2.png">
-  <img src="Smile.png">
-  <img src="EyeDown.png">
-  <img src="MouthOpen.png">
+  <img src="../../../projects/facemocap/MouthOpen2.png">
+  <img src="../../../projects/facemocap/Smile.png">
+  <img src="../../../projects/facemocap/EyeDown.png">
+  <img src="../../../projects/facemocap/MouthOpen.png">
 </div>
-<h2 id="制作形态键">制作形态键</h2>
-<p>制作 ARKit 52 个形态键：</p>
+<h2 id="creating-shape-keys">Creating shape keys</h2>
+<p>I created the 52 ARKit facial shape keys.</p>
 <p align="center">
-  <img src="ShapeKeys.png" width="400">
+  <img src="../../../projects/facemocap/ShapeKeys.png" width="400">
 </p>
-<p>效果如下：</p>
-<p>插入6 个 GIF 图</p>
+<p>Here are some of the shapes in motion.</p>
+<p>The six clips show the eyes, nose, cheeks, and mouth.</p>
 <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px;">
-  <img src="EyeRoll.gif">
-  <img src="EyeBlink.gif">
-  <img src="Nose.gif" >
-  <img src="Blow.gif">
-  <img src="MouthMove1.gif">
-  <img src="MouthMove2.gif" >
+  <img src="../../../projects/facemocap/EyeRoll.gif">
+  <img src="../../../projects/facemocap/EyeBlink.gif">
+  <img src="../../../projects/facemocap/Nose.gif" >
+  <img src="../../../projects/facemocap/Blow.gif">
+  <img src="../../../projects/facemocap/MouthMove1.gif">
+  <img src="../../../projects/facemocap/MouthMove2.gif" >
 </div>
-<h2 id="livelink-读入--控制">livelink 读入 + 控制</h2>
-<p>处理完之后将模型导入 UE，UE 中的操作流程大致如下：</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-csharp" data-lang="csharp"><span class="line"><span class="cl"><span class="n">Live</span> <span class="n">Link</span> <span class="n">Source</span>  
-</span></span><span class="line"><span class="cl"><span class="err">↓</span>  
-</span></span><span class="line"><span class="cl"><span class="n">LiveLinkRemapAsset</span>  
-</span></span><span class="line"><span class="cl"><span class="err">（改名字</span> <span class="p">/</span> <span class="err">改数值）</span>  
-</span></span><span class="line"><span class="cl"><span class="err">↓</span>  
-</span></span><span class="line"><span class="cl"><span class="n">Animation</span> <span class="n">Blueprint</span>  
-</span></span><span class="line"><span class="cl"><span class="err">（读取曲线）</span>  
-</span></span><span class="line"><span class="cl"><span class="err">↓</span>  
-</span></span><span class="line"><span class="cl"><span class="n">Set</span> <span class="n">Morph</span> <span class="n">Target</span>  
-</span></span><span class="line"><span class="cl"><span class="err">↓</span>  
-</span></span><span class="line"><span class="cl"><span class="err">角色表情</span>
-</span></span></code></pre></div><h3 id="livelink-读入数据">livelink 读入数据</h3>
-<p>借用了 UE meta human 的读入功能，实时读入 260 个关键数据</p>
+<h2 id="reading-and-applying-live-link-data">Reading and applying Live Link data</h2>
+<p>Once the model was ready, I imported it into Unreal Engine. The animation data takes the following path.</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-text" data-lang="text"><span class="line"><span class="cl">Live Link Source
+</span></span><span class="line"><span class="cl">↓
+</span></span><span class="line"><span class="cl">LiveLinkRemapAsset
+</span></span><span class="line"><span class="cl">(remap curve names and values)
+</span></span><span class="line"><span class="cl">↓
+</span></span><span class="line"><span class="cl">Animation Blueprint
+</span></span><span class="line"><span class="cl">(read animation curves)
+</span></span><span class="line"><span class="cl">↓
+</span></span><span class="line"><span class="cl">Set Morph Target
+</span></span><span class="line"><span class="cl">↓
+</span></span><span class="line"><span class="cl">Character expression
+</span></span></code></pre></div><h3 id="reading-the-live-data">Reading the live data</h3>
+<p>I used Unreal Engine’s MetaHuman capture input to read 260 curve values in real time.</p>
 <p align="center">
-  <img src="image%201.png" width="400">
+  <img src="../../../projects/facemocap/image%201.png" width="400">
 </p>
-<h3 id="实时设置形态键的值">实时设置形态键的值</h3>
+<h3 id="driving-the-shape-keys-in-real-time">Driving the shape keys in real time</h3>
 <ul>
-<li>从 260 个值中选取最合适的值输给 52ARKit，测试效果如下：</li>
+<li>From the 260 input values, I chose the closest match for each of the 52 ARKit shapes. Here’s a test of the mapping.</li>
 </ul>
 <p align="center">
-  <img src="image%202.png">
+  <img src="../../../projects/facemocap/image%202.png">
 </p>
 <ul>
-<li>设置 52 个 ARKit + 用对象列表简化</li>
-<li>为了便于调试我分成了左中右三个组</li>
+<li>I used a list of objects to simplify the setup for the 52 shapes.</li>
+<li>For debugging, I grouped the shapes by the part of the face they affect: left, center, or right.</li>
 </ul>
-<img src="/projects/facemocap/AnimBP1.png" alt="AnimBP1.png" loading="lazy"><p>左 / 右部分对应表格如下:</p>
+<img src="/projects/facemocap/AnimBP1.png" alt="AnimBP1.png" loading="lazy"><p>The table shows the mapping for paired shapes, using the left side as the example.</p>
 <table>
   <thead>
       <tr>
@@ -218,7 +218,7 @@
       </tr>
   </tbody>
 </table>
-<p>无左右的形态键如下：</p>
+<p>These shapes have no separate left and right versions.</p>
 <table>
   <thead>
       <tr>
@@ -293,8 +293,8 @@
       </tr>
   </tbody>
 </table>
-<h3 id="设置头部转动">设置头部转动</h3>
-<p>核心：读取 HeadRoll / HeadPitch / HeadYaw 来控制骨骼动画</p>
+<h3 id="driving-head-rotation">Driving head rotation</h3>
+<p>I read <code>HeadRoll</code>, <code>HeadPitch</code>, and <code>HeadYaw</code> to drive the skeletal animation.</p>
 <img src="/projects/facemocap/AnimBP2.png" alt="AnimBP2.png" loading="lazy">
       </div>
     </article>
@@ -304,15 +304,15 @@
       <div class="single-toc-body">
         <nav id="TableOfContents">
   <ul>
-    <li><a href="#概述">概述：</a></li>
-    <li><a href="#面部建模与绑定">面部建模与绑定</a></li>
-    <li><a href="#刷权重">刷权重</a></li>
-    <li><a href="#制作形态键">制作形态键</a></li>
-    <li><a href="#livelink-读入--控制">livelink 读入 + 控制</a>
+    <li><a href="#overview">Overview</a></li>
+    <li><a href="#modeling-and-rigging-the-face">Modeling and rigging the face</a></li>
+    <li><a href="#painting-skin-weights">Painting skin weights</a></li>
+    <li><a href="#creating-shape-keys">Creating shape keys</a></li>
+    <li><a href="#reading-and-applying-live-link-data">Reading and applying Live Link data</a>
       <ul>
-        <li><a href="#livelink-读入数据">livelink 读入数据</a></li>
-        <li><a href="#实时设置形态键的值">实时设置形态键的值</a></li>
-        <li><a href="#设置头部转动">设置头部转动</a></li>
+        <li><a href="#reading-the-live-data">Reading the live data</a></li>
+        <li><a href="#driving-the-shape-keys-in-real-time">Driving the shape keys in real time</a></li>
+        <li><a href="#driving-head-rotation">Driving head rotation</a></li>
       </ul>
     </li>
   </ul>

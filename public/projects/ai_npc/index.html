@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html lang="en-US">
 <head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script>
   <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -20,11 +20,11 @@
     </a>
     <nav class="site-header__nav">
       
-        <a href="/about/" class="site-header__link">关于</a>
+        <a href="/about/" class="site-header__link">About</a>
       
-        <a href="/posts/" class="site-header__link">博客</a>
+        <a href="/posts/" class="site-header__link">Blog</a>
       
-        <a href="/projects/" class="site-header__link">项目</a>
+        <a href="/projects/" class="site-header__link">Project</a>
       
 
       
@@ -35,14 +35,14 @@
             
           
           
-          <a href="/projects/ai_npc/" lang="zh" hreflang="zh" class="site-header__link" aria-current="page">中文</a>
+          <a href="/zh/projects/ai_npc/" lang="zh" hreflang="zh" class="site-header__link">中文</a>
         
           
           
             
           
           <span aria-hidden="true">|</span>
-          <a href="/en/projects/ai_npc/" lang="en" hreflang="en" class="site-header__link">English</a>
+          <a href="/projects/ai_npc/" lang="en" hreflang="en" class="site-header__link" aria-current="page">English</a>
         
       </span>
     </nav>
@@ -60,26 +60,26 @@
       <h1 class="single-title">AI NPC Dual-Character System</h1>
 
       <div class="single-meta">
-        <span>五月 12, 2026</span>
+        <span>May 12, 2026</span>
         
       </div>
 
       <div class="markdown-body">
-        <h2 id="ai-虚拟人动画">AI 虚拟人动画</h2>
-<p>演示视频:
-<img src="AInpc.gif" width="800"></p>
-<p>整体架构：</p>
-<img src="image.png" width="800">  
-<h2 id="动画系统">动画系统</h2>
-<h3 id="总框架">总框架：</h3>
-<h4 id="arkit-分通道">ARkit 分通道</h4>
-<p>一共三个 System 负责</p>
+        <h2 id="animating-two-ai-characters">Animating two AI characters</h2>
+<p>The conversation in action
+<img src="../../../projects/ai_npc/AInpc.gif" width="800"></p>
+<p>System architecture</p>
+<img src="../../../projects/ai_npc/image.png" width="800">
+<h2 id="animation-system">Animation system</h2>
+<h3 id="how-the-controllers-fit-together">How the controllers fit together</h3>
+<h4 id="dividing-the-arkit-channels">Dividing the ARKit channels</h4>
+<p>Three controllers share responsibility for the face and head.</p>
 <ul>
-<li><code>ExpressionController</code>：只产出“表情目标值”</li>
-<li><code>VisemeController</code>：只产出“口型目标值”</li>
-<li><code>LookAtController</code>：只控制骨骼旋转 / 眼球方向</li>
+<li><code>ExpressionController</code> produces target weights for expressions.</li>
+<li><code>VisemeController</code> produces target weights for speech shapes, or visemes.</li>
+<li><code>LookAtController</code> controls bone rotation and eye direction.</li>
 </ul>
-<p>ExpressionController 负责的通道:</p>
+<p>Channels assigned to <code>ExpressionController</code></p>
 <pre tabindex="0"><code>browDownLeft / Right
 browInnerUp
 browOuterUpLeft / Right
@@ -101,7 +101,7 @@ mouthSmileLeft / Right
 mouthUpperUpLeft / Right
 
 noseSneerLeft / Right
-</code></pre><p>VisemeController 负责的通道:</p>
+</code></pre><p>Channels assigned to <code>VisemeController</code></p>
 <pre tabindex="0"><code>jawForward
 jawOpen
 mouthClose
@@ -112,42 +112,41 @@ mouthPucker
 mouthRollLower
 mouthRollUpper
 mouthStretchLeft / Right
-</code></pre><p>LookAtController 接管，不直接走 BlendShape:</p>
+</code></pre><p>These channels are managed by <code>LookAtController</code> rather than driven directly as independent blend shapes.</p>
 <pre tabindex="0"><code>eyeLookDownLeft / Right
 eyeLookInLeft / Right
 eyeLookOutLeft / Right
 eyeLookUpLeft / Right
 eyeBlinkLeft / Right
-</code></pre><h4 id="底层接口">底层接口</h4>
-<p>主要组件：</p>
+</code></pre><h4 id="low-level-interface">Low-level interface</h4>
+<p>Two components apply the controllers’ output to the face.</p>
 <ul>
-<li>FaceRendererBinder: 获取所有可用于面部BlendShape控制的Renderer，存入<code>SkinnedMeshRenderer[] result</code> , 以便于可以统一设置所有组件上相关的形态键</li>
+<li><code>FaceRendererBinder</code> collects every renderer with facial blend shapes in <code>SkinnedMeshRenderer[] result</code>. This lets the same shape be adjusted across multiple meshes.</li>
 </ul>
-<img src="image 1.png" width="400">  
+<img src="../../../projects/ai_npc/image%201.png" width="400">
 <ul>
-<li>FaceBlendShapeController：用于统一设置 / 清空某一个形态键</li>
+<li><code>FaceBlendShapeController</code> sets individual shape weights and resets the blend shapes.</li>
 </ul>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-csharp" data-lang="csharp"><span class="line"><span class="cl"><span class="kd">public</span> <span class="k">void</span> <span class="n">ResetAllBlendShapes</span><span class="p">()</span>
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl"><span class="kd">public</span> <span class="k">void</span> <span class="n">SetBlendShape</span><span class="p">(</span><span class="kt">string</span> <span class="n">blendShapeName</span><span class="p">,</span> <span class="kt">float</span> <span class="n">weight</span><span class="p">)</span>
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl"><span class="kd">public</span> <span class="k">void</span> <span class="n">SetBlendShapeOnRenderer</span><span class="p">(</span><span class="n">SkinnedMeshRenderer</span> <span class="n">smr</span><span class="p">,</span> <span class="kt">string</span> <span class="n">blendShapeName</span><span class="p">,</span> <span class="kt">float</span> <span class="n">weight</span><span class="p">)</span>
-</span></span><span class="line"><span class="cl">    
-</span></span></code></pre></div><h4 id="动画分层">动画分层</h4>
+</span></span></code></pre></div><h4 id="animation-layers">Animation layers</h4>
 <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px;">
-  <img src="image 2.png">
-  <img src="image 3.png">
-  <img src="image 4.png">
+  <img src="../../../projects/ai_npc/image%202.png">
+  <img src="../../../projects/ai_npc/image%203.png">
+  <img src="../../../projects/ai_npc/image%204.png">
 </div>
 <ul>
-<li>Walk：以后用来 handle 跟随行走动画</li>
-<li>UpperLayer：负责说话时的动作</li>
-<li>LookAt：叠加头部动画</li>
+<li><strong>Walk</strong> is reserved for a future walking animation when following another character.</li>
+<li><strong>UpperLayer</strong> handles gestures during speech.</li>
+<li><strong>LookAt</strong> layers head motion onto the pose.</li>
 </ul>
 <hr>
-<h3 id="说话动作逻辑">说话动作逻辑</h3>
+<h3 id="gestures-during-speech">Gestures during speech</h3>
 <ul>
-<li>用动画树（2D Freeform Cartesian）来在一定程度随机生成说话动画
+<li>A 2D Freeform Cartesian blend tree adds variation to the speaking gestures. It has two parameters.
 <ul>
 <li>TalkStyle 0-1</li>
 <li>TalkIntensity 0-1</li>
@@ -157,7 +156,7 @@ eyeBlinkLeft / Right
 <table>
   <thead>
       <tr>
-          <th>动画</th>
+          <th>Animation</th>
           <th>TalkStyle</th>
           <th>TalkIntensity</th>
       </tr>
@@ -185,9 +184,9 @@ eyeBlinkLeft / Right
       </tr>
   </tbody>
 </table>
-<img src="image 5.png" width="400">  
+<img src="../../../projects/ai_npc/image%205.png" width="400">
 <ul>
-<li>Intensity 和表情有关：</li>
+<li>The character’s emotion determines the intensity of its gestures.</li>
 </ul>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-csharp" data-lang="csharp"><span class="line"><span class="cl">    <span class="kd">private</span> <span class="kt">float</span> <span class="n">GetTalkDensity</span><span class="p">(</span><span class="n">EmotionType</span> <span class="n">type</span><span class="p">)</span>
 </span></span><span class="line"><span class="cl">    <span class="p">{</span>
@@ -208,25 +207,25 @@ eyeBlinkLeft / Right
 </span></span><span class="line"><span class="cl">        <span class="p">}</span>
 </span></span><span class="line"><span class="cl">    <span class="p">}</span>
 </span></span></code></pre></div><ul>
-<li>TalkStyle 为随机在 1 / 2 里筛选</li>
+<li>For each variation, the system randomly chooses between the two talk styles.</li>
 </ul>
-<h3 id="expression-逻辑">Expression 逻辑</h3>
+<h3 id="facial-expressions">Facial expressions</h3>
 <p>Expression Controller:</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-csharp" data-lang="csharp"><span class="line"><span class="cl"><span class="n">Start</span><span class="p">()</span>
-</span></span><span class="line"><span class="cl"><span class="err">↓</span>
-</span></span><span class="line"><span class="cl"><span class="n">ApplyExpression</span><span class="p">(</span><span class="err">当前表情</span><span class="p">)</span>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-text" data-lang="text"><span class="line"><span class="cl">Start()
+</span></span><span class="line"><span class="cl">↓
+</span></span><span class="line"><span class="cl">ApplyExpression(currentExpression)
 </span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl"><span class="n">Update</span><span class="p">()</span>
-</span></span><span class="line"><span class="cl"><span class="err">↓</span>
-</span></span><span class="line"><span class="cl"><span class="err">如果表情变了</span>
-</span></span><span class="line"><span class="cl"><span class="err">↓</span>
-</span></span><span class="line"><span class="cl"><span class="n">ApplyExpression</span><span class="p">(</span><span class="err">新表情</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">Update()
+</span></span><span class="line"><span class="cl">↓
+</span></span><span class="line"><span class="cl">If the expression has changed
+</span></span><span class="line"><span class="cl">↓
+</span></span><span class="line"><span class="cl">ApplyExpression(newExpression)
 </span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl"><span class="err">外部调用：</span>
-</span></span><span class="line"><span class="cl"><span class="n">SetExpression</span><span class="p">(...)</span>
-</span></span><span class="line"><span class="cl"><span class="err">↓</span>
-</span></span><span class="line"><span class="cl"><span class="n">ApplyExpression</span><span class="p">(...)</span>
-</span></span></code></pre></div><p>表情预设：</p>
+</span></span><span class="line"><span class="cl">External call:
+</span></span><span class="line"><span class="cl">SetExpression(...)
+</span></span><span class="line"><span class="cl">↓
+</span></span><span class="line"><span class="cl">ApplyExpression(...)
+</span></span></code></pre></div><p>Expression presets and their blend shape weights</p>
 <p>Happy:</p>
 <pre tabindex="0"><code>mouthSmileLeft / Right = 80
 cheekSquintLeft / Right = 40
@@ -249,27 +248,25 @@ jawOpen = 10
 eyeSquintLeft / Right = 50
 mouthPressLeft / Right = 60
 jawForward = 20
-</code></pre><p>编辑器里可以手动调节：</p>
-<img src="image 6.png" width="400">  
-<h3 id="口型逻辑">口型逻辑</h3>
-<ul>
-<li>Viseme 控制逻辑</li>
-</ul>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-csharp" data-lang="csharp"><span class="line"><span class="cl"><span class="n">Start</span><span class="p">()</span>
-</span></span><span class="line"><span class="cl"><span class="err">↓</span>
-</span></span><span class="line"><span class="cl"><span class="n">ApplyViseme</span><span class="p">(</span><span class="n">VisemeType</span> <span class="err">当前口型</span><span class="p">)</span> 
+</code></pre><p>The weights can also be adjusted by hand in the editor.</p>
+<img src="../../../projects/ai_npc/image%206.png" width="400">
+<h3 id="lip-movements">Lip movements</h3>
+<p>The viseme controller applies the current speech shape.</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-text" data-lang="text"><span class="line"><span class="cl">Start()
+</span></span><span class="line"><span class="cl">↓
+</span></span><span class="line"><span class="cl">ApplyViseme(VisemeType currentViseme)
 </span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl"><span class="n">Update</span><span class="p">()</span>
-</span></span><span class="line"><span class="cl"><span class="err">↓</span>
-</span></span><span class="line"><span class="cl"><span class="err">如果口型变了</span>
-</span></span><span class="line"><span class="cl"><span class="err">↓</span>
-</span></span><span class="line"><span class="cl"><span class="n">ApplyViseme</span><span class="p">(</span><span class="n">VisemeType</span> <span class="err">新口型</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">Update()
+</span></span><span class="line"><span class="cl">↓
+</span></span><span class="line"><span class="cl">If the viseme has changed
+</span></span><span class="line"><span class="cl">↓
+</span></span><span class="line"><span class="cl">ApplyViseme(VisemeType newViseme)
 </span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl"><span class="err">外部调用：</span>
-</span></span><span class="line"><span class="cl"><span class="n">SetViseme</span><span class="p">(</span><span class="n">VisemeType</span> <span class="n">visemeType</span><span class="p">)</span>
-</span></span><span class="line"><span class="cl"><span class="err">↓</span>
-</span></span><span class="line"><span class="cl"><span class="n">ApplyViseme</span><span class="p">(</span><span class="n">VisemeType</span> <span class="n">visemeType</span><span class="p">)</span>
-</span></span></code></pre></div><p>Viseme 预设</p>
+</span></span><span class="line"><span class="cl">External call:
+</span></span><span class="line"><span class="cl">SetViseme(VisemeType visemeType)
+</span></span><span class="line"><span class="cl">↓
+</span></span><span class="line"><span class="cl">ApplyViseme(VisemeType visemeType)
+</span></span></code></pre></div><p>Viseme presets</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-csharp" data-lang="csharp"><span class="line"><span class="cl"><span class="kd">public</span> <span class="kd">enum</span> <span class="n">VisemeType</span>
 </span></span><span class="line"><span class="cl"><span class="p">{</span>
 </span></span><span class="line"><span class="cl">    <span class="n">None</span><span class="p">,</span>
@@ -286,7 +283,7 @@ jawForward = 20
 </span></span><span class="line"><span class="cl">    <span class="n">Rest</span>
 </span></span><span class="line"><span class="cl"><span class="p">}</span>
 </span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl"><span class="c1">// 设置了例如以下的：</span>
+</span></span><span class="line"><span class="cl"><span class="c1">// Example preset for closed lips.</span>
 </span></span><span class="line"><span class="cl"><span class="k">new</span> <span class="n">VisemePreset</span>
 </span></span><span class="line"><span class="cl"><span class="p">{</span>
 </span></span><span class="line"><span class="cl">    <span class="n">visemeType</span> <span class="p">=</span> <span class="n">VisemeType</span><span class="p">.</span><span class="n">Closed</span><span class="p">,</span>
@@ -298,109 +295,105 @@ jawForward = 20
 </span></span><span class="line"><span class="cl">        <span class="k">new</span> <span class="n">BlendShapeValue</span> <span class="p">{</span> <span class="n">shapeName</span> <span class="p">=</span> <span class="s">&#34;jawOpen&#34;</span><span class="p">,</span> <span class="k">value</span> <span class="p">=</span> <span class="m">0f</span> <span class="p">}</span>
 </span></span><span class="line"><span class="cl">     <span class="p">}</span>
 </span></span><span class="line"><span class="cl"><span class="p">},</span>
-</span></span></code></pre></div><img src="image 7.png" width="400">   
-<h3 id="blink-逻辑">Blink 逻辑</h3>
+</span></span></code></pre></div><img src="../../../projects/ai_npc/image%207.png" width="400">
+<h3 id="blinking">Blinking</h3>
 <p>BlinkController</p>
 <ul>
-<li>通过 <code>FaceBlendShapeController.SetBlendShape()</code>  去控制 <code>eyeBlinkLeft</code> 和 <code>eyeBlinkRight</code></li>
-<li>核心代码逻辑：</li>
+<li><code>BlinkController</code> drives <code>eyeBlinkLeft</code> and <code>eyeBlinkRight</code> through <code>FaceBlendShapeController.SetBlendShape()</code>.</li>
+<li>Each blink goes through the following states.</li>
 </ul>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-csharp" data-lang="csharp"><span class="line"><span class="cl"><span class="n">Update</span><span class="p">()</span>
-</span></span><span class="line"><span class="cl">  <span class="err">↓</span>
-</span></span><span class="line"><span class="cl"><span class="err">是否需要眨眼？</span>
-</span></span><span class="line"><span class="cl">  <span class="err">↓</span> <span class="err">是</span>
-</span></span><span class="line"><span class="cl"><span class="n">StartBlink</span><span class="p">():</span> <span class="m">1.</span> <span class="err">随机生成眨眼强度</span> <span class="m">2.</span> <span class="n">_blinkState</span> <span class="p">=</span> <span class="n">BlinkState</span><span class="p">.</span><span class="n">Closing</span><span class="p">;</span>
-</span></span><span class="line"><span class="cl">  <span class="err">↓</span>
-</span></span><span class="line"><span class="cl"><span class="n">UpdateBlink</span><span class="p">()</span> <span class="err">三个</span><span class="k">case</span><span class="err">：不眨眼</span> <span class="p">/</span> <span class="n">BlinkState</span><span class="p">.</span><span class="n">Closing</span> <span class="p">/</span> <span class="n">BlinkState</span><span class="p">.</span><span class="n">Opening</span>
-</span></span><span class="line"><span class="cl">  <span class="err">↓</span>
-</span></span><span class="line"><span class="cl"><span class="n">Closing</span><span class="err">：闭眼</span> <span class="m">0</span> <span class="p">-&gt;</span> <span class="err">目标值</span>
-</span></span><span class="line"><span class="cl">  <span class="err">↓</span> <span class="err">一段时间间隔后</span>  <span class="n">_blinkState</span> <span class="p">=</span> <span class="n">BlinkState</span><span class="p">.</span><span class="n">Opening</span> 
-</span></span><span class="line"><span class="cl"><span class="n">Opening</span><span class="err">：睁眼</span> <span class="err">目标值</span> <span class="p">-&gt;</span> <span class="m">0</span>
-</span></span><span class="line"><span class="cl">  <span class="err">↓</span>
-</span></span><span class="line"><span class="cl"><span class="n">ScheduleNextBlink</span><span class="p">()</span>
-</span></span><span class="line"><span class="cl">  <span class="err">↓</span>
-</span></span><span class="line"><span class="cl"><span class="err">回到</span> <span class="n">Update</span><span class="p">()</span>
-</span></span></code></pre></div><h3 id="lookat-逻辑">LookAt 逻辑</h3>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-csharp" data-lang="csharp"><span class="line"><span class="cl"><span class="n">Update</span><span class="p">()</span>
-</span></span><span class="line"><span class="cl">  <span class="err">↓</span>
-</span></span><span class="line"><span class="cl"><span class="err">检查引用和目标是否有效</span>
-</span></span><span class="line"><span class="cl">  <span class="err">↓</span>
-</span></span><span class="line"><span class="cl"><span class="n">ComputeEyeTarget</span><span class="p">()</span>
-</span></span><span class="line"><span class="cl">  <span class="err">↓</span>
-</span></span><span class="line"><span class="cl"><span class="n">ComputeHeadTarget</span><span class="p">()</span>
-</span></span><span class="line"><span class="cl">  <span class="err">↓</span>
-</span></span><span class="line"><span class="cl"><span class="n">UpdateEyeLogic</span><span class="p">()</span>
-</span></span><span class="line"><span class="cl">  <span class="err">↓</span>
-</span></span><span class="line"><span class="cl"><span class="n">UpdateHeadLogic</span><span class="p">()</span>
-</span></span></code></pre></div><ul>
-<li>compute 部分逻</li>
-</ul>
-<p>眼睛：</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-csharp" data-lang="csharp"><span class="line"><span class="cl"><span class="err">目标位置</span>
-</span></span><span class="line"><span class="cl">  <span class="err">↓</span>
-</span></span><span class="line"><span class="cl"><span class="err">转换到</span> <span class="n">eyeReference</span> <span class="err">的局部坐标</span>
-</span></span><span class="line"><span class="cl">  <span class="err">↓</span>
-</span></span><span class="line"><span class="cl"><span class="err">取</span> <span class="n">localOffset</span><span class="p">.</span><span class="n">x</span> <span class="err">计算水平偏移</span>
-</span></span><span class="line"><span class="cl"><span class="err">取</span> <span class="n">localOffset</span><span class="p">.</span><span class="n">y</span> <span class="err">计算垂直偏移</span>
-</span></span><span class="line"><span class="cl">  <span class="err">↓</span>
-</span></span><span class="line"><span class="cl"><span class="err">根据</span> <span class="n">eyeHorizontalLimit</span> <span class="p">/</span> <span class="n">eyeVerticalLimit</span> <span class="err">限制最大角度</span>
-</span></span><span class="line"><span class="cl">  <span class="err">↓</span>
-</span></span><span class="line"><span class="cl"><span class="err">归一化成</span> <span class="p">-</span><span class="m">1</span> <span class="p">~</span> <span class="m">1</span>
-</span></span><span class="line"><span class="cl">  <span class="err">↓</span>
-</span></span><span class="line"><span class="cl"><span class="err">乘以</span> <span class="n">eyeHorizontalWeight</span> <span class="p">/</span> <span class="n">eyeVerticalWeight</span>
-</span></span><span class="line"><span class="cl">  <span class="err">↓</span>
-</span></span><span class="line"><span class="cl"><span class="err">减去当前头部转动量</span> <span class="n">_currentHeadX</span>
-</span></span><span class="line"><span class="cl">  <span class="err">↓</span>
-</span></span><span class="line"><span class="cl"><span class="n">MoveTowards</span> <span class="err">平滑移动</span>
-</span></span><span class="line"><span class="cl">  <span class="err">↓</span>
-</span></span><span class="line"><span class="cl"><span class="err">写入</span> <span class="n">eyeLook</span><span class="p">...</span> <span class="n">BlendShape</span>
-</span></span></code></pre></div><p>头：</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-csharp" data-lang="csharp"><span class="line"><span class="cl"><span class="err">目标位置</span>
-</span></span><span class="line"><span class="cl">  <span class="err">↓</span>
-</span></span><span class="line"><span class="cl"><span class="err">转换到</span> <span class="n">headReference</span> <span class="err">的局部坐标</span>
-</span></span><span class="line"><span class="cl">  <span class="err">↓</span>
-</span></span><span class="line"><span class="cl"><span class="err">用</span> <span class="n">atan2</span><span class="p">(</span><span class="n">localOffset</span><span class="p">.</span><span class="n">x</span><span class="p">,</span> <span class="n">localOffset</span><span class="p">.</span><span class="n">z</span><span class="p">)</span> <span class="err">算水平角度</span>
-</span></span><span class="line"><span class="cl">  <span class="err">↓</span>
-</span></span><span class="line"><span class="cl"><span class="err">限制在</span> <span class="n">headHorizontalLimit</span> <span class="err">范围内</span>
-</span></span><span class="line"><span class="cl">  <span class="err">↓</span>
-</span></span><span class="line"><span class="cl"><span class="err">根据距离计算响应强度</span>
-</span></span><span class="line"><span class="cl">  <span class="err">↓</span>
-</span></span><span class="line"><span class="cl"><span class="err">归一化成</span> <span class="p">-</span><span class="m">1</span> <span class="p">~</span> <span class="m">1</span>
-</span></span><span class="line"><span class="cl">  <span class="err">↓</span>
-</span></span><span class="line"><span class="cl"><span class="err">判断是否超过</span> <span class="n">deadZone</span>
-</span></span><span class="line"><span class="cl">  <span class="err">↓</span>
-</span></span><span class="line"><span class="cl"><span class="err">等待眼睛先转到一定程度</span>
-</span></span><span class="line"><span class="cl">  <span class="err">↓</span>
-</span></span><span class="line"><span class="cl"><span class="err">头部开始跟随</span>
-</span></span><span class="line"><span class="cl">  <span class="err">↓</span>
-</span></span><span class="line"><span class="cl"><span class="n">MoveTowards</span> <span class="err">平滑转头</span>
-</span></span><span class="line"><span class="cl">  <span class="err">↓</span>
-</span></span><span class="line"><span class="cl"><span class="err">写入</span> <span class="n">Animator</span> <span class="err">参数</span>
-</span></span></code></pre></div><ul>
-<li>update 部分逻辑</li>
-</ul>
-<p>眼睛部分：set blend shape：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-text" data-lang="text"><span class="line"><span class="cl">Update()
+</span></span><span class="line"><span class="cl">  ↓
+</span></span><span class="line"><span class="cl">Is it time to blink?
+</span></span><span class="line"><span class="cl">  ↓ Yes
+</span></span><span class="line"><span class="cl">StartBlink(): choose a random blink intensity and set _blinkState = BlinkState.Closing
+</span></span><span class="line"><span class="cl">  ↓
+</span></span><span class="line"><span class="cl">UpdateBlink() handles three states: idle, BlinkState.Closing, and BlinkState.Opening
+</span></span><span class="line"><span class="cl">  ↓
+</span></span><span class="line"><span class="cl">Closing: increase the eyelid weight from 0 to the target
+</span></span><span class="line"><span class="cl">  ↓ After a short interval, set _blinkState = BlinkState.Opening
+</span></span><span class="line"><span class="cl">Opening: decrease the weight from the target to 0
+</span></span><span class="line"><span class="cl">  ↓
+</span></span><span class="line"><span class="cl">ScheduleNextBlink()
+</span></span><span class="line"><span class="cl">  ↓
+</span></span><span class="line"><span class="cl">Return to Update()
+</span></span></code></pre></div><h3 id="gaze-and-head-tracking">Gaze and head tracking</h3>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-text" data-lang="text"><span class="line"><span class="cl">Update()
+</span></span><span class="line"><span class="cl">  ↓
+</span></span><span class="line"><span class="cl">Check that the references and target are valid
+</span></span><span class="line"><span class="cl">  ↓
+</span></span><span class="line"><span class="cl">ComputeEyeTarget()
+</span></span><span class="line"><span class="cl">  ↓
+</span></span><span class="line"><span class="cl">ComputeHeadTarget()
+</span></span><span class="line"><span class="cl">  ↓
+</span></span><span class="line"><span class="cl">UpdateEyeLogic()
+</span></span><span class="line"><span class="cl">  ↓
+</span></span><span class="line"><span class="cl">UpdateHeadLogic()
+</span></span></code></pre></div><h4 id="computing-the-targets">Computing the targets</h4>
+<p>Eyes</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-text" data-lang="text"><span class="line"><span class="cl">Start with the target position
+</span></span><span class="line"><span class="cl">  ↓
+</span></span><span class="line"><span class="cl">Convert it to the local space of eyeReference
+</span></span><span class="line"><span class="cl">  ↓
+</span></span><span class="line"><span class="cl">Use localOffset.x for the horizontal offset
+</span></span><span class="line"><span class="cl">Use localOffset.y for the vertical offset
+</span></span><span class="line"><span class="cl">  ↓
+</span></span><span class="line"><span class="cl">Clamp the angles using eyeHorizontalLimit and eyeVerticalLimit
+</span></span><span class="line"><span class="cl">  ↓
+</span></span><span class="line"><span class="cl">Normalize to the range [-1, 1]
+</span></span><span class="line"><span class="cl">  ↓
+</span></span><span class="line"><span class="cl">Apply eyeHorizontalWeight and eyeVerticalWeight to their respective axes
+</span></span><span class="line"><span class="cl">  ↓
+</span></span><span class="line"><span class="cl">Subtract the current head rotation, _currentHeadX
+</span></span><span class="line"><span class="cl">  ↓
+</span></span><span class="line"><span class="cl">Smooth the movement with MoveTowards
+</span></span><span class="line"><span class="cl">  ↓
+</span></span><span class="line"><span class="cl">Write the eyeLook... blend shape weights
+</span></span></code></pre></div><p>Head</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-text" data-lang="text"><span class="line"><span class="cl">Start with the target position
+</span></span><span class="line"><span class="cl">  ↓
+</span></span><span class="line"><span class="cl">Convert it to the local space of headReference
+</span></span><span class="line"><span class="cl">  ↓
+</span></span><span class="line"><span class="cl">Compute the horizontal angle with atan2(localOffset.x, localOffset.z)
+</span></span><span class="line"><span class="cl">  ↓
+</span></span><span class="line"><span class="cl">Clamp it using headHorizontalLimit
+</span></span><span class="line"><span class="cl">  ↓
+</span></span><span class="line"><span class="cl">Scale the response by distance
+</span></span><span class="line"><span class="cl">  ↓
+</span></span><span class="line"><span class="cl">Normalize to the range [-1, 1]
+</span></span><span class="line"><span class="cl">  ↓
+</span></span><span class="line"><span class="cl">Check whether the angle exceeds deadZone
+</span></span><span class="line"><span class="cl">  ↓
+</span></span><span class="line"><span class="cl">Wait for the eyes to turn partway toward the target
+</span></span><span class="line"><span class="cl">  ↓
+</span></span><span class="line"><span class="cl">Start turning the head to follow
+</span></span><span class="line"><span class="cl">  ↓
+</span></span><span class="line"><span class="cl">Smooth the turn with MoveTowards
+</span></span><span class="line"><span class="cl">  ↓
+</span></span><span class="line"><span class="cl">Write the Animator parameters
+</span></span></code></pre></div><h4 id="applying-the-updates">Applying the updates</h4>
+<p>The eyes are driven by blend shape weights.</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-csharp" data-lang="csharp"><span class="line"><span class="cl"><span class="n">faceController</span><span class="p">.</span><span class="n">SetBlendShape</span><span class="p">(</span><span class="s">&#34;eyeLookUpLeft&#34;</span><span class="p">,</span> <span class="n">eyeLookUpLeft</span><span class="p">);</span>
 </span></span><span class="line"><span class="cl"><span class="n">faceController</span><span class="p">.</span><span class="n">SetBlendShape</span><span class="p">(</span><span class="s">&#34;eyeLookUpRight&#34;</span><span class="p">,</span> <span class="n">eyeLookUpRight</span><span class="p">);</span>
 </span></span><span class="line"><span class="cl"><span class="n">faceController</span><span class="p">.</span><span class="n">SetBlendShape</span><span class="p">(</span><span class="s">&#34;eyeLookDownLeft&#34;</span><span class="p">,</span> <span class="n">eyeLookDownLeft</span><span class="p">);</span>
 </span></span><span class="line"><span class="cl"><span class="n">faceController</span><span class="p">.</span><span class="n">SetBlendShape</span><span class="p">(</span><span class="s">&#34;eyeLookDownRight&#34;</span><span class="p">,</span> <span class="n">eyeLookDownRight</span><span class="p">);</span>
-</span></span></code></pre></div><p>动画部分逻辑：</p>
-<img src="image 8.png" width="400">  
-<h2 id="其它">其它</h2>
-<h3 id="tts-解决方案">TTS 解决方案</h3>
-<p>与 tts 的连接逻辑：</p>
-<p>使用的是微软的 Azure 服务，使用了 unity 外的 python 脚本</p>
-<p>传过去：</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-csharp" data-lang="csharp"><span class="line"><span class="cl"><span class="k">class</span> <span class="nc">TtsRequest</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">):</span>
-</span></span><span class="line"><span class="cl">    <span class="n">text</span><span class="p">:</span> <span class="n">str</span>
-</span></span><span class="line"><span class="cl">    <span class="n">voice</span><span class="p">:</span> <span class="n">str</span> <span class="p">=</span> <span class="s">&#34;zh-CN-XiaoxiaoNeural&#34;</span>
-</span></span><span class="line"><span class="cl">    <span class="n">style</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">str</span><span class="p">]</span> <span class="p">=</span> <span class="n">None</span>
-</span></span><span class="line"><span class="cl">    <span class="n">rate</span><span class="p">:</span> <span class="n">str</span> <span class="p">=</span> <span class="s">&#34;0%&#34;</span>
-</span></span><span class="line"><span class="cl">    <span class="n">pitch</span><span class="p">:</span> <span class="n">str</span> <span class="p">=</span> <span class="s">&#34;0%&#34;</span>
-</span></span><span class="line"><span class="cl">    <span class="n">volume</span><span class="p">:</span> <span class="n">str</span> <span class="p">=</span> <span class="s">&#34;0%&#34;</span>
-</span></span><span class="line"><span class="cl">    <span class="n">request_viseme</span><span class="p">:</span> <span class="kt">bool</span> <span class="p">=</span> <span class="n">True</span>
-</span></span><span class="line"><span class="cl">    <span class="n">emotion</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">str</span><span class="p">]</span> <span class="p">=</span> <span class="s">&#34;neutral&#34;</span>
-</span></span></code></pre></div><p>传回来：</p>
+</span></span></code></pre></div><p>The Animator graph handles the head movement.</p>
+<img src="../../../projects/ai_npc/image%208.png" width="400">
+<h2 id="speech-and-conversation">Speech and conversation</h2>
+<h3 id="text-to-speech-with-azure">Text-to-speech with Azure</h3>
+<p>Connecting Unity to the speech service</p>
+<p>I used Microsoft Azure for speech synthesis, with a Python script running outside Unity.</p>
+<p>Unity sends the following request.</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="k">class</span> <span class="nc">TtsRequest</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">    <span class="n">text</span><span class="p">:</span> <span class="nb">str</span>
+</span></span><span class="line"><span class="cl">    <span class="n">voice</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&#34;zh-CN-XiaoxiaoNeural&#34;</span>
+</span></span><span class="line"><span class="cl">    <span class="n">style</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+</span></span><span class="line"><span class="cl">    <span class="n">rate</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&#34;0%&#34;</span>
+</span></span><span class="line"><span class="cl">    <span class="n">pitch</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&#34;0%&#34;</span>
+</span></span><span class="line"><span class="cl">    <span class="n">volume</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&#34;0%&#34;</span>
+</span></span><span class="line"><span class="cl">    <span class="n">request_viseme</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span>
+</span></span><span class="line"><span class="cl">    <span class="n">emotion</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&#34;neutral&#34;</span>
+</span></span></code></pre></div><p>The server returns a response like this.</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-json" data-lang="json"><span class="line"><span class="cl"><span class="p">{</span>
 </span></span><span class="line"><span class="cl">  <span class="nt">&#34;ok&#34;</span><span class="p">:</span> <span class="kc">true</span><span class="p">,</span>
 </span></span><span class="line"><span class="cl">  <span class="nt">&#34;audio_base64&#34;</span><span class="p">:</span> <span class="s2">&#34;UklGRiQAAABXQVZF...&#34;</span><span class="p">,</span>
@@ -422,149 +415,139 @@ jawForward = 20
 </span></span><span class="line"><span class="cl">  <span class="p">},</span>
 </span></span><span class="line"><span class="cl">  <span class="nt">&#34;words&#34;</span><span class="p">:</span> <span class="p">[]</span>
 </span></span><span class="line"><span class="cl"><span class="p">}</span>
-</span></span></code></pre></div><ul>
-<li>接收逻辑</li>
-</ul>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-csharp" data-lang="csharp"><span class="line"><span class="cl"><span class="n">SpeakCoroutine</span><span class="p">(</span><span class="n">text</span><span class="p">)</span>
-</span></span><span class="line"><span class="cl">        <span class="err">↓</span>
-</span></span><span class="line"><span class="cl"><span class="err">初始化状态</span>
-</span></span><span class="line"><span class="cl"><span class="n">_isPreparing</span> <span class="p">=</span> <span class="kc">true</span>
-</span></span><span class="line"><span class="cl"><span class="n">_isReadyToTalk</span> <span class="p">=</span> <span class="kc">false</span>
-</span></span><span class="line"><span class="cl"><span class="n">_hasPlaybackStarted</span> <span class="p">=</span> <span class="kc">false</span>
-</span></span><span class="line"><span class="cl"><span class="n">_hasPlaybackCompleted</span> <span class="p">=</span> <span class="kc">false</span>
-</span></span><span class="line"><span class="cl"><span class="n">talking</span> <span class="p">=</span> <span class="kc">false</span>
-</span></span><span class="line"><span class="cl">        <span class="err">↓</span>
-</span></span><span class="line"><span class="cl"><span class="err">处理旧的音频</span> <span class="p">/</span> <span class="n">update</span> <span class="n">audisource</span> <span class="err">和</span> <span class="n">visemeSyncPlayer</span>
-</span></span><span class="line"><span class="cl">        <span class="err">↓</span>
-</span></span><span class="line"><span class="cl"><span class="err">构造</span> <span class="n">AzureTtsRequest</span><span class="err">，想服务器请求</span> <span class="n">UnityWebRequest</span> <span class="n">POST</span> <span class="n">serverUrl</span>
-</span></span><span class="line"><span class="cl">        <span class="err">↓</span>
-</span></span><span class="line"><span class="cl"><span class="k">yield</span> <span class="k">return</span> <span class="n">request</span><span class="p">.</span><span class="n">SendWebRequest</span><span class="p">()</span><span class="err">等待服务器返回</span>
-</span></span><span class="line"><span class="cl">        <span class="err">↓</span>
-</span></span><span class="line"><span class="cl">        <span class="err">↓</span> <span class="err">如果请求成功</span>
-</span></span><span class="line"><span class="cl">        <span class="err">↓</span>
-</span></span><span class="line"><span class="cl"><span class="err">读取</span> <span class="n">responseJson</span>
-</span></span><span class="line"><span class="cl"><span class="n">JsonUtility</span><span class="p">.</span><span class="n">FromJson</span><span class="p">&lt;</span><span class="n">AzureTtsResponse</span><span class="p">&gt;()</span><span class="err">，设置检验逻辑</span>
-</span></span><span class="line"><span class="cl">        <span class="err">↓</span>
-</span></span><span class="line"><span class="cl">        <span class="err">↓</span>
-</span></span><span class="line"><span class="cl"><span class="n">audio_base64</span><span class="err">：需要转换成</span> <span class="n">AudioClip</span>
-</span></span><span class="line"><span class="cl">        <span class="err">↓</span>
-</span></span><span class="line"><span class="cl"><span class="n">Convert</span><span class="p">.</span><span class="n">FromBase64String</span><span class="p">(...)</span> <span class="err">返回：</span><span class="n">wavBytes</span>
-</span></span><span class="line"><span class="cl"><span class="n">WavUtility</span><span class="p">.</span><span class="n">ToAudioClip</span><span class="p">(...)</span> <span class="err">返回：</span><span class="n">AudioClip</span> <span class="n">clip</span>
-</span></span><span class="line"><span class="cl">        <span class="err">↓</span>
-</span></span><span class="line"><span class="cl">        <span class="err">↓</span> 
-</span></span><span class="line"><span class="cl"><span class="err">同时启动音画逻辑：</span>
-</span></span><span class="line"><span class="cl"><span class="err">把</span> <span class="n">AudioClip</span> <span class="err">交给</span> <span class="n">AudioSource</span><span class="err">：</span><span class="n">audioSource</span><span class="p">.</span><span class="n">clip</span> <span class="p">=</span> <span class="n">clip</span><span class="p">;</span>
-</span></span><span class="line"><span class="cl"><span class="err">把</span> <span class="n">Visemes</span> <span class="err">交给</span> <span class="n">visemeSyncPlayer</span> <span class="n">visemeSyncPlayer</span><span class="p">.</span><span class="n">LoadTimeline</span><span class="p">(</span><span class="n">response</span><span class="p">.</span><span class="n">visemes</span><span class="p">)</span>
-</span></span><span class="line"><span class="cl">        <span class="err">↓</span>
-</span></span><span class="line"><span class="cl">        <span class="err">↓</span>
-</span></span><span class="line"><span class="cl"><span class="err">音频</span> <span class="p">+</span> <span class="err">口型时间线准备完成</span>
-</span></span><span class="line"><span class="cl"><span class="n">_isPreparing</span> <span class="p">=</span> <span class="kc">false</span>
-</span></span><span class="line"><span class="cl"><span class="n">_isReadyToTalk</span> <span class="p">=</span> <span class="kc">true</span>
-</span></span><span class="line"><span class="cl">        <span class="err">↓</span>
-</span></span><span class="line"><span class="cl"><span class="err">等待</span> <span class="n">talking</span> <span class="p">==</span> <span class="kc">true</span>  <span class="k">yield</span> <span class="k">return</span> <span class="k">new</span> <span class="n">WaitUntil</span><span class="p">(()</span> <span class="p">=&gt;</span> <span class="n">talking</span><span class="p">)</span>
-</span></span><span class="line"><span class="cl">        <span class="err">↓</span>
-</span></span><span class="line"><span class="cl"><span class="n">AudioSource</span><span class="p">.</span><span class="n">Play</span><span class="p">()</span>
-</span></span><span class="line"><span class="cl">        <span class="err">↓</span>
-</span></span><span class="line"><span class="cl"><span class="n">_hasPlaybackStarted</span> <span class="p">=</span> <span class="kc">true</span>
-</span></span><span class="line"><span class="cl"><span class="n">_hasPlaybackCompleted</span> <span class="p">=</span> <span class="kc">false</span>
-</span></span><span class="line"><span class="cl">        <span class="err">↓</span>
-</span></span><span class="line"><span class="cl"><span class="n">visemeSyncPlayer</span><span class="p">.</span><span class="n">Play</span><span class="p">()</span>
-</span></span><span class="line"><span class="cl">        <span class="err">↓</span>
-</span></span><span class="line"><span class="cl"><span class="n">_isReadyToTalk</span> <span class="p">=</span> <span class="kc">false</span>
-</span></span><span class="line"><span class="cl">        <span class="err">↓</span>
-</span></span><span class="line"><span class="cl"><span class="err">如果</span> <span class="n">resetTalkingAfterPlaybackStarts</span> <span class="p">==</span> <span class="kc">true</span>
-</span></span><span class="line"><span class="cl"><span class="n">talking</span> <span class="p">=</span> <span class="kc">false</span>
-</span></span><span class="line"><span class="cl">        <span class="err">↓</span>
-</span></span><span class="line"><span class="cl"><span class="err">等待音频播放结束</span>
-</span></span><span class="line"><span class="cl"><span class="k">yield</span> <span class="k">return</span> <span class="k">new</span> <span class="n">WaitWhile</span><span class="p">(()</span> <span class="p">=&gt;</span> <span class="n">audioSource</span><span class="p">.</span><span class="n">isPlaying</span><span class="p">)</span>
-</span></span><span class="line"><span class="cl">        <span class="err">↓</span>
-</span></span><span class="line"><span class="cl"><span class="n">_hasPlaybackCompleted</span> <span class="p">=</span> <span class="kc">true</span>
-</span></span><span class="line"><span class="cl"><span class="n">_speakCoroutine</span> <span class="p">=</span> <span class="kc">null</span>
-</span></span><span class="line"><span class="cl">        <span class="err">↓</span>
-</span></span><span class="line"><span class="cl"><span class="err">协程结束</span>
-</span></span></code></pre></div><ul>
-<li>播放逻辑</li>
-</ul>
+</span></span></code></pre></div><h4 id="receiving-the-synthesized-line">Receiving the synthesized line</h4>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-text" data-lang="text"><span class="line"><span class="cl">SpeakCoroutine(text)
+</span></span><span class="line"><span class="cl">        ↓
+</span></span><span class="line"><span class="cl">Initialize the playback state
+</span></span><span class="line"><span class="cl">_isPreparing = true
+</span></span><span class="line"><span class="cl">_isReadyToTalk = false
+</span></span><span class="line"><span class="cl">_hasPlaybackStarted = false
+</span></span><span class="line"><span class="cl">_hasPlaybackCompleted = false
+</span></span><span class="line"><span class="cl">talking = false
+</span></span><span class="line"><span class="cl">        ↓
+</span></span><span class="line"><span class="cl">Clear the previous audio and update the AudioSource and visemeSyncPlayer
+</span></span><span class="line"><span class="cl">        ↓
+</span></span><span class="line"><span class="cl">Build an AzureTtsRequest and POST it to serverUrl with UnityWebRequest
+</span></span><span class="line"><span class="cl">        ↓
+</span></span><span class="line"><span class="cl">yield return request.SendWebRequest() to wait for the response
+</span></span><span class="line"><span class="cl">        ↓
+</span></span><span class="line"><span class="cl">        ↓ If the request succeeds
+</span></span><span class="line"><span class="cl">        ↓
+</span></span><span class="line"><span class="cl">Read responseJson
+</span></span><span class="line"><span class="cl">Parse it with JsonUtility.FromJson&lt;AzureTtsResponse&gt;() and validate the response
+</span></span><span class="line"><span class="cl">        ↓
+</span></span><span class="line"><span class="cl">        ↓
+</span></span><span class="line"><span class="cl">Convert audio_base64 to an AudioClip
+</span></span><span class="line"><span class="cl">        ↓
+</span></span><span class="line"><span class="cl">Convert.FromBase64String(...) returns wavBytes
+</span></span><span class="line"><span class="cl">WavUtility.ToAudioClip(...) returns AudioClip clip
+</span></span><span class="line"><span class="cl">        ↓
+</span></span><span class="line"><span class="cl">        ↓
+</span></span><span class="line"><span class="cl">Prepare both playback tracks:
+</span></span><span class="line"><span class="cl">Assign the clip to the AudioSource: audioSource.clip = clip;
+</span></span><span class="line"><span class="cl">Load the visemes: visemeSyncPlayer.LoadTimeline(response.visemes)
+</span></span><span class="line"><span class="cl">        ↓
+</span></span><span class="line"><span class="cl">        ↓
+</span></span><span class="line"><span class="cl">The audio and viseme timeline are ready
+</span></span><span class="line"><span class="cl">_isPreparing = false
+</span></span><span class="line"><span class="cl">_isReadyToTalk = true
+</span></span><span class="line"><span class="cl">        ↓
+</span></span><span class="line"><span class="cl">Wait for talking == true: yield return new WaitUntil(() =&gt; talking)
+</span></span><span class="line"><span class="cl">        ↓
+</span></span><span class="line"><span class="cl">AudioSource.Play()
+</span></span><span class="line"><span class="cl">        ↓
+</span></span><span class="line"><span class="cl">_hasPlaybackStarted = true
+</span></span><span class="line"><span class="cl">_hasPlaybackCompleted = false
+</span></span><span class="line"><span class="cl">        ↓
+</span></span><span class="line"><span class="cl">visemeSyncPlayer.Play()
+</span></span><span class="line"><span class="cl">        ↓
+</span></span><span class="line"><span class="cl">_isReadyToTalk = false
+</span></span><span class="line"><span class="cl">        ↓
+</span></span><span class="line"><span class="cl">If resetTalkingAfterPlaybackStarts == true
+</span></span><span class="line"><span class="cl">talking = false
+</span></span><span class="line"><span class="cl">        ↓
+</span></span><span class="line"><span class="cl">Wait for audio playback to finish
+</span></span><span class="line"><span class="cl">yield return new WaitWhile(() =&gt; audioSource.isPlaying)
+</span></span><span class="line"><span class="cl">        ↓
+</span></span><span class="line"><span class="cl">_hasPlaybackCompleted = true
+</span></span><span class="line"><span class="cl">_speakCoroutine = null
+</span></span><span class="line"><span class="cl">        ↓
+</span></span><span class="line"><span class="cl">End the coroutine
+</span></span></code></pre></div><h4 id="playing-the-synthesized-line">Playing the synthesized line</h4>
 <ol>
-<li>用代码让 tts 返回类似这样的结构体：</li>
+<li>Convert the timing information from TTS into frames like this one.</li>
 </ol>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-csharp" data-lang="csharp"><span class="line"><span class="cl"><span class="kd">public</span> <span class="n">LipSyncFrame</span><span class="p">(</span><span class="kt">float</span> <span class="n">timeMs</span><span class="p">,</span> <span class="n">VisemeType</span> <span class="n">visemeType</span><span class="p">)</span>
 </span></span><span class="line"><span class="cl"><span class="p">{</span>
 </span></span><span class="line"><span class="cl">    <span class="k">this</span><span class="p">.</span><span class="n">timeMs</span> <span class="p">=</span> <span class="n">timeMs</span><span class="p">;</span>
 </span></span><span class="line"><span class="cl">    <span class="k">this</span><span class="p">.</span><span class="n">visemeType</span> <span class="p">=</span> <span class="n">visemeType</span><span class="p">;</span>
 </span></span><span class="line"><span class="cl"><span class="p">}</span>
-</span></span></code></pre></div><p>核心代码逻辑：</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-csharp" data-lang="csharp"><span class="line"><span class="cl"><span class="n">Update</span><span class="p">()</span>
-</span></span><span class="line"><span class="cl"><span class="err">↓</span>
-</span></span><span class="line"><span class="cl"><span class="err">检查是否正在播放</span>
-</span></span><span class="line"><span class="cl"><span class="err">↓</span>
-</span></span><span class="line"><span class="cl"><span class="err">检查</span> <span class="n">audioSource</span> <span class="p">/</span> <span class="n">visemeController</span> <span class="err">是否有效</span>
-</span></span><span class="line"><span class="cl"><span class="err">↓</span>
-</span></span><span class="line"><span class="cl"><span class="err">检查音频是否结束</span>
-</span></span><span class="line"><span class="cl">    <span class="err">↓</span>
-</span></span><span class="line"><span class="cl">    <span class="err">如果结束：</span><span class="n">Stop</span><span class="p">()</span>
+</span></span></code></pre></div><p>The player uses the audio clock to select the active viseme.</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-text" data-lang="text"><span class="line"><span class="cl">Update()
+</span></span><span class="line"><span class="cl">↓
+</span></span><span class="line"><span class="cl">Check whether playback is active
+</span></span><span class="line"><span class="cl">↓
+</span></span><span class="line"><span class="cl">Check that audioSource and visemeController are valid
+</span></span><span class="line"><span class="cl">↓
+</span></span><span class="line"><span class="cl">Check whether the audio has finished
+</span></span><span class="line"><span class="cl">    ↓
+</span></span><span class="line"><span class="cl">    If it has finished, call Stop()
 </span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl"><span class="err">↓</span>
-</span></span><span class="line"><span class="cl"><span class="err">检查时间轴是否为空</span>
-</span></span><span class="line"><span class="cl"><span class="err">↓</span>
-</span></span><span class="line"><span class="cl"><span class="err">读取当前音频播放时间</span>
-</span></span><span class="line"><span class="cl"><span class="err">↓</span>
-</span></span><span class="line"><span class="cl"><span class="err">根据时间推进到对应的口型节点</span>
-</span></span><span class="line"><span class="cl"><span class="err">↓</span>
-</span></span><span class="line"><span class="cl"><span class="err">取得目标口型</span> <span class="n">target</span>
-</span></span><span class="line"><span class="cl"><span class="err">↓</span>
-</span></span><span class="line"><span class="cl"><span class="err">如果目标口型</span> <span class="p">!=</span> <span class="err">当前口型</span>
-</span></span><span class="line"><span class="cl">    <span class="err">↓</span>
-</span></span><span class="line"><span class="cl">    <span class="n">SetCurrentViseme</span><span class="p">(</span><span class="n">target</span><span class="p">)</span>
-</span></span><span class="line"><span class="cl">    <span class="err">↓</span>
-</span></span><span class="line"><span class="cl">    <span class="err">更新当前口型</span>
-</span></span></code></pre></div><ul>
-<li>核心同步原理：</li>
-</ul>
+</span></span><span class="line"><span class="cl">↓
+</span></span><span class="line"><span class="cl">Check whether the timeline is empty
+</span></span><span class="line"><span class="cl">↓
+</span></span><span class="line"><span class="cl">Read the current audio playback time
+</span></span><span class="line"><span class="cl">↓
+</span></span><span class="line"><span class="cl">Advance to the viseme frame for that time
+</span></span><span class="line"><span class="cl">↓
+</span></span><span class="line"><span class="cl">Get the target viseme
+</span></span><span class="line"><span class="cl">↓
+</span></span><span class="line"><span class="cl">If the target differs from the current viseme
+</span></span><span class="line"><span class="cl">    ↓
+</span></span><span class="line"><span class="cl">    SetCurrentViseme(target)
+</span></span><span class="line"><span class="cl">    ↓
+</span></span><span class="line"><span class="cl">    Update the current viseme
+</span></span></code></pre></div><h4 id="keeping-speech-and-lip-movements-in-sync">Keeping speech and lip movements in sync</h4>
 <ol>
-<li>AzureTtsClients 处同时申请 AudioSource 和 VisemeSyncPlayer</li>
-<li>VisemeSyncPlayer 按照 AudioSource 的时间播放</li>
+<li><code>AzureTtsClients</code> sets up the AudioSource and VisemeSyncPlayer together.</li>
+<li>VisemeSyncPlayer follows the AudioSource playback time.</li>
 </ol>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-csharp" data-lang="csharp"><span class="line"><span class="cl"><span class="kt">float</span> <span class="n">currentTimeMs</span> <span class="p">=</span> <span class="n">audioSource</span><span class="p">.</span><span class="n">time</span> <span class="p">*</span> <span class="m">1000f</span><span class="p">;</span>
 </span></span><span class="line"><span class="cl"><span class="n">VisemeType</span> <span class="n">target</span> <span class="p">=</span> <span class="n">_timeline</span><span class="p">[</span><span class="n">_currentIndex</span><span class="p">].</span><span class="n">visemeType</span><span class="p">;</span>
-</span></span></code></pre></div><h3 id="双人调度逻辑">双人调度逻辑</h3>
-<ul>
-<li>ConversationStreamReceiver：负责接收输入</li>
-</ul>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-csharp" data-lang="csharp"><span class="line"><span class="cl"><span class="n">StartReading</span><span class="p">()</span>
-</span></span><span class="line"><span class="cl">  <span class="err">↓</span>
-</span></span><span class="line"><span class="cl"><span class="n">StartStreamConversation</span><span class="p">()</span>
-</span></span><span class="line"><span class="cl">  <span class="err">↓</span>
-</span></span><span class="line"><span class="cl"><span class="n">ReadTalkPiece</span><span class="p">()</span>
-</span></span><span class="line"><span class="cl">  <span class="err">↓</span>
-</span></span><span class="line"><span class="cl"><span class="n">EnqueueTalkPiece</span><span class="p">()</span> <span class="c1">// 用Queue 来存储流式输入</span>
-</span></span><span class="line"><span class="cl">  <span class="err">↓</span>
-</span></span><span class="line"><span class="cl"><span class="p">.....</span>
-</span></span><span class="line"><span class="cl">  <span class="err">↓</span>
-</span></span><span class="line"><span class="cl"><span class="n">CompleteReading</span><span class="p">()</span>
-</span></span><span class="line"><span class="cl">  <span class="err">↓</span>
-</span></span><span class="line"><span class="cl"><span class="n">MarkStreamCompleted</span><span class="p">()</span>
-</span></span></code></pre></div><ul>
-<li>ConversationDirector：负责调度 NPC 怎么说、什么时候说、谁听谁</li>
-</ul>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-csharp" data-lang="csharp"><span class="line"><span class="cl"><span class="err">确定说话人</span> <span class="n">speaker</span>
-</span></span><span class="line"><span class="cl"><span class="err">确定听话人</span> <span class="n">listener</span>
-</span></span><span class="line"><span class="cl">  <span class="err">↓</span>
-</span></span><span class="line"><span class="cl"><span class="err">准备当前句</span> <span class="n">TTS</span>
-</span></span><span class="line"><span class="cl">  <span class="err">↓</span>
-</span></span><span class="line"><span class="cl"><span class="err">等待</span> <span class="n">TTS</span> <span class="n">ready</span>
-</span></span><span class="line"><span class="cl">  <span class="err">↓</span>
-</span></span><span class="line"><span class="cl"><span class="n">listener</span> <span class="err">进入听状态，看向</span> <span class="n">speaker</span>
-</span></span><span class="line"><span class="cl">  <span class="err">↓</span>
-</span></span><span class="line"><span class="cl"><span class="n">speaker</span> <span class="err">开始说话</span>
-</span></span><span class="line"><span class="cl">  <span class="err">↓</span>
-</span></span><span class="line"><span class="cl"><span class="err">说到</span> <span class="n">preTriggerPercent</span> <span class="err">时，提前准备下一句</span>
-</span></span><span class="line"><span class="cl">  <span class="err">↓</span>
-</span></span><span class="line"><span class="cl"><span class="err">当前句说完</span>
-</span></span><span class="line"><span class="cl">  <span class="err">↓</span>
-</span></span><span class="line"><span class="cl"><span class="n">speaker</span> <span class="err">结束说话</span>
-</span></span><span class="line"><span class="cl">  <span class="err">↓</span>
-</span></span><span class="line"><span class="cl"><span class="err">如果下一句还没来，就进入</span> <span class="n">Thinking</span> <span class="err">等待</span>
+</span></span></code></pre></div><h3 id="coordinating-two-speakers">Coordinating two speakers</h3>
+<p><code>ConversationStreamReceiver</code> receives the incoming dialogue.</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-text" data-lang="text"><span class="line"><span class="cl">StartReading()
+</span></span><span class="line"><span class="cl">  ↓
+</span></span><span class="line"><span class="cl">StartStreamConversation()
+</span></span><span class="line"><span class="cl">  ↓
+</span></span><span class="line"><span class="cl">ReadTalkPiece()
+</span></span><span class="line"><span class="cl">  ↓
+</span></span><span class="line"><span class="cl">EnqueueTalkPiece() // Queue each piece of incoming dialogue.
+</span></span><span class="line"><span class="cl">  ↓
+</span></span><span class="line"><span class="cl">.....
+</span></span><span class="line"><span class="cl">  ↓
+</span></span><span class="line"><span class="cl">CompleteReading()
+</span></span><span class="line"><span class="cl">  ↓
+</span></span><span class="line"><span class="cl">MarkStreamCompleted()
+</span></span></code></pre></div><p><code>ConversationDirector</code> decides who speaks, when they speak, and who listens to whom.</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-text" data-lang="text"><span class="line"><span class="cl">Identify the speaker
+</span></span><span class="line"><span class="cl">Identify the listener
+</span></span><span class="line"><span class="cl">  ↓
+</span></span><span class="line"><span class="cl">Prepare TTS for the current line
+</span></span><span class="line"><span class="cl">  ↓
+</span></span><span class="line"><span class="cl">Wait until TTS is ready
+</span></span><span class="line"><span class="cl">  ↓
+</span></span><span class="line"><span class="cl">Put the listener into the listening state and look toward the speaker
+</span></span><span class="line"><span class="cl">  ↓
+</span></span><span class="line"><span class="cl">Start the speaker’s line
+</span></span><span class="line"><span class="cl">  ↓
+</span></span><span class="line"><span class="cl">At preTriggerPercent, start preparing the next line
+</span></span><span class="line"><span class="cl">  ↓
+</span></span><span class="line"><span class="cl">Wait for the current line to finish
+</span></span><span class="line"><span class="cl">  ↓
+</span></span><span class="line"><span class="cl">End the speaker’s turn
+</span></span><span class="line"><span class="cl">  ↓
+</span></span><span class="line"><span class="cl">If the next line has not arrived, wait in the Thinking state
 </span></span></code></pre></div>
       </div>
     </article>
@@ -574,21 +557,21 @@ jawForward = 20
       <div class="single-toc-body">
         <nav id="TableOfContents">
   <ul>
-    <li><a href="#ai-虚拟人动画">AI 虚拟人动画</a></li>
-    <li><a href="#动画系统">动画系统</a>
+    <li><a href="#animating-two-ai-characters">Animating two AI characters</a></li>
+    <li><a href="#animation-system">Animation system</a>
       <ul>
-        <li><a href="#总框架">总框架：</a></li>
-        <li><a href="#说话动作逻辑">说话动作逻辑</a></li>
-        <li><a href="#expression-逻辑">Expression 逻辑</a></li>
-        <li><a href="#口型逻辑">口型逻辑</a></li>
-        <li><a href="#blink-逻辑">Blink 逻辑</a></li>
-        <li><a href="#lookat-逻辑">LookAt 逻辑</a></li>
+        <li><a href="#how-the-controllers-fit-together">How the controllers fit together</a></li>
+        <li><a href="#gestures-during-speech">Gestures during speech</a></li>
+        <li><a href="#facial-expressions">Facial expressions</a></li>
+        <li><a href="#lip-movements">Lip movements</a></li>
+        <li><a href="#blinking">Blinking</a></li>
+        <li><a href="#gaze-and-head-tracking">Gaze and head tracking</a></li>
       </ul>
     </li>
-    <li><a href="#其它">其它</a>
+    <li><a href="#speech-and-conversation">Speech and conversation</a>
       <ul>
-        <li><a href="#tts-解决方案">TTS 解决方案</a></li>
-        <li><a href="#双人调度逻辑">双人调度逻辑</a></li>
+        <li><a href="#text-to-speech-with-azure">Text-to-speech with Azure</a></li>
+        <li><a href="#coordinating-two-speakers">Coordinating two speakers</a></li>
       </ul>
     </li>
   </ul>

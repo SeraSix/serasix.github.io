@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+<title>Unity 后处理基础 | Sera&#39;s Portfolio</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/css/layout.css">
+<link rel="stylesheet" href="/css/markdown.css">
+
+</head>
+<body class="site-body">
+  <header class="site-header">
+  <div class="site-header__inner">
+    <a href="/zh/" class="site-header__brand">
+      <span>SERASIX</span>
+    </a>
+    <nav class="site-header__nav">
+      
+        <a href="/zh/about/" class="site-header__link">关于</a>
+      
+        <a href="/zh/posts/" class="site-header__link">博客</a>
+      
+        <a href="/zh/projects/" class="site-header__link">项目</a>
+      
+
+      
+      <span class="site-header__languages">
+        
+          
+          
+            
+          
+          
+          <a href="/zh/posts/posteffect/" lang="zh" hreflang="zh" class="site-header__link" aria-current="page">中文</a>
+        
+          
+          
+            
+          
+          <span aria-hidden="true">|</span>
+          <a href="/posts/posteffect/" lang="en" hreflang="en" class="site-header__link">English</a>
+        
+      </span>
+    </nav>
+  </div>
+</header>
+
+  <main class="site-main">
+    
+  <div class="single-layout">
+    <article class="single-article">
+      <div class="single-section-wrap">
+        <span class="single-section-badge">posts</span>
+      </div>
+
+      <h1 class="single-title">Unity 后处理基础</h1>
+
+      <div class="single-meta">
+        <span>三月 12, 2026</span>
+        <span> | Author: Sera</span>
+      </div>
+
+      <div class="markdown-body">
+        <h2 id="内置渲染管线的后处理原理">内置渲染管线的后处理原理</h2>
+<h3 id="原理">原理</h3>
+<p>渲染管线中后处理的位置：</p>
+<img src="/posts/posteffect/Pasted_image_20250608142824.png" alt="" loading="lazy" style="ZgotmplZ"><p>后处理逻辑：摄像机调用 OnRenderImage( ) 函数（相关脚本挂在摄像机上），unity在每一个单位时间自动调用</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-nasm" data-lang="nasm"><span class="line"><span class="cl">	<span class="nf">void</span> <span class="nv">OnRenderImage</span><span class="p">(</span><span class="nv">RenderTexture</span> <span class="nv">source</span><span class="p">,</span> <span class="nv">RenderTexture</span> <span class="nv">destination</span><span class="p">)</span> <span class="err">{</span>
+</span></span><span class="line"><span class="cl">	    <span class="nf">Graphics.Blit</span><span class="p">(</span><span class="nv">source</span><span class="p">,</span> <span class="nv">destination</span><span class="p">,</span> <span class="nv">material</span><span class="err">，</span><span class="s">&#34;pass&#34;</span><span class="p">)</span><span class="c1">;</span>
+</span></span><span class="line"><span class="cl">	<span class="err">}</span>
+</span></span><span class="line"><span class="cl"><span class="err">}</span>
+</span></span></code></pre></div><ul>
+<li>核心操作：<code>Graphics.Blit(source, destination, material, pass)</code> ，这个函数先拿到后处理前的的原图，利用后处理 shader 处理它，结束后输出最终图，专业点讲就是：
+<ul>
+<li>从 Render Texture source中取原图</li>
+<li>调用传入的 material</li>
+<li>把渲染完成的结果传到 destination</li>
+</ul>
+</li>
+<li>Graphics.Blit 会调用 drawcall，可以在 Frame Debugger 里进行查看：</li>
+</ul>
+<img src="/posts/posteffect/Pasted_image_20250611172027.png" alt="Pasted image 20250611172027.png" loading="lazy"><h3 id="代码实现">代码实现</h3>
+<p>实现后处理需要在以下两个地方更改代码：</p>
+<ol>
+<li>在 camera 上挂后处理脚本</li>
+<li>写后处理 shader最简单的后处理模板：</li>
+</ol>
+<p>最简单的摄像机脚本：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-csharp" data-lang="csharp"><span class="line"><span class="cl"><span class="na">[ExecuteInEditMode()]</span> <span class="c1">//在编辑模式的时候就会被调用</span>
+</span></span><span class="line"><span class="cl"><span class="na">[RequireComponent(typeof(Camera))]</span> <span class="c1">//查看当前的GO是否有camera组件，如果没有的话会自动添加</span>
+</span></span><span class="line"><span class="cl"><span class="kd">public</span> <span class="k">class</span> <span class="s">&#34;ScriptName&#34;</span> <span class="p">:</span> <span class="n">MonoBehaviour</span><span class="p">{</span>
+</span></span><span class="line"><span class="cl">	<span class="kd">public</span> <span class="n">Material</span> <span class="n">material</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">	<span class="k">void</span> <span class="n">Start</span> <span class="p">()</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">		<span class="k">if</span> <span class="p">(</span><span class="n">material</span> <span class="p">==</span> <span class="kc">null</span> <span class="p">||</span> <span class="n">material</span><span class="p">.</span><span class="n">shader</span> <span class="p">==</span> <span class="kc">null</span> <span class="p">||</span> <span class="n">material</span><span class="p">.</span><span class="n">shader</span><span class="p">.</span><span class="n">isSupported</span> <span class="p">==</span> <span class="kc">false</span><span class="p">){</span>
+</span></span><span class="line"><span class="cl">		<span class="n">enabled</span> <span class="p">=</span> <span class="kc">false</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">		<span class="k">return</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">	<span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">	<span class="c1">// 每一帧都会执行一次，只能在 camera组件上生效</span>
+</span></span><span class="line"><span class="cl">	<span class="k">void</span> <span class="n">OnRenderImage</span><span class="p">(</span><span class="n">RenderTexture</span> <span class="n">source</span><span class="p">,</span> <span class="n">RenderTexture</span> <span class="n">destination</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">	    <span class="n">Graphics</span><span class="p">.</span><span class="n">Blit</span><span class="p">(</span><span class="n">source</span><span class="p">,</span> <span class="n">destination</span><span class="p">,</span> <span class="n">material</span><span class="err">，</span><span class="s">&#34;pass&#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">	<span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><p>最简单的后处理脚本（以暗角效果为例）：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-csharp" data-lang="csharp"><span class="line"><span class="cl"><span class="n">Shader</span> <span class="s">&#34;EmageEffect/Sample&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="n">Properties</span>
+</span></span><span class="line"><span class="cl">    <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="n">_MainTex</span> <span class="p">(</span><span class="s">&#34;Texture&#34;</span><span class="p">,</span> <span class="m">2D</span><span class="p">)</span> <span class="p">=</span> <span class="s">&#34;white&#34;</span> <span class="p">{}</span>
+</span></span><span class="line"><span class="cl">        <span class="c1">// 这里的_MainTex就是 camera 中的 source，即原图</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="n">SubShader</span>
+</span></span><span class="line"><span class="cl">    <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="c1">// No culling or depth</span>
+</span></span><span class="line"><span class="cl">        <span class="n">Cull</span> <span class="n">Off</span>
+</span></span><span class="line"><span class="cl">        <span class="n">ZWrite</span> <span class="n">Off</span>
+</span></span><span class="line"><span class="cl">        <span class="n">ZTest</span> <span class="n">Always</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">        <span class="n">Pass</span>
+</span></span><span class="line"><span class="cl">        <span class="p">{</span>
+</span></span><span class="line"><span class="cl">            <span class="n">CGPROGRAM</span>
+</span></span><span class="line"><span class="cl">            <span class="cp">#pragma</span> <span class="n">vertex</span> <span class="n">vert_img</span><span class="p">;</span> <span class="c1">// 后处理不会涉及 vert shader，所以直接调用内置函数</span>
+</span></span><span class="line"><span class="cl">            <span class="cp">#pragma</span> <span class="n">fragment</span> <span class="n">frag</span>
+</span></span><span class="line"><span class="cl">            <span class="err">#</span><span class="n">include</span> <span class="s">&#34;UnityCG.cginc&#34;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">            <span class="n">sampler2D</span> <span class="n">_MainTex</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">            <span class="n">fixed4</span> <span class="n">frag</span> <span class="p">(</span><span class="n">v2f_img</span> <span class="n">i</span><span class="p">)</span> <span class="p">:</span> <span class="n">SV_Target</span>
+</span></span><span class="line"><span class="cl">            <span class="p">{</span>
+</span></span><span class="line"><span class="cl">		            <span class="c1">// 进行后处理操作</span>
+</span></span><span class="line"><span class="cl">								<span class="n">float4</span> <span class="n">col</span> <span class="p">=</span> <span class="n">tex2D</span><span class="p">(</span><span class="n">_MainTex</span><span class="p">,</span> <span class="n">i</span><span class="p">.</span><span class="n">uv</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">                <span class="k">return</span> <span class="n">col</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">            <span class="p">}</span>
+</span></span><span class="line"><span class="cl">            <span class="n">ENDCG</span>
+</span></span><span class="line"><span class="cl">        <span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><h2 id="简单案例">简单案例</h2>
+<p>去把 pad 上的东西般过来…</p>
+<h3 id="1-暗角">1. 暗角</h3>
+<img src="/posts/posteffect/Pasted_image_20250614110044.png" alt="Pasted image 20250614110044.png" loading="lazy"><p>核心计算公式： 见黄色公式，效果见可视化图形</p>
+<img src="/posts/posteffect/Pasted_image_20250609173007.png" alt="Pasted image 20250609173007.png" loading="lazy"><p>代码实现：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-csharp" data-lang="csharp"><span class="line"><span class="cl"><span class="c1">//最基本的：</span>
+</span></span><span class="line"><span class="cl"><span class="kt">float</span> <span class="n">vfactor</span> <span class="p">=</span> <span class="m">1.0</span> <span class="p">-</span> <span class="n">length</span><span class="p">(</span><span class="n">i</span><span class="p">.</span><span class="n">uv</span> <span class="p">-</span> <span class="n">float2</span><span class="p">(</span><span class="m">0.5</span><span class="p">,</span><span class="m">0.5</span><span class="p">))</span> <span class="c1">//会是一个椭圆！</span>
+</span></span><span class="line"><span class="cl"><span class="c1">// 常见的暗角控制参数：</span>
+</span></span><span class="line"><span class="cl"><span class="c1">// _VignetteIntensity </span>
+</span></span><span class="line"><span class="cl"><span class="n">float2</span> <span class="n">d</span> <span class="p">=</span> <span class="n">abs</span><span class="p">(</span><span class="n">i</span><span class="p">.</span><span class="n">uv</span> <span class="p">-</span> <span class="n">half2</span><span class="p">(</span><span class="m">0.5</span><span class="p">,</span> <span class="m">0.5</span><span class="p">))</span> <span class="p">*</span> <span class="n">_VignetteIntensity</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="c1">// _VignetteRoundness</span>
+</span></span><span class="line"><span class="cl"><span class="n">d</span> <span class="p">=</span> <span class="n">pow</span><span class="p">(</span><span class="n">saturate</span><span class="p">(</span><span class="n">d</span><span class="p">),</span> <span class="n">_VignetteRoundness</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="c1">// _VignetteSmoothness</span>
+</span></span><span class="line"><span class="cl"><span class="kt">float</span> <span class="n">vfactor</span> <span class="p">=</span> <span class="n">pow</span><span class="p">(</span><span class="n">saturate</span><span class="p">(</span><span class="m">1.0</span> <span class="p">-</span> <span class="n">dist</span> <span class="p">*</span> <span class="n">dist</span><span class="p">),</span> <span class="n">_VignetteSmoothness</span><span class="p">);</span>
+</span></span></code></pre></div><h3 id="2-描边">2. 描边</h3>
+<img src="/posts/posteffect/Pasted_image_20250614104651.png" alt="Pasted image 20250614104651.png" loading="lazy"><p>实现方式：</p>
+<ol>
+<li>9 x 9的采样
+<ol>
+<li>在这一步做了卷积翻转</li>
+<li>shader的<code>_MainTex_TexelSize</code> 参数</li>
+</ol>
+</li>
+<li>边缘检测的预处理：rgb &ndash;&gt; luminance
+<ol>
+<li><code>0.2125 * r + 0.7154 * g + 0.0721 * b</code></li>
+</ol>
+</li>
+<li>采用 sobel 算子进行计算</li>
+</ol>
+<p>核心代码：三个核心函数，分别进行步骤1，步骤2，步骤3</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-csharp" data-lang="csharp"><span class="line"><span class="cl">   <span class="c1">// 采样贴图附近九个点</span>
+</span></span><span class="line"><span class="cl">   <span class="k">void</span> <span class="n">sample</span> <span class="p">(</span><span class="n">v2f_img</span> <span class="n">i</span><span class="p">,</span> <span class="k">out</span> <span class="n">half2</span> <span class="n">result</span><span class="p">[</span><span class="m">9</span><span class="p">]</span> <span class="p">){</span>
+</span></span><span class="line"><span class="cl">        <span class="n">result</span><span class="p">[</span><span class="m">0</span><span class="p">]</span> <span class="p">=</span> <span class="n">i</span><span class="p">.</span><span class="n">uv</span> <span class="p">+</span> <span class="n">_MainTex_TexelSize</span><span class="p">.</span><span class="n">xy</span> <span class="p">*</span> <span class="n">half2</span><span class="p">(-</span><span class="m">1</span><span class="p">,-</span><span class="m">1</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">        <span class="n">result</span><span class="p">[</span><span class="m">1</span><span class="p">]</span> <span class="p">=</span> <span class="n">i</span><span class="p">.</span><span class="n">uv</span> <span class="p">+</span> <span class="n">_MainTex_TexelSize</span><span class="p">.</span><span class="n">xy</span> <span class="p">*</span> <span class="n">half2</span><span class="p">(</span><span class="m">0</span><span class="p">,-</span><span class="m">1</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">        <span class="n">result</span><span class="p">[</span><span class="m">2</span><span class="p">]</span> <span class="p">=</span> <span class="n">i</span><span class="p">.</span><span class="n">uv</span> <span class="p">+</span> <span class="n">_MainTex_TexelSize</span><span class="p">.</span><span class="n">xy</span> <span class="p">*</span> <span class="n">half2</span><span class="p">(</span><span class="m">1</span><span class="p">,-</span><span class="m">1</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">        <span class="n">result</span><span class="p">[</span><span class="m">3</span><span class="p">]</span> <span class="p">=</span> <span class="n">i</span><span class="p">.</span><span class="n">uv</span> <span class="p">+</span> <span class="n">_MainTex_TexelSize</span><span class="p">.</span><span class="n">xy</span> <span class="p">*</span> <span class="n">half2</span><span class="p">(-</span><span class="m">1</span><span class="p">,</span><span class="m">0</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">        <span class="n">result</span><span class="p">[</span><span class="m">4</span><span class="p">]</span> <span class="p">=</span> <span class="n">i</span><span class="p">.</span><span class="n">uv</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="n">result</span><span class="p">[</span><span class="m">5</span><span class="p">]</span> <span class="p">=</span> <span class="n">i</span><span class="p">.</span><span class="n">uv</span> <span class="p">+</span> <span class="n">_MainTex_TexelSize</span><span class="p">.</span><span class="n">xy</span> <span class="p">*</span> <span class="n">half2</span><span class="p">(</span><span class="m">1</span><span class="p">,</span><span class="m">0</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">        <span class="n">result</span><span class="p">[</span><span class="m">6</span><span class="p">]</span> <span class="p">=</span> <span class="n">i</span><span class="p">.</span><span class="n">uv</span> <span class="p">+</span> <span class="n">_MainTex_TexelSize</span><span class="p">.</span><span class="n">xy</span> <span class="p">*</span> <span class="n">half2</span><span class="p">(-</span><span class="m">1</span><span class="p">,</span><span class="m">1</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">        <span class="n">result</span><span class="p">[</span><span class="m">7</span><span class="p">]</span> <span class="p">=</span> <span class="n">i</span><span class="p">.</span><span class="n">uv</span> <span class="p">+</span> <span class="n">_MainTex_TexelSize</span><span class="p">.</span><span class="n">xy</span> <span class="p">*</span> <span class="n">half2</span><span class="p">(</span><span class="m">0</span><span class="p">,</span><span class="m">1</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">        <span class="n">result</span><span class="p">[</span><span class="m">8</span><span class="p">]</span> <span class="p">=</span> <span class="n">i</span><span class="p">.</span><span class="n">uv</span> <span class="p">+</span> <span class="n">_MainTex_TexelSize</span><span class="p">.</span><span class="n">xy</span> <span class="p">*</span> <span class="n">half2</span><span class="p">(</span><span class="m">1</span><span class="p">,</span><span class="m">1</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="c1">// change the rgb to luminance</span>
+</span></span><span class="line"><span class="cl">    <span class="n">fixed3</span> <span class="n">cal_luminance</span><span class="p">(</span><span class="n">fixed3</span> <span class="n">color</span><span class="p">){</span>
+</span></span><span class="line"><span class="cl">        <span class="k">return</span>  <span class="m">0.2125</span> <span class="p">*</span> <span class="n">color</span><span class="p">.</span><span class="n">r</span> <span class="p">+</span> <span class="m">0.7154</span> <span class="p">*</span> <span class="n">color</span><span class="p">.</span><span class="n">g</span> <span class="p">+</span> <span class="m">0.0721</span> <span class="p">*</span> <span class="n">color</span><span class="p">.</span><span class="n">b</span><span class="p">;</span> 
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="c1">// calculate convolution with sobel</span>
+</span></span><span class="line"><span class="cl">    <span class="n">half</span> <span class="n">sobel</span><span class="p">(</span><span class="n">half2</span> <span class="n">sampled</span><span class="p">[</span><span class="m">9</span><span class="p">]){</span>
+</span></span><span class="line"><span class="cl">        <span class="kd">const</span> <span class="n">half</span> <span class="n">Gx</span><span class="p">[</span><span class="m">9</span><span class="p">]</span> <span class="p">=</span> <span class="p">{-</span><span class="m">1</span><span class="p">,</span>  <span class="m">0</span><span class="p">,</span>  <span class="m">1</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">                            <span class="p">-</span><span class="m">2</span><span class="p">,</span>  <span class="m">0</span><span class="p">,</span>  <span class="m">2</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">                            <span class="p">-</span><span class="m">1</span><span class="p">,</span>  <span class="m">0</span><span class="p">,</span>  <span class="m">1</span><span class="p">};</span>
+</span></span><span class="line"><span class="cl">        <span class="kd">const</span> <span class="n">half</span> <span class="n">Gy</span><span class="p">[</span><span class="m">9</span><span class="p">]</span> <span class="p">=</span> <span class="p">{-</span><span class="m">1</span><span class="p">,</span> <span class="p">-</span><span class="m">2</span><span class="p">,</span> <span class="p">-</span><span class="m">1</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">                            <span class="m">0</span><span class="p">,</span>  <span class="m">0</span><span class="p">,</span>  <span class="m">0</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">                            <span class="m">1</span><span class="p">,</span>  <span class="m">2</span><span class="p">,</span>  <span class="m">1</span><span class="p">};</span>	
+</span></span><span class="line"><span class="cl">        <span class="n">half</span> <span class="n">luminance</span> <span class="p">=</span> <span class="m">0</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="n">half</span> <span class="n">edgeX</span> <span class="p">=</span> <span class="m">0</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="n">half</span> <span class="n">edgeY</span> <span class="p">=</span> <span class="m">0</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="k">for</span><span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="p">=</span> <span class="m">0</span><span class="p">;</span> <span class="n">i</span> <span class="p">&lt;</span> <span class="m">9</span><span class="p">;</span> <span class="n">i</span><span class="p">++){</span>
+</span></span><span class="line"><span class="cl">            <span class="n">luminance</span> <span class="p">=</span> <span class="n">cal_luminance</span><span class="p">(</span><span class="n">tex2D</span><span class="p">(</span><span class="n">_MainTex</span><span class="p">,</span> <span class="n">sampled</span><span class="p">[</span><span class="n">i</span><span class="p">]));</span>
+</span></span><span class="line"><span class="cl">            <span class="n">edgeX</span> <span class="p">+=</span> <span class="n">luminance</span> <span class="p">*</span> <span class="n">Gx</span><span class="p">[</span><span class="n">i</span><span class="p">];</span>
+</span></span><span class="line"><span class="cl">            <span class="n">edgeY</span> <span class="p">+=</span> <span class="n">luminance</span> <span class="p">*</span> <span class="n">Gy</span><span class="p">[</span><span class="n">i</span><span class="p">];</span>
+</span></span><span class="line"><span class="cl">        <span class="p">}</span>
+</span></span><span class="line"><span class="cl">        <span class="n">half</span> <span class="n">edge</span> <span class="p">=</span> <span class="n">abs</span><span class="p">(</span><span class="n">edgeX</span><span class="p">)</span> <span class="p">+</span> <span class="n">abs</span><span class="p">(</span><span class="n">edgeY</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">        <span class="k">return</span> <span class="n">edge</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span></code></pre></div><h3 id="3-bloom">3. Bloom</h3>
+<img src="/posts/posteffect/Pasted_image_20250614150059.png" alt="Pasted image 20250614150059.png" loading="lazy"><p>实现原理：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-csharp" data-lang="csharp"><span class="line"><span class="cl"><span class="na">[原图 source]</span>
+</span></span><span class="line"><span class="cl">      <span class="err">│</span>
+</span></span><span class="line"><span class="cl">      <span class="err">▼</span>
+</span></span><span class="line"><span class="cl"><span class="na">[提取亮区]</span> <span class="err">——</span><span class="p">&gt;</span> <span class="p">[</span><span class="err">高斯模糊</span><span class="p">]</span> <span class="err">——</span><span class="p">&gt;</span> <span class="p">[</span><span class="n">bloom纹理</span><span class="p">]</span>
+</span></span><span class="line"><span class="cl">      <span class="err">│</span>                        <span class="err">▲</span>
+</span></span><span class="line"><span class="cl">      <span class="err">└──────────</span> <span class="err">合成</span> <span class="err">────────—┘</span>
+</span></span><span class="line"><span class="cl">                    <span class="err">↓</span>
+</span></span><span class="line"><span class="cl"><span class="na">              [destination]</span>
+</span></span></code></pre></div><p>在 shader 中的体现：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-csharp" data-lang="csharp"><span class="line"><span class="cl"><span class="n">pass</span>
+</span></span><span class="line"><span class="cl"><span class="p">{</span>
+</span></span><span class="line"><span class="cl">	<span class="c1">// threshold</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="n">pass</span> <span class="c1">// Horizontal blur</span>
+</span></span><span class="line"><span class="cl"><span class="n">pass</span> <span class="c1">// Vertical blur</span>
+</span></span><span class="line"><span class="cl"><span class="n">pass</span>
+</span></span><span class="line"><span class="cl"><span class="p">{</span>
+</span></span><span class="line"><span class="cl">	<span class="n">Blend</span> <span class="n">One</span> <span class="n">One</span> <span class="c1">//不必要，但是效果确实更好看</span>
+</span></span><span class="line"><span class="cl">	<span class="c1">// blend </span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div>
+      </div>
+    </article>
+
+    <aside class="single-toc">
+      <h2 class="single-toc-title">On This Page</h2>
+      <div class="single-toc-body">
+        <nav id="TableOfContents">
+  <ul>
+    <li><a href="#内置渲染管线的后处理原理">内置渲染管线的后处理原理</a>
+      <ul>
+        <li><a href="#原理">原理</a></li>
+        <li><a href="#代码实现">代码实现</a></li>
+      </ul>
+    </li>
+    <li><a href="#简单案例">简单案例</a>
+      <ul>
+        <li><a href="#1-暗角">1. 暗角</a></li>
+        <li><a href="#2-描边">2. 描边</a></li>
+        <li><a href="#3-bloom">3. Bloom</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+      </div>
+    </aside>
+  </div>
+
+  </main>
+  <footer class="site-footer">
+  <div class="site-footer__inner">
+    <p style="margin:0;">&copy; 2026 Sera&#39;s Portfolio. Built with Hugo.</p>
+  </div>
+</footer>
+
+</body>
+</html>

@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Sera&#39;s Portfolio</title>
+    <link>http://localhost:1313/zh/</link>
+    <description>Recent content on Sera&#39;s Portfolio</description>
+    <generator>Hugo</generator>
+    <language>zh-CN</language>
+    <lastBuildDate>Fri, 20 Nov 2026 00:00:00 +0800</lastBuildDate>
+    <atom:link href="http://localhost:1313/zh/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>NPR 角色</title>
+      <link>http://localhost:1313/zh/projects/npr_character/</link>
+      <pubDate>Fri, 20 Nov 2026 00:00:00 +0800</pubDate>
+      <guid>http://localhost:1313/zh/projects/npr_character/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>CatSpider</title>
+      <link>http://localhost:1313/zh/projects/catspider/</link>
+      <pubDate>Mon, 17 Aug 2026 14:14:00 +0800</pubDate>
+      <guid>http://localhost:1313/zh/projects/catspider/</guid>
+      <description>基于 UE Control Rig 实现的小猫蜘蛛</description>
+    </item>
+    <item>
+      <title>OpenWorld</title>
+      <link>http://localhost:1313/zh/projects/openworld/</link>
+      <pubDate>Sat, 15 Aug 2026 14:14:00 +0800</pubDate>
+      <guid>http://localhost:1313/zh/projects/openworld/</guid>
+      <description>卡通化大世界</description>
+    </item>
+    <item>
+      <title>AI NPC Dual-Character System</title>
+      <link>http://localhost:1313/zh/projects/ai_npc/</link>
+      <pubDate>Tue, 12 May 2026 14:14:00 +0800</pubDate>
+      <guid>http://localhost:1313/zh/projects/ai_npc/</guid>
+      <description>A Unity-based AI NPC conversation system with synchronized speech, visemes, facial expressions, eye contact, and animations</description>
+    </item>
+    <item>
+      <title>UE 面部捕捉实现</title>
+      <link>http://localhost:1313/zh/projects/facemocap/</link>
+      <pubDate>Wed, 18 Mar 2026 03:07:00 +0800</pubDate>
+      <guid>http://localhost:1313/zh/projects/facemocap/</guid>
+      <description>基于LiveLink + ARKit的面部捕捉流程</description>
+    </item>
+    <item>
+      <title>Bubble Shader</title>
+      <link>http://localhost:1313/zh/posts/bubble/</link>
+      <pubDate>Sun, 15 Mar 2026 10:00:00 +0800</pubDate>
+      <guid>http://localhost:1313/zh/posts/bubble/</guid>
+      <description>基于 gesener wave 的，带波动的五彩泡泡</description>
+    </item>
+    <item>
+      <title>我有个人网页了（好耶！）</title>
+      <link>http://localhost:1313/zh/about/me/</link>
+      <pubDate>Sun, 15 Mar 2026 01:33:00 +0800</pubDate>
+      <guid>http://localhost:1313/zh/about/me/</guid>
+      <description>一个关于网站的小小介绍</description>
+    </item>
+    <item>
+      <title>第十一届世界渲染大赛</title>
+      <link>http://localhost:1313/zh/projects/wrc11/</link>
+      <pubDate>Sun, 15 Mar 2026 00:15:00 +0800</pubDate>
+      <guid>http://localhost:1313/zh/projects/wrc11/</guid>
+      <description>My first full pipeline animation project</description>
+    </item>
+    <item>
+      <title>LD58: HeartKeys</title>
+      <link>http://localhost:1313/zh/projects/ld58/</link>
+      <pubDate>Sat, 14 Mar 2026 20:39:00 +0800</pubDate>
+      <guid>http://localhost:1313/zh/projects/ld58/</guid>
+      <description>Leading artist and technical artist of the team</description>
+    </item>
+    <item>
+      <title>LD56: Night at the 8th Warehouse</title>
+      <link>http://localhost:1313/zh/projects/ld56/</link>
+      <pubDate>Sat, 14 Mar 2026 14:14:00 +0800</pubDate>
+      <guid>http://localhost:1313/zh/projects/ld56/</guid>
+      <description>My very first journey in game development and CG</description>
+    </item>
+    <item>
+      <title>Unity 后处理基础</title>
+      <link>http://localhost:1313/zh/posts/posteffect/</link>
+      <pubDate>Thu, 12 Mar 2026 10:00:00 +0800</pubDate>
+      <guid>http://localhost:1313/zh/posts/posteffect/</guid>
+      <description>Unity 内置渲染管线里的简单后处理实现</description>
+    </item>
+  </channel>
+</rss>

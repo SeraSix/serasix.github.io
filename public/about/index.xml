@@ -5,15 +5,15 @@
     <link>http://localhost:1313/about/</link>
     <description>Recent content in About on Sera&#39;s Portfolio</description>
     <generator>Hugo</generator>
-    <language>zh-CN</language>
+    <language>en-US</language>
     <lastBuildDate>Sun, 15 Mar 2026 01:33:00 +0800</lastBuildDate>
     <atom:link href="http://localhost:1313/about/index.xml" rel="self" type="application/rss+xml" />
     <item>
-      <title>我有个人网页了（好耶！）</title>
+      <title>I Have My Own Website! (Finally!)</title>
       <link>http://localhost:1313/about/me/</link>
       <pubDate>Sun, 15 Mar 2026 01:33:00 +0800</pubDate>
       <guid>http://localhost:1313/about/me/</guid>
-      <description>一个关于网站的小小介绍</description>
+      <description>A little introduction to this site and how it came about.</description>
     </item>
   </channel>
 </rss>

@@ -5,78 +5,85 @@
     <link>http://localhost:1313/</link>
     <description>Recent content in Technical Art Portfolio and Blog on Sera&#39;s Portfolio</description>
     <generator>Hugo</generator>
-    <language>zh-CN</language>
-    <lastBuildDate>Mon, 17 Aug 2026 14:14:00 +0800</lastBuildDate>
+    <language>en-US</language>
+    <lastBuildDate>Fri, 20 Nov 2026 00:00:00 +0800</lastBuildDate>
     <atom:link href="http://localhost:1313/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>NPR Character</title>
+      <link>http://localhost:1313/projects/npr_character/</link>
+      <pubDate>Fri, 20 Nov 2026 00:00:00 +0800</pubDate>
+      <guid>http://localhost:1313/projects/npr_character/</guid>
+      <description></description>
+    </item>
     <item>
       <title>CatSpider</title>
       <link>http://localhost:1313/projects/catspider/</link>
       <pubDate>Mon, 17 Aug 2026 14:14:00 +0800</pubDate>
       <guid>http://localhost:1313/projects/catspider/</guid>
-      <description>基于 UE Control Rig 实现的小猫蜘蛛</description>
+      <description>A spider-legged cat with a procedural gait built in Unreal Engine’s Control Rig.</description>
     </item>
     <item>
       <title>OpenWorld</title>
       <link>http://localhost:1313/projects/openworld/</link>
       <pubDate>Sat, 15 Aug 2026 14:14:00 +0800</pubDate>
       <guid>http://localhost:1313/projects/openworld/</guid>
-      <description>卡通化大世界</description>
+      <description>A stylized open world with volumetric clouds and grass that bends as the player moves through it.</description>
     </item>
     <item>
       <title>AI NPC Dual-Character System</title>
       <link>http://localhost:1313/projects/ai_npc/</link>
       <pubDate>Tue, 12 May 2026 14:14:00 +0800</pubDate>
       <guid>http://localhost:1313/projects/ai_npc/</guid>
-      <description>A Unity-based AI NPC conversation system with synchronized speech, visemes, facial expressions, eye contact, and animations</description>
+      <description>A two-character conversation system in Unity that synchronizes speech, lip movements, facial expressions, gaze, and gestures.</description>
     </item>
     <item>
-      <title>UE 面部捕捉实现</title>
+      <title>Facial Motion Capture in Unreal Engine</title>
       <link>http://localhost:1313/projects/facemocap/</link>
       <pubDate>Wed, 18 Mar 2026 03:07:00 +0800</pubDate>
       <guid>http://localhost:1313/projects/facemocap/</guid>
-      <description>基于LiveLink + ARKit的面部捕捉流程</description>
+      <description>A facial capture workflow using Live Link and ARKit to drive a custom character in Unreal Engine.</description>
     </item>
     <item>
       <title>Bubble Shader</title>
       <link>http://localhost:1313/posts/bubble/</link>
       <pubDate>Sun, 15 Mar 2026 10:00:00 +0800</pubDate>
       <guid>http://localhost:1313/posts/bubble/</guid>
-      <description>基于 gesener wave 的，带波动的五彩泡泡</description>
+      <description>An iridescent bubble shader animated with two Gerstner waves.</description>
     </item>
     <item>
-      <title>我有个人网页了（好耶！）</title>
+      <title>I Have My Own Website! (Finally!)</title>
       <link>http://localhost:1313/about/me/</link>
       <pubDate>Sun, 15 Mar 2026 01:33:00 +0800</pubDate>
       <guid>http://localhost:1313/about/me/</guid>
-      <description>一个关于网站的小小介绍</description>
+      <description>A little introduction to this site and how it came about.</description>
     </item>
     <item>
-      <title>第十一届世界渲染大赛</title>
+      <title>11th World Render Challenge</title>
       <link>http://localhost:1313/projects/wrc11/</link>
       <pubDate>Sun, 15 Mar 2026 00:15:00 +0800</pubDate>
       <guid>http://localhost:1313/projects/wrc11/</guid>
-      <description>My first full pipeline animation project</description>
+      <description>My first animation project from start to finish, from modeling and rigging to the final render.</description>
     </item>
     <item>
       <title>LD58: HeartKeys</title>
       <link>http://localhost:1313/projects/ld58/</link>
       <pubDate>Sat, 14 Mar 2026 20:39:00 +0800</pubDate>
       <guid>http://localhost:1313/projects/ld58/</guid>
-      <description>Leading artist and technical artist of the team</description>
+      <description>I led the art team and handled technical art for HeartKeys, our Ludum Dare 58 entry.</description>
     </item>
     <item>
       <title>LD56: Night at the 8th Warehouse</title>
       <link>http://localhost:1313/projects/ld56/</link>
       <pubDate>Sat, 14 Mar 2026 14:14:00 +0800</pubDate>
       <guid>http://localhost:1313/projects/ld56/</guid>
-      <description>My very first journey in game development and CG</description>
+      <description>My first game jam, and my first steps in game development and computer graphics.</description>
     </item>
     <item>
-      <title>Unity 后处理基础</title>
+      <title>Post-Processing Basics in Unity</title>
       <link>http://localhost:1313/posts/posteffect/</link>
       <pubDate>Thu, 12 Mar 2026 10:00:00 +0800</pubDate>
       <guid>http://localhost:1313/posts/posteffect/</guid>
-      <description>Unity 内置渲染管线里的简单后处理实现</description>
+      <description>How to implement a vignette, Sobel outlines, and bloom in Unity’s Built-in Render Pipeline.</description>
     </item>
   </channel>
 </rss>

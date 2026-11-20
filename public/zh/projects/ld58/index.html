@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+<title>LD58: HeartKeys | Sera&#39;s Portfolio</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/css/layout.css">
+<link rel="stylesheet" href="/css/markdown.css">
+
+</head>
+<body class="site-body">
+  <header class="site-header">
+  <div class="site-header__inner">
+    <a href="/zh/" class="site-header__brand">
+      <span>SERASIX</span>
+    </a>
+    <nav class="site-header__nav">
+      
+        <a href="/zh/about/" class="site-header__link">关于</a>
+      
+        <a href="/zh/posts/" class="site-header__link">博客</a>
+      
+        <a href="/zh/projects/" class="site-header__link">项目</a>
+      
+
+      
+      <span class="site-header__languages">
+        
+          
+          
+            
+          
+          
+          <a href="/zh/projects/ld58/" lang="zh" hreflang="zh" class="site-header__link" aria-current="page">中文</a>
+        
+          
+          
+            
+          
+          <span aria-hidden="true">|</span>
+          <a href="/projects/ld58/" lang="en" hreflang="en" class="site-header__link">English</a>
+        
+      </span>
+    </nav>
+  </div>
+</header>
+
+  <main class="site-main">
+    
+  <div class="single-layout">
+    <article class="single-article">
+      <div class="single-section-wrap">
+        <span class="single-section-badge">projects</span>
+      </div>
+
+      <h1 class="single-title">LD58: HeartKeys</h1>
+
+      <div class="single-meta">
+        <span>三月 14, 2026</span>
+        
+      </div>
+
+      <div class="markdown-body">
+        <h2 id="简介">简介：</h2>
+<p>第58届 Luduam Dare Game Jam， 担任团队的主美和技美，最终成绩：19</p>
+<p><a href="https://ldjam.com/events/ludum-dare/58/heart-keys">网页连接，点这就能玩</a></p>
+<img src="/projects/ld58/image.png" alt="image.png" loading="lazy"><p>Credit和最终成绩（标亮的是我）：</p>
+<img src="image%201.png" width="400">  
+<img src="image%202.png" width="400">  
+<h2 id="技术拆解">技术拆解</h2>
+<p>队内分工：主美 + 技美</p>
+<p>负责对内分工 + 负责 3D 的技术部分</p>
+<h3 id="第三人称动画控制">第三人称动画控制</h3>
+<p>固定相机视角 + 动画状态机</p>
+<img src="image%203.png" alt="image.png" loading="lazy"><p>代码：https://github.com/SeraSix/Unity_Reusable/blob/main/3rdPerson/Move_Controller.cs</p>
+<h3 id="人物建模--绑定--动画">人物建模 + 绑定 + 动画</h3>
+<div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px;">
+  <img src="Pasted_image_20251005162424.png">
+  <img src="Pasted_image_20251005162549.png">
+  <img src="Pasted_image_20251005163547.png" >
+</div>
+<img src="/projects/ld58/Pasted_image_20251001112707.png" alt="Pasted image 20251001112707.png" loading="lazy"><p>Unity Avatar 设置：</p>
+<div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 0px;">
+  <img src="animation.gif">
+  <img src="animation-.gif">
+</div>
+<h3 id="input-system">Input System</h3>
+<p>设置 + 控制代码编写<a href="https://github.com/SeraSix/Unity_Reusable/blob/main/3rdPerson/Move_Controller.cs">（代码在这里）</a></p>
+<img src="image%204.png" alt="image.png" loading="lazy"><h2 id="场景所有物件建模">场景所有物件建模</h2>
+<p>大场景图片：</p>
+<img src="/projects/ld58/overview.png" alt="overview.png" loading="lazy"><p align="center">
+  <img src="details2.png" width="500">
+</p>
+<p align="center">
+  <img src="details1.png" width="500">
+</p>
+<p align="center">
+  <img src="details3.png" width="500">
+</p>
+<h2 id="后记">后记</h2>
+<p>LD56 之后修炼了一年的作品，鲜艳 + lowpoly 的治愈美术风格，最后取得了比预期高了好多的成绩也收获了很多好评</p>
+<img src="image%205.png" alt="image.png" loading="lazy"><p>这次最大的挑战是美术团队很庞大 + 全在线上。不过好在美术小组吵了一天的架之后大家逐渐找到了合适的分工，倒是下次还得练练怎么和策划沟通….</p>
+<p align="center">
+  <img src="367732ab309641df356fab5575299b89.jpg" width="200">
+</p>
+<p>下面聊一聊场景设计的小巧思</p>
+<p>我们的游戏名叫 Heart Key，钥匙象征着在成长过程中克服迷茫的过程，正好呼应了游戏的核心玩法 “ 不断收集技能，解开谜题”。为了描绘这个过程，我们选择了校园，家庭，爱情这三个主题，通过这三关后可以到达未来关卡（最后一关）。</p>
+<p>我们采用了 “把巨大物体掩埋在沙地” 里的方式来表达内心混沌，灵感来源于b站<a href="https://www.bilibili.com/video/BV1Wju1zrE2q/?spm_id_from=333.1387.upload.video_card.click">考拉老师</a>的一张视频截图。</p>
+<img src="image%206.png" alt="image.png" loading="lazy"><p>然而家庭主题关卡并没有延续这一风格，起因是因为不利于视觉引导遭到了策划团队的强烈反对 :(  后面改成了排列整齐但空无一人的两室一厅，反倒有了一种 “青少年在家里无法得到理解” 的韵味。</p>
+<img src="/projects/ld58/eacd795f-28b2-498c-b8ea-8d9e1d32340f.png" alt="image.png" loading="lazy"><p>爱情关卡中最值得拿出来说的是这一堆玫瑰和一堆剑，这里的设计灵感来源于格鲁吉亚的圣剑山（见右图）。据说这里铭记了千年前的一场以少胜多的战役，后来成为了勇气的赞歌。</p>
+<p>这大概是我理解的少年时期的爱情，颇有点赌上一切奋不顾身的冲动，可惜被我的队友们都认为我喜欢葬爱（</p>
+<div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px;">
+  <img src="f45b54e4-d989-4aaf-beaf-e9c7a68246b7.png">
+  <img src="image%207.png">
+</div>
+<p>至于为什么采用 low poly 的风格，实在是因为时间不够 + 技术有待提高，当然也有一部分原因是我很喜欢跳舞的线（谢谢跳舞的线！）</p>
+<p>差不多就是这样，最后放一张人员表！</p>
+<img src="image%208.png" alt="image.png" loading="lazy">
+      </div>
+    </article>
+
+    <aside class="single-toc">
+      <h2 class="single-toc-title">On This Page</h2>
+      <div class="single-toc-body">
+        <nav id="TableOfContents">
+  <ul>
+    <li><a href="#简介">简介：</a></li>
+    <li><a href="#技术拆解">技术拆解</a>
+      <ul>
+        <li><a href="#第三人称动画控制">第三人称动画控制</a></li>
+        <li><a href="#人物建模--绑定--动画">人物建模 + 绑定 + 动画</a></li>
+        <li><a href="#input-system">Input System</a></li>
+      </ul>
+    </li>
+    <li><a href="#场景所有物件建模">场景所有物件建模</a></li>
+    <li><a href="#后记">后记</a></li>
+  </ul>
+</nav>
+      </div>
+    </aside>
+  </div>
+
+  </main>
+  <footer class="site-footer">
+  <div class="site-footer__inner">
+    <p style="margin:0;">&copy; 2026 Sera&#39;s Portfolio. Built with Hugo.</p>
+  </div>
+</footer>
+
+</body>
+</html>
